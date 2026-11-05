@@ -98,8 +98,47 @@ A continuous 6-scene illustrated journey into the making of Saarthi, resolving *
 
 ---
 
+## 🎨 Interactive Scrapbook Enhancements
+
+1. **Signature 3D Memory Stand (`#memory-stand`)**:
+   - Vintage rotating display turntable arranged in 3D perspective space.
+   - Mouse and touch dragging with inertial momentum and continuous ambient spin.
+   - Clickable miniature 3D SVG objects: Midnight Notebook, Hackathon Badge, Steaming Chai, Origami Crane, ESC Keycap, Flash Drive.
+   - 3D zoom-in selection stage where chosen objects lift towards the foreground with realistic perspective, background blur, and handwritten sticky note details.
+
+2. **The Curiosity Pebble (`#pebble-track-viewport`)**:
+   - 2D Canvas physics simulation where a smooth marble drops down an offset wooden pegboard.
+   - Authentic restitution bouncing physics with soundless peg pulses and gravity funneling.
+   - Settling into the wooden cradle unlocks stray student insights from Priyanshi's pocket notebook.
+
+3. **Scrapbook Journey Timeline & Polaroid Gallery (`#journey-timeline`)**:
+   - Winding hand-drawn dashed path with clickable milestone nodes representing pivotal learning moments.
+   - Polaroid-style photograph frames with washi tape, organic tilt, and interactive zoom inspection.
+
+4. **Interactive Sticky Note Wall (`#sticky-notes-board`)**:
+   - Tactile scrapbook bulletin wall with angled pastel notes, washi tape pins, and micro-hover lifts.
+   - Clicking any note expands it into a high-legibility modal reading card.
+
+5. **Unfinished Ideas Drawer (`#drawer-furniture`)**:
+   - Tactile wooden cabinet with an interactive brass pull handle.
+   - Sliding open reveals categorized index cards of future technical horizons: Calm Finance CLI, Visual DSA Memory Studio, Accessible Audio Banking, and Contextual Companion UI.
+
+6. **Balloon Memories ("Little Things That Made Me", `#balloon-memories`)**:
+   - Floating pastel balloons drifting with gentle sinusoidal physics.
+   - Clicking any balloon pops it with a burst of pastel particles on an HTML5 canvas and unfolds a handwritten life or coding lesson. Reinflate button allows floating them again.
+
+7. **Interactive Retro Command Centre (`#terminal-overlay`)**:
+   - Terminal modal accessible via `Ctrl+K`, `Cmd+K`, `~`, or the navigation bar button.
+   - Interactive commands: `help`, `about`, `saarthi`, `skills`, `artifacts`, `timeline`, `drawer`, `ball`, `balloons`, `contact`, `clear`, `exit`.
+
+8. **Dedicated Saarthi Case Study (`saarthi.html`)**:
+   - Standalone deep-dive case study page honoring the storybook aesthetic.
+   - Sections: The Human Problem ("Missing Context in Digital Banking"), User Research Insights, 4-Tier Systems Architecture, 8-Screen Genuine Screenshot Walkthrough from `assets/saarthi/`, Implemented vs. Roadmap honesty comparison table, and Student Takeaways.
+
+---
+
 ## 💻 Local Preview
-Double-click [**`index.html`**](file:///C:/Users/shoot/.gemini/antigravity/scratch/portfolio-website/index.html) to open in your browser, or run:
+Double-click [**`index.html`**](file:///C:/Users/shoot/.gemini/antigravity\scratch\portfolio-website\index.html) or [**`saarthi.html`**](file:///C:/Users/shoot/.gemini/antigravity\scratch\portfolio-website\saarthi.html) to open in your browser, or run:
 ```powershell
 python -m http.server 3000
 ```

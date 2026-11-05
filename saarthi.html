@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saarthi Case Study — Priyanshi | Still Becoming</title>
+  <meta name="description" content="A comprehensive deep dive into Saarthi: tackling missing context in digital banking through empathetic, intelligent architecture. Flagship hackathon project by Priyanshi." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Case Study Dedicated Stylesheet -->
+  <style>
+    /* Case Study Page Specific Adjustments */
+    body {
+      background-color: var(--bg-cream, #FAF7F2);
+      color: var(--ink-primary, #2C2825);
+    }
+
+    .case-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--border-pencil, rgba(44, 40, 37, 0.12));
+      padding: 0.85rem 1.5rem;
+    }
+
+    .case-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .case-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      text-decoration: none;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-pill);
+      background: #FFFDF9;
+      border: 1.5px solid var(--border-pencil-strong, rgba(44, 40, 37, 0.22));
+      transition: all var(--transition-gentle);
+    }
+
+    .case-nav-back:hover {
+      background: var(--pastel-peach, #FCE9DE);
+      border-color: var(--pastel-coral, #E59982);
+      transform: translateX(-3px);
+    }
+
+    .case-nav-links {
+      display: flex;
+      gap: 1.2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .case-nav-links a {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color var(--transition-gentle);
+    }
+
+    .case-nav-links a:hover {
+      color: var(--pastel-coral);
+    }
+
+    .case-hero {
+      padding: 4.5rem 1.5rem 3.5rem 1.5rem;
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .case-badge-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-pill);
+      background: #FCE9DE;
+      border: 1px solid rgba(229, 153, 130, 0.35);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pastel-coral);
+      margin-bottom: 1.5rem;
+    }
+
+    .case-hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--ink-primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .case-hero-title em {
+      font-family: var(--font-hand);
+      font-style: normal;
+      color: var(--pastel-coral);
+      font-size: 1.15em;
+    }
+
+    .case-hero-lead {
+      font-family: var(--font-reading);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.65;
+      color: var(--ink-secondary);
+      max-width: 780px;
+      margin: 0 auto 2.5rem auto;
+    }
+
+    .case-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      background: #FFFDF9;
+      border: 2px solid var(--border-pencil-strong);
+      border-radius: 14px;
+      padding: 1.6rem 2rem;
+      text-align: left;
+      box-shadow: 0 10px 28px rgba(44, 40, 37, 0.06);
+    }
+
+    .meta-col-title {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .meta-col-value {
+      font-family: var(--font-serif);
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .case-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .case-section {
+      padding: 4rem 0;
+      border-bottom: 1.5px dashed var(--border-pencil);
+    }
+
+    .case-section-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-kicker {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--pastel-coral);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .case-section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.85rem, 3.4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--ink-primary);
+      line-height: 1.25;
+    }
+
+    .case-prose {
+      font-family: var(--font-reading);
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: #38312C;
+    }
+
+    .case-prose p {
+      margin-bottom: 1.4rem;
+    }
+
+    .case-prose strong {
+      color: var(--ink-primary);
+      font-weight: 600;
+    }
+
+    /* Problem Quote Card */
+    .problem-quote-card {
+      position: relative;
+      background: #FFFDF9;
+      border-left: 4px solid var(--pastel-coral);
+      border-radius: 0 12px 12px 0;
+      padding: 1.8rem 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 8px 24px rgba(44, 40, 37, 0.06);
+    }
+
+    .problem-quote-card p {
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      line-height: 1.4;
+      color: var(--ink-primary);
+      margin: 0;
+    }
+
+    .problem-quote-card span {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-top: 0.65rem;
+    }
+
+    /* 4 Dimensions Grid */
+    .four-dimensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .dimension-card {
+      background: #FFFDF9;
+      border: 1.8px solid var(--border-pencil-strong);
+      border-radius: 12px;
+      padding: 1.6rem;
+      box-shadow: 0 6px 18px rgba(44, 40, 37, 0.05);
+      transition: transform var(--transition-gentle);
+    }
+
+    .dimension-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--pastel-coral);
+    }
+
+    .dim-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      background: #FCE9DE;
+      color: var(--pastel-coral);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+
+    .dim-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .dim-desc {
+      font-family: var(--font-reading);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--ink-secondary);
+    }
+
+    /* Architecture Visual Diagram */
+    .arch-diagram-wrapper {
+      background: #FFFDF9;
+      border: 2px solid var(--border-pencil-strong);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 12px 36px rgba(44, 40, 37, 0.08);
+      margin: 2.5rem 0;
+    }
+
+    .arch-pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      position: relative;
+    }
+
+    .pipeline-step {
+      background: var(--bg-cream-soft, #F5EFEB);
+      border: 1.8px solid var(--border-pencil);
+      border-radius: 10px;
+      padding: 1.4rem;
+      position: relative;
+    }
+
+    .pipeline-step.highlight {
+      border-color: var(--pastel-coral);
+      background: #FFFDF9;
+      box-shadow: 0 6px 20px rgba(229, 153, 130, 0.16);
+    }
+
+    .pipeline-tag {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pastel-coral);
+    }
+
+    .pipeline-name {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin: 0.35rem 0;
+    }
+
+    .pipeline-desc {
+      font-family: var(--font-reading);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--ink-secondary);
+    }
+
+    /* Screen Walkthrough Showcase */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .screen-card {
+      background: #FFFDF9;
+      border: 2px solid var(--border-pencil-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(44, 40, 37, 0.08);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .screen-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(44, 40, 37, 0.14);
+    }
+
+    .screen-img-box {
+      background: #2C2825;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+      border-bottom: 2px solid var(--border-pencil-strong);
+    }
+
+    .screen-img-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      transition: transform 0.35s ease;
+    }
+
+    .screen-card:hover .screen-img-box img {
+      transform: scale(1.02);
+    }
+
+    .screen-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .screen-badge {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pastel-coral);
+    }
+
+    .screen-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .screen-caption {
+      font-family: var(--font-reading);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+    }
+
+    /* Comparison Table (Implemented vs Planned) */
+    .comparison-table-wrapper {
+      background: #FFFDF9;
+      border: 2px solid var(--border-pencil-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-top: 2rem;
+      box-shadow: 0 8px 24px rgba(44, 40, 37, 0.06);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .comp-col {
+      padding: 2rem;
+    }
+
+    .comp-col:first-child {
+      border-right: 1.5px dashed var(--border-pencil);
+      background: rgba(159, 181, 154, 0.08);
+    }
+
+    .comp-col-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .comp-badge {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .comp-badge-implemented {
+      background: #E8F2E6;
+      color: #4C6A47;
+    }
+
+    .comp-badge-future {
+      background: #FCE9DE;
+      color: #C76F56;
+    }
+
+    .comp-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+    }
+
+    .comp-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .comp-list li {
+      font-family: var(--font-reading);
+      font-size: 1.02rem;
+      line-height: 1.5;
+      color: #38312C;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .comp-list li span.bullet {
+      font-family: var(--font-hand);
+      font-size: 1.2rem;
+      color: var(--pastel-coral);
+      line-height: 1;
+    }
+
+    /* Student Learnings Card */
+    .learnings-card {
+      background: #FFFDF9;
+      border: 2px solid var(--border-pencil-strong);
+      border-radius: 14px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(44, 40, 37, 0.08);
+      position: relative;
+    }
+
+    .learnings-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(1deg);
+      width: 120px;
+      height: 24px;
+      background: rgba(245, 188, 169, 0.65);
+      border: 1px dashed rgba(44, 40, 37, 0.2);
+    }
+
+    .learnings-quote {
+      font-family: var(--font-hand);
+      font-size: 1.65rem;
+      line-height: 1.45;
+      color: var(--ink-primary);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .learnings-points {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .learning-point {
+      background: var(--bg-cream-soft);
+      border: 1px solid var(--border-pencil);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .learning-point h5 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      margin-bottom: 0.35rem;
+    }
+
+    .learning-point p {
+      font-family: var(--font-reading);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--ink-secondary);
+      margin: 0;
+    }
+
+    /* Case Study Footer */
+    .case-footer {
+      padding: 4.5rem 1.5rem;
+      text-align: center;
+      background: #F5EFEB;
+      border-top: 1.5px solid var(--border-pencil);
+      margin-top: 5rem;
+    }
+
+    .case-footer-monogram {
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      line-height: 44px;
+      border-radius: 50%;
+      background: var(--ink-primary);
+      color: var(--bg-cream);
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .case-footer-quote {
+      font-family: var(--font-hand);
+      font-size: 1.5rem;
+      color: var(--ink-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-return-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: var(--radius-pill);
+      background: var(--ink-primary);
+      color: var(--bg-cream);
+      border: 1.8px solid var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(44, 40, 37, 0.2);
+      transition: all var(--transition-gentle);
+    }
+
+    .btn-return-home:hover {
+      background: var(--pastel-coral);
+      border-color: var(--pastel-coral);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .case-nav-links {
+        display: none;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comp-col:first-child {
+        border-right: none;
+        border-bottom: 1.5px dashed var(--border-pencil);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="case-nav" aria-label="Case Study Navigation">
+    <div class="case-nav-inner">
+      <a href="index.html#chapter-2" class="case-nav-back">
+        <span>←</span>
+        <span>Back to Priyanshi's Portfolio</span>
+      </a>
+      <ul class="case-nav-links">
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#research">User Insights</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#screens">Screens</a></li>
+        <li><a href="#roadmap">Implemented vs Roadmap</a></li>
+        <li><a href="#learnings">Reflections</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="case-hero">
+    <div class="case-badge-row">
+      <span>✦ FinTech Hackathon Flagship Project</span>
+      <span>•</span>
+      <span>36-Hour Prototype</span>
+    </div>
+
+    <h1 class="case-hero-title">
+      Saarthi: <em>Missing Context</em> in Digital Banking
+    </h1>
+
+    <p class="case-hero-lead">
+      Digital banking apps provide thousands of features, yet when users look at a cryptic transaction or an ambiguous error code, they are left stranded. Saarthi is an empathetic, context-aware companion designed to transform cold financial ledgers into calm, human clarity.
+    </p>
+
+    <div class="case-meta-grid">
+      <div class="meta-col">
+        <div class="meta-col-title">Role</div>
+        <div class="meta-col-value">UX Research & Architecture</div>
+      </div>
+      <div class="meta-col">
+        <div class="meta-col-title">Track</div>
+        <div class="meta-col-value">FinTech & Inclusive Banking</div>
+      </div>
+      <div class="meta-col">
+        <div class="meta-col-title">Timeframe</div>
+        <div class="meta-col-value">36-Hour Hackathon Sprint</div>
+      </div>
+      <div class="meta-col">
+        <div class="meta-col-title">Core Focus</div>
+        <div class="meta-col-value">Contextual AI & Human Interface</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="case-container">
+
+    <!-- SECTION 1: THE HUMAN PROBLEM -->
+    <section class="case-section" id="problem">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter I • The Catalyst</span>
+        <h2 class="case-section-title">The Problem: Missing Context in Digital Banking</h2>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          Digital banking in India and across the world has achieved remarkable technological speed. Payments happen in milliseconds over UPI and IMPS. Yet, as the underlying pipes grew faster, the human experience grew colder and more disorienting.
+        </p>
+
+        <div class="problem-quote-card">
+          <p>“Did I get hacked? Who is 'POS-RET-BLR-092'? I don't remember spending 1,420 rupees on Tuesday.”</p>
+          <span>— A family member's panic over a cryptic bank SMS statement</span>
+        </div>
+
+        <p>
+          This incident was not an isolated edge case. Observing friends, parents, and elderly relatives interact with banking applications revealed a fundamental truth: <strong>banking applications display raw database records rather than meaningful human context.</strong>
+        </p>
+
+        <p>
+          We diagnosed four distinct dimensions where modern digital banking systematically fails its users:
+        </p>
+      </div>
+
+      <div class="four-dimensions-grid">
+        <div class="dimension-card">
+          <span class="dim-num">1</span>
+          <h4 class="dim-title">Cryptic Ledgers</h4>
+          <p class="dim-desc">Merchant descriptors like <code>PYMT/29381/POS-KA</code> terrify users. Instead of showing "Coffee at Third Wave with Tanvi", banking apps dump payment gateway metadata.</p>
+        </div>
+
+        <div class="dimension-card">
+          <span class="dim-num">2</span>
+          <h4 class="dim-title">Isolated Silos</h4>
+          <p class="dim-desc">Savings, fixed deposits, credit cards, and investments live in fragmented tabs. There is no unified storyline explaining how today's spending impacts next week's commitments.</p>
+        </div>
+
+        <div class="dimension-card">
+          <span class="dim-num">3</span>
+          <h4 class="dim-title">Anxiety Error Codes</h4>
+          <p class="dim-desc">When a server times out, users see <code>ERROR: 9924-GATEWAY_TIMEOUT</code>. It fails to answer the only question that matters: <em>Is my money safe or lost?</em></p>
+        </div>
+
+        <div class="dimension-card">
+          <span class="dim-num">4</span>
+          <h4 class="dim-title">The Accessibility Chasm</h4>
+          <p class="dim-desc">For elderly citizens or first-time digital users, complex multi-level menus and financial jargon act as an intimidating barrier rather than an empowering tool.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: RESEARCH & INSIGHTS -->
+    <section class="case-section" id="research">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter II • Empathy & Discovery</span>
+        <h2 class="case-section-title">User Research: What People Actually Need</h2>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          During the initial hours of the hackathon, before writing a single line of backend logic, we sketched out user personas and conducted quick informal interviews with hackathon mentors and peers. The insights completely reshaped our product direction:
+        </p>
+
+        <p>
+          <strong>Insight 1: People don't want spreadsheets; they want reassurance.</strong> When a student opens their banking app, they aren't looking to calculate standard deviations. They want to know: <em>"Can I afford to eat out with friends this weekend without running out of money before my monthly allowance arrives?"</em>
+        </p>
+
+        <p>
+          <strong>Insight 2: Voice is the great equalizer.</strong> Many non-tech-savvy users avoid typing in search boxes or browsing nested accordions. Speaking naturally in their native cadence ("Did my scholarship come through yet?") provides a 10x friendlier entry point.
+        </p>
+
+        <p>
+          <strong>Insight 3: The power of a 'Digital Twin'.</strong> People find financial planning stressful because it feels theoretical. Being able to run simulations—such as "What happens if I make this one-time purchase today?"—replaces dread with informed confidence.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 3: ARCHITECTURE & HOW SAARTHI WORKS -->
+    <section class="case-section" id="architecture">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter III • Systems Architecture</span>
+        <h2 class="case-section-title">How Saarthi Works: The Context Pipeline</h2>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          Saarthi is structured as a multi-tier contextual intelligence layer running between the raw banking core and the user interface. Its purpose is to ingest ambiguous queries and disparate ledger entries, synthesize them with user memory and heuristics, and output clear, conversational guidance.
+        </p>
+      </div>
+
+      <div class="arch-diagram-wrapper">
+        <div class="arch-pipeline">
+          <div class="pipeline-step">
+            <span class="pipeline-tag">Layer 1</span>
+            <h4 class="pipeline-name">Input Channels</h4>
+            <p class="pipeline-desc">Captures natural voice speech via Web Speech API or typed conversational queries.</p>
+          </div>
+
+          <div class="pipeline-step highlight">
+            <span class="pipeline-tag">Layer 2 • Core</span>
+            <h4 class="pipeline-name">Context Resolver</h4>
+            <p class="pipeline-desc">Extracts financial intent, time horizons, and entity references (merchants, categories, friends).</p>
+          </div>
+
+          <div class="pipeline-step">
+            <span class="pipeline-tag">Layer 3</span>
+            <h4 class="pipeline-name">Canonical Ledger</h4>
+            <p class="pipeline-desc">Maps raw banking statements to rich metadata (merchant names, locations, recurring subscriptions).</p>
+          </div>
+
+          <div class="pipeline-step highlight">
+            <span class="pipeline-tag">Layer 4 • Output</span>
+            <h4 class="pipeline-name">Calm Synthesizer</h4>
+            <p class="pipeline-desc">Delivers reassuring natural-language summaries and audio responses instead of cold error codes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          A standout engineering decision was separating <strong>computational verification</strong> from <strong>natural language explanation</strong>. In financial applications, LLMs cannot be trusted to perform deterministic balance arithmetic. Saarthi delegates all financial math to a deterministic ledger core, utilizing the AI model solely for intent understanding, context augmentation, and empathetic explanation.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 4: SCREEN WALKTHROUGH -->
+    <section class="case-section" id="screens">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter IV • Product Walkthrough</span>
+        <h2 class="case-section-title">The Implemented Interface & Screen Flow</h2>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          Here is the complete walkthrough of the Saarthi working prototype, illustrating how each user flow bridges the gap between raw financial mechanics and human empathy.
+        </p>
+      </div>
+
+      <div class="screens-grid">
+        
+        <!-- Screen 1: Login -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/login.png" alt="Saarthi Login and Authentication screen" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 01 • Entry</span>
+            <h4 class="screen-title">Calm, Welcoming Onboarding</h4>
+            <p class="screen-caption">
+              A minimalist, reassuring login interface that prioritizes peace of mind over aggressive security warnings, easing initial user apprehension.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 2: Dashboard Overview -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/home1.png" alt="Saarthi Contextual Home Dashboard" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 02 • Core Experience</span>
+            <h4 class="screen-title">Contextual Home Hub</h4>
+            <p class="screen-caption">
+              Replaces cluttered multi-column menus with a clean breakdown of available funds, daily safe-to-spend limits, and immediate action cards.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 3: Conversational Voice -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/talk.png" alt="Saarthi Talk to Assistant Voice Screen" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 03 • Voice & Text</span>
+            <h4 class="screen-title">Conversational Audio Companion</h4>
+            <p class="screen-caption">
+              "Talk to Saarthi" allows users to ask questions out loud in conversational language and receive immediate spoken and visual explanations.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 4: Hisaab Breakdown -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/hisaab.png" alt="Saarthi Hisaab Expense Breakdown" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 04 • Expense Context</span>
+            <h4 class="screen-title">Hisaab: Human Daily Breakdown</h4>
+            <p class="screen-caption">
+              Groups expenditures into real-life human contexts (hostel, chai, study materials) rather than cryptic point-of-sale merchant codes.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 5: Context Ledger -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/ledger.png" alt="Saarthi Enriched Transaction Ledger" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 05 • The Ledger</span>
+            <h4 class="screen-title">Context-Enriched Ledger</h4>
+            <p class="screen-caption">
+              Every transaction card includes verified merchant identities, locations, timestamps, and a one-click "Explain this transaction" button.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 6: Digital Twin & Time Machine -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/digitaltwin.png" alt="Saarthi Financial Digital Twin" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 06 • Simulation</span>
+            <h4 class="screen-title">The Financial Digital Twin</h4>
+            <p class="screen-caption">
+              A predictive sandbox that simulates how upcoming decisions will affect personal cash flow weeks into the future, eliminating guesswork.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 7: Security Audit & KYC -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/audit.png" alt="Saarthi Contextual Security and Audit Screen" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 07 • Trust & Security</span>
+            <h4 class="screen-title">Transparent Security Audit</h4>
+            <p class="screen-caption">
+              Plain-English security verification and activity logs that inform the user exactly which services accessed data and why.
+            </p>
+          </div>
+        </article>
+
+        <!-- Screen 8: Time Machine Feature -->
+        <article class="screen-card">
+          <div class="screen-img-box">
+            <img src="assets/saarthi/timemachine.png" alt="Saarthi Time Machine Feature" loading="lazy" />
+          </div>
+          <div class="screen-body">
+            <span class="screen-badge">Flow 08 • Projection</span>
+            <h4 class="screen-title">Financial Time Machine</h4>
+            <p class="screen-caption">
+              Interactive timeline sliders that project balance trajectories based on recurring subscriptions and historical spending cadence.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: IMPLEMENTED VS ROADMAP -->
+    <section class="case-section" id="roadmap">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter V • Honesty in Engineering</span>
+        <h2 class="case-section-title">Implementation Reality vs Future Roadmap</h2>
+      </div>
+
+      <div class="case-prose">
+        <p>
+          In keeping with the philosophy of <em>"Still Becoming"</em>, I believe in absolute engineering honesty. Hackathon prototypes demonstrate possibility; production systems require rigorous iteration. Here is an honest breakdown of what was built during the 36-hour sprint versus the architectural roadmap.
+        </p>
+      </div>
+
+      <div class="comparison-table-wrapper">
+        <div class="comparison-grid">
+          
+          <!-- Column 1: Built -->
+          <div class="comp-col">
+            <div class="comp-col-header">
+              <span class="comp-badge comp-badge-implemented">✓ Implemented in 36h</span>
+              <h4 class="comp-title">The Working Prototype</h4>
+            </div>
+            <ul class="comp-list">
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Context Resolver Engine:</strong> Rule-based and semantic extraction of financial queries into structured intent objects.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Simulated Banking Ledger:</strong> Mock database of 200+ multi-category transactions with realistic UPI descriptor strings.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Voice Interface Integration:</strong> Real-time microphone capture and speech-to-text synthesis via Web Speech API.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Interactive Dashboard:</strong> Fully responsive interface connecting the Hisaab, Digital Twin, and Ledger screens.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Reassurance Generator:</strong> Plain-English error code translator converting cryptic HTTP/gateway errors into actionable steps.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Roadmap -->
+          <div class="comp-col">
+            <div class="comp-col-header">
+              <span class="comp-badge comp-badge-future">✦ Architectural Roadmap</span>
+              <h4 class="comp-title">Future Engineering Horizons</h4>
+            </div>
+            <ul class="comp-list">
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>India Account Aggregator (AA) Integration:</strong> Live consent-based financial data fetching across multiple banks via RBI-regulated AA pipes.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>On-Device Local SLM:</strong> Running small quantized models locally on the device (WebLLM / ONNX) so sensitive banking data never leaves the handset.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Multilingual Voice Models:</strong> Fine-tuned regional speech engines supporting conversational Hindi, Gujarati, and Marathi for non-English speakers.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Automated Dispute Resolver:</strong> One-tap automated chargeback and grievance filing with auto-attached merchant receipts.</span>
+              </li>
+              <li>
+                <span class="bullet">✦</span>
+                <span><strong>Zero-Knowledge Audit Vault:</strong> Cryptographic verification ensuring that banking assistants cannot view user balances in plaintext on centralized servers.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: STUDENT REFLECTIONS -->
+    <section class="case-section" id="learnings" style="border-bottom: none;">
+      <div class="case-section-header">
+        <span class="section-kicker">Chapter VI • Personal Takeaways</span>
+        <h2 class="case-section-title">What Building Saarthi Taught Priyanshi</h2>
+      </div>
+
+      <div class="learnings-card">
+        <div class="learnings-tape"></div>
+        <p class="learnings-quote">
+          “Code is only as valuable as the peace of mind it provides to the person using it.”
+        </p>
+
+        <div class="learnings-points">
+          <div class="learning-point">
+            <h5>1. Empathy Beats Complexity</h5>
+            <p>It is easy to add fifty features to a dashboard. It takes true restraint to strip away forty of them so a nervous user can find the one answer they need.</p>
+          </div>
+
+          <div class="learning-point">
+            <h5>2. The Beauty of Constraints</h5>
+            <p>A 36-hour clock forces you to cut fluff. You realize that a simple, rock-solid context mapper beats an over-engineered machine learning pipeline that breaks under edge cases.</p>
+          </div>
+
+          <div class="learning-point">
+            <h5>3. The Journey Continues</h5>
+            <p>Saarthi was my first deep exploration into human-centered software engineering. It reinforced my conviction that my career in Computer Science should be spent building tools that bring clarity, warmth, and dignity to everyday human lives.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Case Study Footer -->
+  <footer class="case-footer">
+    <div class="case-footer-monogram">P</div>
+    <p class="case-footer-quote">“Still becoming. Always curious. Always building.”</p>
+    <a href="index.html#chapter-2" class="btn-return-home">
+      <span>←</span>
+      <span>Return to Priyanshi's Portfolio</span>
+    </a>
+  </footer>
+
+</body>
+</html>

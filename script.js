@@ -34,6 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initSaarthiWalkthrough();
   initMobileNavigation();
   initContactForm();
+  initMemoryCarousel();
+  initBallDrop();
+  initScrapbookTimeline();
+  initStickyNotes();
+  initIdeasDrawer();
+  initBalloonMemories();
+  initTerminal();
 });
 
 /* ============================================================
@@ -812,6 +819,1021 @@ function initSaarthiWalkthrough() {
       updateSlide(currentSlide + 1);
     } else if (e.key === "ArrowLeft") {
       updateSlide(currentSlide - 1);
+    }
+  });
+}
+
+/* ============================================================
+   11. SIGNATURE 3D MEMORY CAROUSEL & OBJECT ZOOM INTERACTION
+   ============================================================ */
+function initMemoryCarousel() {
+  const viewport = document.getElementById("carousel-viewport");
+  const ring = document.getElementById("carousel-ring");
+  const items = document.querySelectorAll(".carousel-item");
+  const btnPrev = document.getElementById("carousel-prev-btn");
+  const btnNext = document.getElementById("carousel-next-btn");
+
+  // Zoom-in Focus Stage Elements
+  const focusOverlay = document.getElementById("memory-focus-overlay");
+  const focusBackdrop = document.getElementById("focus-backdrop");
+  const focusRender = document.getElementById("focus-object-render");
+  const focusTag = document.getElementById("focus-note-tag");
+  const focusTitle = document.getElementById("focus-note-title");
+  const focusSubtitle = document.getElementById("focus-note-subtitle");
+  const focusBody = document.getElementById("focus-note-body");
+  const btnClose = document.getElementById("btn-close-memory");
+  const btnNextMemory = document.getElementById("btn-next-memory");
+
+  if (!viewport || !ring || items.length === 0) return;
+
+  const count = items.length;
+  let currentRotation = 0;
+  let targetRotation = 0;
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let velocity = 0;
+  let autoRotate = true;
+  let selectedIndex = -1;
+
+  function getRadius() {
+    return window.innerWidth <= 768 ? 140 : 210;
+  }
+
+  // Update item 3D positions around the circular platform
+  function updateCarousel() {
+    const radius = getRadius();
+    const step = 360 / count;
+
+    items.forEach((item, index) => {
+      const angleDeg = (index * step + currentRotation) % 360;
+      const angleRad = (angleDeg * Math.PI) / 180;
+
+      // Calculate 3D coordinates on circular turntable
+      const x = Math.sin(angleRad) * radius;
+      const z = Math.cos(angleRad) * radius;
+      
+      // Depth scaling and layering
+      const normalizedZ = (z + radius) / (2 * radius); // 0 (back) to 1 (front)
+      const scale = 0.82 + normalizedZ * 0.28;
+      const opacity = 0.5 + normalizedZ * 0.5;
+      const zIndex = Math.round(normalizedZ * 100);
+
+      // Billboard items towards the viewer
+      item.style.transform = `translate3d(${x}px, 0px, ${z}px) scale(${scale})`;
+      item.style.zIndex = zIndex;
+      item.style.opacity = opacity;
+    });
+  }
+
+  // Physics animation loop for smooth drag and subtle ambient spin
+  function tick() {
+    if (!isDragging) {
+      if (autoRotate && (!focusOverlay || !focusOverlay.classList.contains("active"))) {
+        targetRotation += 0.12; // gentle ambient float
+      }
+      currentRotation += (targetRotation - currentRotation) * 0.1;
+      velocity *= 0.92;
+      targetRotation += velocity;
+    } else {
+      currentRotation += (targetRotation - currentRotation) * 0.35;
+    }
+
+    updateCarousel();
+    requestAnimationFrame(tick);
+  }
+
+  // Drag Interactions (Mouse & Touch)
+  function onPointerDown(clientX) {
+    isDragging = true;
+    autoRotate = false;
+    startX = clientX;
+    lastX = clientX;
+    velocity = 0;
+    viewport.classList.add("is-dragging");
+  }
+
+  function onPointerMove(clientX) {
+    if (!isDragging) return;
+    const deltaX = clientX - lastX;
+    velocity = deltaX * 0.35;
+    targetRotation += velocity;
+    lastX = clientX;
+  }
+
+  function onPointerUp() {
+    if (!isDragging) return;
+    isDragging = false;
+    viewport.classList.remove("is-dragging");
+    setTimeout(() => {
+      if (!isDragging && focusOverlay && !focusOverlay.classList.contains("active")) {
+        autoRotate = true;
+      }
+    }, 3000);
+  }
+
+  // Mouse listeners
+  viewport.addEventListener("mousedown", (e) => {
+    if (e.button === 0) onPointerDown(e.clientX);
+  });
+  window.addEventListener("mousemove", (e) => onPointerMove(e.clientX));
+  window.addEventListener("mouseup", onPointerUp);
+
+  // Touch listeners
+  viewport.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) onPointerDown(e.touches[0].clientX);
+  }, { passive: true });
+  window.addEventListener("touchmove", (e) => {
+    if (isDragging && e.touches.length === 1) onPointerMove(e.touches[0].clientX);
+  }, { passive: true });
+  window.addEventListener("touchend", onPointerUp);
+
+  // Manual rotation buttons
+  if (btnPrev) {
+    btnPrev.addEventListener("click", () => {
+      autoRotate = false;
+      targetRotation += 360 / count;
+      setTimeout(() => { autoRotate = true; }, 3500);
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      autoRotate = false;
+      targetRotation -= 360 / count;
+      setTimeout(() => { autoRotate = true; }, 3500);
+    });
+  }
+
+  // ----------------------------------------------------
+  // OBJECT SELECTION & 3D ZOOM-IN INSPECTION MODAL
+  // ----------------------------------------------------
+  function openMemory(index) {
+    selectedIndex = index;
+    const item = items[index];
+    if (!item) return;
+
+    autoRotate = false;
+
+    // Extract data
+    const title = item.getAttribute("data-title") || "";
+    const subtitle = item.getAttribute("data-subtitle") || "";
+    const tag = item.getAttribute("data-tag") || "Artifact";
+    const note = item.getAttribute("data-note") || "";
+    const visualBox = item.querySelector(".item-visual-box");
+
+    // Populate Modal
+    if (focusTag) focusTag.textContent = tag;
+    if (focusTitle) focusTitle.textContent = title;
+    if (focusSubtitle) focusSubtitle.textContent = subtitle;
+    if (focusBody) focusBody.textContent = `“${note}”`;
+
+    // Clone SVG with crisp resolution
+    if (focusRender && visualBox) {
+      focusRender.innerHTML = visualBox.innerHTML;
+    }
+
+    // Activate Focus Overlay
+    if (focusOverlay) {
+      focusOverlay.classList.add("active");
+      focusOverlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeMemory() {
+    if (focusOverlay) {
+      focusOverlay.classList.remove("active");
+      focusOverlay.setAttribute("aria-hidden", "true");
+    }
+    document.body.style.overflow = "";
+    selectedIndex = -1;
+    setTimeout(() => {
+      autoRotate = true;
+    }, 1500);
+  }
+
+  // Click on items to inspect
+  items.forEach((item, index) => {
+    item.addEventListener("click", (e) => {
+      if (Math.abs(velocity) > 1.2) return;
+      openMemory(index);
+    });
+  });
+
+  // Close buttons and backdrop
+  if (btnClose) btnClose.addEventListener("click", closeMemory);
+  if (focusBackdrop) focusBackdrop.addEventListener("click", closeMemory);
+
+  // Next Memory button inside modal
+  if (btnNextMemory) {
+    btnNextMemory.addEventListener("click", () => {
+      const nextIndex = (selectedIndex + 1) % count;
+      targetRotation -= 360 / count;
+      openMemory(nextIndex);
+    });
+  }
+
+  // Escape key to close
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && focusOverlay && focusOverlay.classList.contains("active")) {
+      closeMemory();
+    }
+  });
+
+  // Start rotation loop
+  tick();
+}
+
+/* ============================================================
+   12. THE CURIOSITY PEBBLE (BALL DROP SIMULATION)
+   ============================================================ */
+function initBallDrop() {
+  const canvas = document.getElementById("pebble-canvas");
+  const btnDrop = document.getElementById("btn-drop-marble");
+  const statusBadge = document.getElementById("pebble-status-badge");
+  const resultBox = document.getElementById("pebble-result-box");
+  const noteNumEl = document.getElementById("pebble-note-num");
+  const quoteEl = document.getElementById("pebble-quote");
+
+  if (!canvas || !btnDrop) return;
+
+  const ctx = canvas.getContext("2d");
+  const width = canvas.width;
+  const height = canvas.height;
+
+  // Authentic student lessons
+  const lessons = [
+    "Every line of code you write was once something you didn't know how to do. Momentum is just one small pebble at a time.",
+    "Debugging with print statements or GDB: the bug isn't elusive because it's hard, it's elusive because you made an assumption you didn't check.",
+    "In digital banking, a missing explanation creates immediate anxiety. Software that handles human livelihoods must prioritize clarity over cleverness.",
+    "A segmentation fault isn't failureâ€”it's the CPU gently reminding you that computers don't guess, they obey.",
+    "You don't need to know every framework in existence. You need to know how to ask questions, read documentation, and stay curious when things break."
+  ];
+
+  let currentLessonIndex = 0;
+
+  // Pegboard grid
+  const pegs = [];
+  const rows = [
+    { y: 55, xs: [75, 130, 180, 230, 285] },
+    { y: 95, xs: [50, 105, 155, 205, 255, 310] },
+    { y: 135, xs: [75, 130, 180, 230, 285] },
+    { y: 175, xs: [50, 105, 155, 205, 255, 310] }
+  ];
+
+  rows.forEach(row => {
+    row.xs.forEach(x => {
+      pegs.push({ x, y: row.y, r: 4.5, pulse: 0 });
+    });
+  });
+
+  // Marble state
+  const marble = {
+    x: 180,
+    y: 18,
+    vx: 0,
+    vy: 0,
+    r: 7.5,
+    active: false,
+    settled: false,
+    trail: []
+  };
+
+  function dropMarble() {
+    marble.x = 180 + (Math.random() - 0.5) * 20;
+    marble.y = 18;
+    marble.vx = (Math.random() - 0.5) * 1.5;
+    marble.vy = 0.5;
+    marble.active = true;
+    marble.settled = false;
+    marble.trail = [];
+    
+    if (statusBadge) {
+      statusBadge.textContent = "Bouncing down pegs...";
+      statusBadge.style.color = "var(--pastel-coral)";
+    }
+  }
+
+  function settleMarble() {
+    marble.settled = true;
+    marble.active = false;
+
+    // Pick next lesson
+    currentLessonIndex = (currentLessonIndex + 1) % lessons.length;
+    if (noteNumEl) noteNumEl.textContent = currentLessonIndex + 1;
+    if (quoteEl) quoteEl.textContent = `â€œ${lessons[currentLessonIndex]}â€`;
+
+    if (statusBadge) {
+      statusBadge.textContent = "Landed in Cradle! âœ¨";
+      statusBadge.style.color = "var(--pastel-sage-dark, #5F7D5A)";
+    }
+
+    if (resultBox) {
+      resultBox.style.transform = "rotate(0deg) scale(1.03)";
+      setTimeout(() => {
+        resultBox.style.transform = "rotate(-1deg) scale(1)";
+      }, 350);
+    }
+  }
+
+  function update() {
+    if (marble.active) {
+      marble.vy += 0.38; // gravity
+      marble.vx *= 0.99; // air resistance
+      marble.vy *= 0.99;
+      marble.x += marble.vx;
+      marble.y += marble.vy;
+
+      // Add to trail
+      marble.trail.push({ x: marble.x, y: marble.y, life: 1 });
+      if (marble.trail.length > 8) marble.trail.shift();
+
+      // Side wall bounces
+      const minX = 20 + marble.r;
+      const maxX = width - 20 - marble.r;
+      if (marble.x < minX) {
+        marble.x = minX;
+        marble.vx = -marble.vx * 0.65;
+      } else if (marble.x > maxX) {
+        marble.x = maxX;
+        marble.vx = -marble.vx * 0.65;
+      }
+
+      // Peg collisions
+      pegs.forEach(peg => {
+        const dx = marble.x - peg.x;
+        const dy = marble.y - peg.y;
+        const dist = Math.hypot(dx, dy);
+        const minDist = marble.r + peg.r;
+
+        if (dist < minDist && dist > 0) {
+          const nx = dx / dist;
+          const ny = dy / dist;
+          // separate
+          marble.x = peg.x + nx * minDist;
+          marble.y = peg.y + ny * minDist;
+
+          // bounce
+          const dot = marble.vx * nx + marble.vy * ny;
+          if (dot < 0) {
+            marble.vx -= 1.62 * dot * nx;
+            marble.vy -= 1.62 * dot * ny;
+            marble.vx += (Math.random() - 0.5) * 0.8;
+          }
+          peg.pulse = 1;
+        }
+      });
+
+      // Bottom cradle
+      const floorY = 205;
+      if (marble.y >= floorY) {
+        marble.y = floorY;
+        marble.vy = -marble.vy * 0.45;
+        // funnel towards center
+        marble.vx += (180 - marble.x) * 0.08;
+        marble.vx *= 0.85;
+
+        if (Math.abs(marble.vy) < 0.4 && Math.abs(marble.vx) < 0.2) {
+          settleMarble();
+        }
+      }
+    }
+
+    // Decay peg pulses
+    pegs.forEach(peg => {
+      if (peg.pulse > 0) peg.pulse -= 0.05;
+    });
+
+    // Decay trail
+    marble.trail.forEach(t => {
+      t.life -= 0.08;
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Warm wooden pegboard background
+    ctx.fillStyle = "#F8EFEB";
+    ctx.fillRect(0, 0, width, height);
+
+    // Subtle guide grain lines
+    ctx.strokeStyle = "rgba(44, 40, 37, 0.05)";
+    ctx.lineWidth = 1;
+    for (let y = 30; y < height; y += 20) {
+      ctx.beginPath();
+      ctx.moveTo(15, y);
+      ctx.lineTo(width - 15, y);
+      ctx.stroke();
+    }
+
+    // Funnel catcher chute at bottom
+    ctx.strokeStyle = "#2C2825";
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(30, 195);
+    ctx.quadraticCurveTo(80, 215, 140, 218);
+    ctx.lineTo(220, 218);
+    ctx.quadraticCurveTo(280, 215, 330, 195);
+    ctx.stroke();
+
+    // Pegs
+    pegs.forEach(peg => {
+      // Peg shadow
+      ctx.fillStyle = "rgba(44, 40, 37, 0.15)";
+      ctx.beginPath();
+      ctx.arc(peg.x + 1, peg.y + 1.5, peg.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Peg body
+      ctx.fillStyle = peg.pulse > 0 ? "#E59982" : "#8E837A";
+      ctx.beginPath();
+      ctx.arc(peg.x, peg.y, peg.r + peg.pulse * 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Brass pin center
+      ctx.fillStyle = "#FAF7F2";
+      ctx.beginPath();
+      ctx.arc(peg.x - 1, peg.y - 1, peg.r * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Trail
+    marble.trail.forEach(t => {
+      if (t.life > 0) {
+        ctx.fillStyle = `rgba(229, 153, 130, ${t.life * 0.35})`;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, marble.r * 0.65, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+
+    // Marble
+    if (marble.active || marble.settled) {
+      // Marble drop shadow
+      ctx.fillStyle = "rgba(44, 40, 37, 0.22)";
+      ctx.beginPath();
+      ctx.ellipse(marble.x, marble.y + 5, marble.r, marble.r * 0.45, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Marble glossy sphere
+      const grad = ctx.createRadialGradient(
+        marble.x - marble.r * 0.3,
+        marble.y - marble.r * 0.3,
+        1,
+        marble.x,
+        marble.y,
+        marble.r
+      );
+      grad.addColorStop(0, "#FCE9DE");
+      grad.addColorStop(0.5, "#E59982");
+      grad.addColorStop(1, "#B85D43");
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(marble.x, marble.y, marble.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Crisp outline
+      ctx.strokeStyle = "#2C2825";
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+
+      // Little specular shine dot
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath();
+      ctx.arc(marble.x - marble.r * 0.35, marble.y - marble.r * 0.35, marble.r * 0.28, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  btnDrop.addEventListener("click", dropMarble);
+
+  // Trigger once on view
+  let triggeredOnScroll = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !triggeredOnScroll) {
+        triggeredOnScroll = true;
+        setTimeout(dropMarble, 600);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(canvas);
+  loop();
+}
+
+/* ============================================================
+   13. SCRAPBOOK JOURNEY TIMELINE & POLAROID FRAMES
+   ============================================================ */
+function initScrapbookTimeline() {
+  const nodes = document.querySelectorAll(".milestone-node");
+  const cardPill = document.getElementById("ms-pill");
+  const cardTitle = document.getElementById("ms-title");
+  const cardDesc = document.getElementById("ms-desc");
+  const cardTakeaway = document.getElementById("ms-takeaway");
+  const polaroids = document.querySelectorAll(".polaroid-frame");
+
+  if (nodes.length === 0) return;
+
+  const milestonesData = [
+    {
+      pill: "Milestone 01 â€¢ High School",
+      title: "Writing My Very First Line of Code",
+      desc: "It was an asterisks pyramid printed to the command prompt in a dusty computer lab. It crashed three times before running. But that feelingâ€”of giving an inanimate machine a thought and watching it respondâ€”sparked the endless curiosity that brought me into Computer Science.",
+      takeaway: "<em>Lesson: â€œEvery master began by printing naive text to a dark terminal.â€</em>"
+    },
+    {
+      pill: "Milestone 02 â€¢ Year 1",
+      title: "Deep End: The First Hackathon",
+      desc: "Walking into an auditorium packed with senior engineers, multiple monitors, and unfamiliar terminal commands felt terrifying. For two hours I questioned if I belonged. Then we grabbed sketchbooks, asked naive user questions, and started building. I learned that you don't need to know everything to make a meaningful start.",
+      takeaway: "<em>Lesson: â€œAction dispels imposter syndrome faster than preparation ever can.â€</em>"
+    },
+    {
+      pill: "Milestone 03 â€¢ FinTech Track",
+      title: "The Genesis of Saarthi",
+      desc: "Watching my family get paralyzed by ambiguous banking alerts ('Transaction Pending: Error Code 8821') convinced me that banking apps lacked human context. We pitched Saarthiâ€”an assistant that bridges raw ledger entries with real-world contextâ€”and spent 36 sleepless hours turning sketches into a working prototype.",
+      takeaway: "<em>Lesson: â€œThe strongest software comes from solving frustrations you've personally witnessed.â€</em>"
+    },
+    {
+      pill: "Milestone 04 â€¢ Core Foundations",
+      title: "Wrestling with C++ & DSA",
+      desc: "Countless late nights wrestling with pointer arithmetic, memory allocation, and graph traversals. When you strip away modern frameworks and look directly at memory, you develop deep respect for what happens under the hood.",
+      takeaway: "<em>Lesson: â€œUnderstanding how things break teaches you how to build things that last.â€</em>"
+    },
+    {
+      pill: "Milestone 05 â€¢ Present",
+      title: "Designing for Humans (Still Becoming)",
+      desc: "Today, my craft lives at the intersection of rigorous problem-solving and gentle, human-centric design. Every interface is a conversation, and every system should respect the human on the other side.",
+      takeaway: "<em>Lesson: â€œStill becoming. The journey itself is the craft.â€</em>"
+    }
+  ];
+
+  nodes.forEach(node => {
+    node.addEventListener("click", () => {
+      const stepIndex = parseInt(node.getAttribute("data-step"), 10);
+      const data = milestonesData[stepIndex];
+      if (!data) return;
+
+      nodes.forEach(n => n.classList.remove("active"));
+      node.classList.add("active");
+
+      // Smooth content update
+      if (cardTitle) {
+        cardTitle.style.opacity = "0.2";
+        setTimeout(() => {
+          if (cardPill) cardPill.textContent = data.pill;
+          if (cardTitle) cardTitle.textContent = data.title;
+          if (cardDesc) cardDesc.textContent = data.desc;
+          if (cardTakeaway) cardTakeaway.innerHTML = data.takeaway;
+          cardTitle.style.opacity = "1";
+        }, 150);
+      }
+    });
+  });
+
+  // Polaroid interactive tilts & snaps
+  polaroids.forEach(polaroid => {
+    polaroid.addEventListener("click", () => {
+      polaroid.classList.toggle("is-focused");
+    });
+  });
+}
+
+/* ============================================================
+   14. INTERACTIVE STICKY NOTE WALL & EXPANDED CARD MODAL
+   ============================================================ */
+function initStickyNotes() {
+  const notes = document.querySelectorAll(".sticky-note");
+  const overlay = document.getElementById("sticky-expanded-overlay");
+  const backdrop = document.getElementById("sticky-modal-backdrop");
+  const btnClose = document.getElementById("btn-close-sticky");
+  const tagEl = document.getElementById("sticky-tag");
+  const titleEl = document.getElementById("sticky-title");
+  const dateEl = document.getElementById("sticky-date");
+  const bodyEl = document.getElementById("sticky-body");
+
+  if (notes.length === 0 || !overlay) return;
+
+  function openNote(note) {
+    const tag = note.getAttribute("data-tag") || "Reflection";
+    const title = note.getAttribute("data-title") || "Note";
+    const date = note.getAttribute("data-date") || "Scrapbook";
+    const fullContentEl = note.querySelector(".note-full-content");
+    const fullContent = fullContentEl ? fullContentEl.innerHTML : note.querySelector(".note-mini-preview").textContent;
+
+    if (tagEl) tagEl.textContent = tag;
+    if (titleEl) titleEl.textContent = title;
+    if (dateEl) dateEl.textContent = date;
+    if (bodyEl) bodyEl.innerHTML = `<p>${fullContent.trim()}</p>`;
+
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeNote() {
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  notes.forEach(note => {
+    note.addEventListener("click", () => openNote(note));
+  });
+
+  if (btnClose) btnClose.addEventListener("click", closeNote);
+  if (backdrop) backdrop.addEventListener("click", closeNote);
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("active")) {
+      closeNote();
+    }
+  });
+}
+
+/* ============================================================
+   15. UNFINISHED IDEAS DRAWER
+   ============================================================ */
+function initIdeasDrawer() {
+  const drawerBox = document.getElementById("drawer-box");
+  const btnPull = document.getElementById("btn-pull-drawer");
+  const btnToggle = document.getElementById("btn-drawer-toggle");
+  const toggleText = document.getElementById("drawer-toggle-text");
+  const pullLabel = document.querySelector(".handle-pull-label");
+  const toggleIcon = document.querySelector(".drawer-toggle-icon");
+
+  if (!drawerBox) return;
+
+  function toggleDrawer() {
+    const isOpen = drawerBox.classList.toggle("is-open");
+
+    if (toggleText) {
+      toggleText.textContent = isOpen ? "Close Drawer" : "Pull Drawer Open";
+    }
+    if (pullLabel) {
+      pullLabel.textContent = isOpen ? "Push Drawer â†‘" : "Pull Drawer â†“";
+    }
+    if (toggleIcon) {
+      toggleIcon.textContent = isOpen ? "â†‘" : "â†“";
+    }
+  }
+
+  if (btnPull) btnPull.addEventListener("click", toggleDrawer);
+  if (btnToggle) btnToggle.addEventListener("click", toggleDrawer);
+}
+
+/* ============================================================
+   16. BALLOON MEMORIES ("LITTLE THINGS THAT MADE ME")
+   ============================================================ */
+function initBalloonMemories() {
+  const balloons = document.querySelectorAll(".interactive-memory-balloon");
+  const canvas = document.getElementById("balloon-pop-canvas");
+  const trayCard = document.getElementById("balloon-tray-card");
+  const trayTitle = document.getElementById("tray-title");
+  const trayQuote = document.getElementById("tray-quote");
+  const btnReinflate = document.getElementById("btn-reinflate-balloons");
+
+  if (balloons.length === 0) return;
+
+  let ctx = null;
+  let particles = [];
+
+  if (canvas) {
+    ctx = canvas.getContext("2d");
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width > 0) {
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+  }
+
+  function spawnBurst(originX, originY, color) {
+    if (!ctx) return;
+    for (let i = 0; i < 35; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 5;
+      particles.push({
+        x: originX,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.5,
+        r: 3 + Math.random() * 4,
+        color: color || "#E59982",
+        alpha: 1,
+        decay: 0.02 + Math.random() * 0.02,
+        isStar: Math.random() > 0.5
+      });
+    }
+  }
+
+  function updateParticles() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.12; // soft gravity
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+
+      if (p.isStar) {
+        ctx.translate(p.x, p.y);
+        ctx.beginPath();
+        for (let j = 0; j < 4; j++) {
+          ctx.rotate(Math.PI / 2);
+          ctx.lineTo(p.r * 1.5, 0);
+          ctx.lineTo(p.r * 0.4, p.r * 0.4);
+        }
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    if (particles.length > 0) {
+      requestAnimationFrame(updateParticles);
+    }
+  }
+
+  balloons.forEach(balloon => {
+    balloon.addEventListener("click", (e) => {
+      if (balloon.classList.contains("is-popped")) return;
+
+      const title = balloon.getAttribute("data-title") || "Memory";
+      const lesson = balloon.getAttribute("data-lesson") || "";
+      const color = balloon.getAttribute("data-color") || "#E59982";
+
+      if (canvas) {
+        const cRect = canvas.getBoundingClientRect();
+        const bRect = balloon.getBoundingClientRect();
+        const originX = bRect.left + bRect.width / 2 - cRect.left;
+        const originY = bRect.top + bRect.height / 3 - cRect.top;
+        spawnBurst(originX, originY, color);
+        if (particles.length <= 35) {
+          requestAnimationFrame(updateParticles);
+        }
+      }
+
+      balloon.classList.add("is-popped");
+
+      if (trayCard) {
+        trayCard.style.display = "block";
+        if (trayTitle) trayTitle.textContent = title;
+        if (trayQuote) trayQuote.textContent = `â€œ${lesson}â€`;
+        trayCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  });
+
+  if (btnReinflate) {
+    btnReinflate.addEventListener("click", () => {
+      balloons.forEach((balloon, i) => {
+        setTimeout(() => {
+          balloon.classList.remove("is-popped");
+        }, i * 100);
+      });
+      if (trayCard) {
+        trayCard.style.display = "none";
+      }
+    });
+  }
+}
+
+/* ============================================================
+   17. RETRO COMMAND CENTRE (TERMINAL NAVIGATION ENGINE)
+   ============================================================ */
+function initTerminal() {
+  const overlay = document.getElementById("terminal-overlay");
+  const backdrop = document.getElementById("terminal-backdrop");
+  const btnToggle = document.getElementById("btn-command-centre-toggle");
+  const btnCloseDot = document.getElementById("term-close-dot");
+  const btnEsc = document.getElementById("term-esc-btn");
+  const terminalInput = document.getElementById("terminal-input");
+  const terminalOutput = document.getElementById("terminal-output");
+
+  if (!overlay || !terminalInput || !terminalOutput) return;
+
+  let history = [];
+  let historyIndex = -1;
+
+  function openTerminal() {
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      terminalInput.focus();
+    }, 100);
+  }
+
+  function closeTerminal() {
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function printLine(text, className = "") {
+    const p = document.createElement("p");
+    if (className) p.className = className;
+    p.innerHTML = text;
+    terminalOutput.appendChild(p);
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  }
+
+  function executeCommand(cmdRaw) {
+    const cmd = cmdRaw.trim().toLowerCase();
+    if (!cmd) return;
+
+    printLine(`<span class="term-prompt">priyanshi@portfolio:~$</span> ${escapeHTML(cmdRaw)}`, "term-cmd-history");
+
+    switch (cmd) {
+      case "help":
+        printLine("<span class='term-highlight'>Available commands:</span>");
+        printLine("  <span class='term-cmd'>about</span>     - Priyanshi's story & student background");
+        printLine("  <span class='term-cmd'>saarthi</span>   - Deep dive into the flagship banking context prototype");
+        printLine("  <span class='term-cmd'>skills</span>    - Technical stack & foundations (C++, DSA, UI, AI)");
+        printLine("  <span class='term-cmd'>artifacts</span> - Scroll to 3D Memory Stand");
+        printLine("  <span class='term-cmd'>timeline</span>  - Scroll to Scrapbook Journey Timeline");
+        printLine("  <span class='term-cmd'>drawer</span>    - Open the Unfinished Ideas Drawer");
+        printLine("  <span class='term-cmd'>ball</span>      - Drop a pebble down the pegboard");
+        printLine("  <span class='term-cmd'>balloons</span>  - Go to Balloon Memories garden");
+        printLine("  <span class='term-cmd'>contact</span>   - Contact details (email & manifesto)");
+        printLine("  <span class='term-cmd'>clear</span>     - Clear terminal buffer");
+        printLine("  <span class='term-cmd'>exit</span>      - Close this terminal modal");
+        break;
+
+      case "about":
+        printLine("Priyanshi â€” Computer Science undergraduate & creative builder.");
+        printLine("Philosophy: <em>Still Becoming.</em> Always curious, always learning, building with empathy.");
+        printLine("Focused on bridging rigorous computing foundations with humane interfaces.");
+        break;
+
+      case "projects":
+      case "saarthi":
+        printLine("â˜… <strong>Saarthi</strong> â€” Missing Context in Digital Banking Assistant.");
+        printLine("Built during a FinTech hackathon to bridge raw bank ledgers with clear human context.");
+        printLine("<a href='saarthi.html' class='term-link'>â†’ Click here to open the Dedicated Saarthi Case Study page</a>");
+        break;
+
+      case "skills":
+        printLine("<strong>Foundations:</strong> C++, Data Structures & Algorithms, OOP, Memory Management");
+        printLine("<strong>Frontend:</strong> JavaScript (ES6+), HTML5 Canvas, CSS3 3D transforms, SVG, GSAP");
+        printLine("<strong>Design:</strong> UI/UX Research, Wireframing, Accessible Typography, Information Hierarchy");
+        printLine("<strong>Applied:</strong> Contextual AI orchestration, Financial data parsing, REST APIs");
+        break;
+
+      case "artifacts":
+      case "carousel":
+        printLine("Navigating to 3D Memory Carousel...");
+        closeTerminal();
+        const carousel = document.getElementById("memory-stand");
+        if (carousel) carousel.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "timeline":
+        printLine("Navigating to Scrapbook Journey Timeline...");
+        closeTerminal();
+        const timeline = document.getElementById("journey-timeline");
+        if (timeline) timeline.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "drawer":
+        printLine("Opening Unfinished Ideas Drawer...");
+        closeTerminal();
+        const drawerMod = document.getElementById("ideas-drawer-module");
+        if (drawerMod) {
+          drawerMod.scrollIntoView({ behavior: "smooth" });
+          const box = document.getElementById("drawer-box");
+          if (box && !box.classList.contains("is-open")) {
+            const btnPull = document.getElementById("btn-pull-drawer");
+            if (btnPull) btnPull.click();
+          }
+        }
+        break;
+
+      case "ball":
+      case "pebble":
+        printLine("Dropping Curiosity Pebble...");
+        closeTerminal();
+        const pebbleSec = document.querySelector(".curiosity-pebble-container");
+        if (pebbleSec) {
+          pebbleSec.scrollIntoView({ behavior: "smooth" });
+          const btn = document.getElementById("btn-drop-marble");
+          if (btn) btn.click();
+        }
+        break;
+
+      case "balloons":
+        printLine("Navigating to Balloon Memories garden...");
+        closeTerminal();
+        const balloonsSec = document.getElementById("balloon-memories");
+        if (balloonsSec) balloonsSec.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "contact":
+        printLine("Email: <a href='mailto:pkshah2021@gmail.com' class='term-link'>pkshah2021@gmail.com</a>");
+        printLine("â€œStill becoming. Always curious. Always building.â€");
+        closeTerminal();
+        const ch4 = document.getElementById("chapter-4");
+        if (ch4) ch4.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "clear":
+        terminalOutput.innerHTML = `
+          <p class="term-welcome">Priyanshi's Scrapbook Command Centre [v2.4]</p>
+          <p class="term-dim">Type <span class="term-cmd">help</span> for a list of scrapbook navigation commands.</p>
+        `;
+        break;
+
+      case "exit":
+      case "quit":
+        closeTerminal();
+        break;
+
+      default:
+        printLine(`Command not recognized: '<span class="term-err">${escapeHTML(cmdRaw)}</span>'. Type <span class="term-cmd">help</span> for commands.`, "term-dim");
+        break;
+    }
+  }
+
+  function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag));
+  }
+
+  // Input listeners
+  terminalInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const val = terminalInput.value;
+      if (val.trim()) {
+        history.push(val);
+        historyIndex = history.length;
+        executeCommand(val);
+      }
+      terminalInput.value = "";
+    } else if (e.key === "ArrowUp") {
+      if (history.length > 0 && historyIndex > 0) {
+        historyIndex--;
+        terminalInput.value = history[historyIndex];
+      }
+    } else if (e.key === "ArrowDown") {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        terminalInput.value = history[historyIndex];
+      } else {
+        historyIndex = history.length;
+        terminalInput.value = "";
+      }
+    }
+  });
+
+  // Toggles and Close triggers
+  if (btnToggle) btnToggle.addEventListener("click", openTerminal);
+  if (btnCloseDot) btnCloseDot.addEventListener("click", closeTerminal);
+  if (btnEsc) btnEsc.addEventListener("click", closeTerminal);
+  if (backdrop) backdrop.addEventListener("click", closeTerminal);
+
+  // Global keyboard shortcuts (Ctrl+K, Cmd+K, or ~ when not in an input)
+  window.addEventListener("keydown", (e) => {
+    const isCtrlK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
+    const isTilde = e.key === "~" || e.key === "`";
+
+    if (isCtrlK || (isTilde && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")) {
+      e.preventDefault();
+      if (overlay.classList.contains("active")) {
+        closeTerminal();
+      } else {
+        openTerminal();
+      }
+    } else if (e.key === "Escape" && overlay.classList.contains("active")) {
+      closeTerminal();
     }
   });
 }

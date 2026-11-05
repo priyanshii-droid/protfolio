@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -39,6 +39,7 @@
         <ul class="nav-list">
           <li><a href="#storybook-scene" class="nav-link active">Prologue</a></li>
           <li><a href="#chapter-1" class="nav-link">I • The Beginning</a></li>
+          <li><a href="#memory-stand" class="nav-link">Artifacts</a></li>
           <li><a href="#chapter-2" class="nav-link">II • Saarthi</a></li>
           <li><a href="#chapter-3" class="nav-link">III • Learning</a></li>
           <li><a href="#chapter-4" class="nav-link">IV • Say Hello</a></li>
@@ -46,6 +47,10 @@
       </nav>
 
       <div class="nav-actions">
+        <button class="btn-command-centre-toggle" id="btn-command-centre-toggle" aria-label="Open Command Centre" title="Open Command Terminal (⌘K)">
+          <span class="cmd-prompt-symbol">&gt;_</span>
+          <span class="cmd-btn-text">Terminal</span>
+        </button>
         <a href="#chapter-4" class="btn-storybook-pill">Say Hello</a>
         <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
           <span></span>
@@ -351,6 +356,7 @@
       </div>
     </section>
 
+    
     <!-- ========================================================
          CHAPTER I: THE UNEXPECTED BEGINNING
          ======================================================== -->
@@ -508,6 +514,387 @@
           </div>
         </div>
 
+        <!-- ====================================================
+             INTERACTIVE JOURNEY TIMELINE, POLAROIDS & BALL DROP
+             ==================================================== -->
+        <div class="scrapbook-journey-module">
+          <div class="module-header">
+            <span class="sub-badge">Scrapbook Milestones</span>
+            <h3 class="module-title">The Path So Far: Footsteps & Snapshots</h3>
+            <p class="module-desc">Click any milestone along the winding path, or hover over the polaroids to inspect early memory frames.</p>
+          </div>
+
+          <!-- Winding Path Timeline with Clickable Milestones -->
+          <div class="journey-timeline-track" id="journey-timeline">
+            <svg class="timeline-winding-svg" viewBox="0 0 900 120" preserveAspectRatio="none">
+              <path class="timeline-drawn-curve" d="M 40 60 Q 230 15, 450 60 T 860 60" fill="none" stroke="#2C2825" stroke-width="2.5" stroke-dasharray="6,8" stroke-linecap="round" />
+            </svg>
+
+            <div class="milestones-nodes-row">
+              <button class="milestone-node active" data-step="0" aria-label="Milestone 1">
+                <span class="node-marker">1</span>
+                <span class="node-title">Curiosity Sparked</span>
+                <span class="node-date">High School</span>
+              </button>
+
+              <button class="milestone-node" data-step="1" aria-label="Milestone 2">
+                <span class="node-marker">2</span>
+                <span class="node-title">Deep End: First Hackathon</span>
+                <span class="node-date">Year 1</span>
+              </button>
+
+              <button class="milestone-node" data-step="2" aria-label="Milestone 3">
+                <span class="node-marker">3</span>
+                <span class="node-title">Genesis of Saarthi</span>
+                <span class="node-date">FinTech Track</span>
+              </button>
+
+              <button class="milestone-node" data-step="3" aria-label="Milestone 4">
+                <span class="node-marker">4</span>
+                <span class="node-title">Wrestling with C++</span>
+                <span class="node-date">Core Foundations</span>
+              </button>
+
+              <button class="milestone-node" data-step="4" aria-label="Milestone 5">
+                <span class="node-marker">5</span>
+                <span class="node-title">Designing for Humans</span>
+                <span class="node-date">Present</span>
+              </button>
+            </div>
+
+            <!-- Milestone Active Expanded Card -->
+            <div class="milestone-expanded-card storybook-card" id="milestone-card">
+              <div class="card-pin">📌</div>
+              <div class="card-content">
+                <div class="card-meta">
+                  <span class="card-step-pill" id="ms-pill">Milestone 01 • High School</span>
+                  <span class="card-status-pill">Pivotal Moment</span>
+                </div>
+                <h4 class="card-heading" id="ms-title">Writing My Very First Line of Code</h4>
+                <p class="card-body" id="ms-desc">
+                  It was an asterisks pyramid printed to the command prompt in a dusty computer lab. It crashed three times before running. But that feeling—of giving an inanimate machine a thought and watching it respond—sparked the endless curiosity that brought me into Computer Science.
+                </p>
+                <div class="card-takeaway" id="ms-takeaway">
+                  <em>Lesson: “Every master began by printing naive text to a dark terminal.”</em>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Polaroid Memory Frames Gallery -->
+          <div class="polaroid-gallery-wrapper">
+            <h4 class="polaroid-gallery-title"><span>✦</span> Polaroid Memory Snaps</h4>
+            <div class="polaroid-cards-row">
+              
+              <!-- Polaroid 1 -->
+              <div class="polaroid-frame polaroid-tilt-left" data-polaroid-id="whiteboard">
+                <div class="tape-corner"></div>
+                <div class="polaroid-photo-box photo-bg-whiteboard">
+                  <svg viewBox="0 0 200 150" class="polaroid-svg">
+                    <rect x="10" y="10" width="180" height="130" rx="4" fill="#F8EFEB" stroke="#2C2825" stroke-width="1.8" />
+                    <line x1="25" y1="35" x2="175" y2="35" stroke="#2C2825" stroke-width="1.2" stroke-dasharray="3,3" />
+                    <text x="30" y="28" font-family="'Caveat', cursive" font-size="13" fill="#E59982">FinTech Problem: Missing Context</text>
+                    <rect x="25" y="50" width="60" height="30" rx="3" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.2" />
+                    <text x="55" y="68" font-family="'Caveat', cursive" font-size="10" fill="#2C2825" text-anchor="middle">Users confused</text>
+                    <line x1="88" y1="65" x2="112" y2="65" stroke="#2C2825" stroke-width="1.8" stroke-linecap="round" />
+                    <polyline points="107,60 114,65 107,70" fill="none" stroke="#2C2825" stroke-width="1.8" />
+                    <rect x="115" y="50" width="65" height="30" rx="3" fill="#E8F1E5" stroke="#2C2825" stroke-width="1.2" />
+                    <text x="147" y="68" font-family="'Caveat', cursive" font-size="10" fill="#5F7D5A" text-anchor="middle">Contextual AI</text>
+                    <text x="100" y="115" font-family="'Caveat', cursive" font-size="12" fill="#8E837A" text-anchor="middle">3:15 AM Whiteboard • Team Saarthi</text>
+                  </svg>
+                </div>
+                <div class="polaroid-caption">
+                  <p>3:15 AM hackathon whiteboard brainstorming.</p>
+                </div>
+              </div>
+
+              <!-- Polaroid 2 -->
+              <div class="polaroid-frame polaroid-tilt-center" data-polaroid-id="terminal">
+                <div class="tape-corner"></div>
+                <div class="polaroid-photo-box photo-bg-terminal">
+                  <svg viewBox="0 0 200 150" class="polaroid-svg">
+                    <rect x="10" y="10" width="180" height="130" rx="4" fill="#2C2825" />
+                    <circle cx="24" cy="24" r="3" fill="#EF4444" />
+                    <circle cx="34" cy="24" r="3" fill="#F59E0B" />
+                    <circle cx="44" cy="24" r="3" fill="#10B981" />
+                    <text x="24" y="48" font-family="monospace" font-size="9" fill="#9FB59A">$ g++ -Wall -std=c++17</text>
+                    <text x="24" y="66" font-family="monospace" font-size="9" fill="#FFFDF9">$ ./saarthi_ledger_audit</text>
+                    <text x="24" y="86" font-family="monospace" font-size="9" fill="#E8B86D">[AUDIT] 42 records parsed</text>
+                    <text x="24" y="106" font-family="monospace" font-size="9" fill="#10B981">[PASS] Zero hallucinations</text>
+                    <text x="24" y="126" font-family="monospace" font-size="8" fill="#8FA88A">Build succeeded (0.34s)</text>
+                  </svg>
+                </div>
+                <div class="polaroid-caption">
+                  <p>When the audit engine compiled clean.</p>
+                </div>
+              </div>
+
+              <!-- Polaroid 3 -->
+              <div class="polaroid-frame polaroid-tilt-right" data-polaroid-id="desk">
+                <div class="tape-corner"></div>
+                <div class="polaroid-photo-box photo-bg-desk">
+                  <svg viewBox="0 0 200 150" class="polaroid-svg">
+                    <rect x="10" y="10" width="180" height="130" rx="4" fill="#EFE4D2" stroke="#2C2825" stroke-width="1.8" />
+                    <rect x="25" y="30" width="70" height="85" rx="3" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.5" transform="rotate(-6 60 72)" />
+                    <path d="M 140 45 L 165 45 L 158 90 L 144 90 Z" fill="#C56A52" stroke="#2C2825" stroke-width="1.8" />
+                    <line x1="90" y1="40" x2="130" y2="25" stroke="#E59982" stroke-width="4" stroke-linecap="round" />
+                    <text x="100" y="125" font-family="'Caveat', cursive" font-size="12" fill="#755E4E" text-anchor="middle">Student workspace setup</text>
+                  </svg>
+                </div>
+                <div class="polaroid-caption">
+                  <p>Cutting chai, wireframe pad, & late night.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Feature 2: The Curiosity Pebble (Ball Drop Interaction) -->
+          <div class="curiosity-pebble-container">
+            <div class="pebble-interactive-card storybook-card">
+              <div class="pebble-card-header">
+                <div class="pebble-tag-row">
+                  <span class="widget-tag">✦ Physics Interaction</span>
+                  <span class="pebble-status" id="pebble-status-badge">Ready to drop</span>
+                </div>
+                <h4 class="pebble-title">The Curiosity Pebble</h4>
+                <p class="pebble-subtitle">
+                  Drop a small marble down the wooden pegboard. Watch it bounce with natural gravity to unlock a stray lesson from my notebook.
+                </p>
+              </div>
+
+              <div class="pebble-stage-layout">
+                <!-- Canvas simulation for realistic ball drop & bounces -->
+                <div class="pebble-canvas-frame">
+                  <canvas id="pebble-canvas" width="360" height="230"></canvas>
+                  <button class="btn-drop-marble" id="btn-drop-marble" aria-label="Drop Marble">
+                    <span class="marble-dot">●</span>
+                    <span>Drop Pebble</span>
+                  </button>
+                </div>
+
+                <!-- Landed Note Reveal Box -->
+                <div class="pebble-result-card" id="pebble-result-box">
+                  <div class="result-tape"></div>
+                  <span class="result-label">Pebble Insight #<span id="pebble-note-num">1</span>:</span>
+                  <p class="result-quote" id="pebble-quote">
+                    “Every line of code you write was once something you didn't know how to do. Momentum is just one small pebble at a time.”
+                  </p>
+                  <span class="result-sub">— From Priyanshi's pocket notebook</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+              </div>
+    </section>
+
+    
+    <!-- ========================================================
+         INTERLUDE: SIGNATURE 3D MEMORY CAROUSEL ("THE MEMORY STAND")
+         A vintage rotating display stand with tangible artifacts
+         ======================================================== -->
+    <section class="section story-container memory-carousel-section" id="memory-stand">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interlude • Interactive Scrapbook</span>
+          <h2 class="section-title">The Memory Stand</h2>
+          <p class="section-subtitle">
+            A vintage rotating display of physical mementos gathered along the way. Drag the stand to rotate, or click an object to inspect it in 3D.
+          </p>
+        </div>
+
+        <div class="carousel-stage-container" id="carousel-stage-container">
+          <!-- Control Hint & Rotate Buttons -->
+          <div class="carousel-toolbar">
+            <button class="carousel-nav-btn btn-prev" id="carousel-prev-btn" aria-label="Rotate Left">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              <span>Rotate Left</span>
+            </button>
+
+            <span class="carousel-drag-hint">
+              <span class="drag-icon">✦</span> Drag platform with mouse or finger to spin
+            </span>
+
+            <button class="carousel-nav-btn btn-next" id="carousel-next-btn" aria-label="Rotate Right">
+              <span>Rotate Right</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 3D Carousel Scene Viewport -->
+          <div class="carousel-viewport" id="carousel-viewport">
+            
+            <!-- Rotating 3D Turntable Platform -->
+            <div class="carousel-stand-rig" id="carousel-stand-rig">
+              
+              <!-- Circular Wooden Pedestal Base -->
+              <div class="pedestal-surface">
+                <div class="pedestal-ring ring-outer"></div>
+                <div class="pedestal-ring ring-middle"></div>
+                <div class="pedestal-center-brass"></div>
+              </div>
+
+              <!-- Carousel Items Ring (Transformed via JS) -->
+              <div class="carousel-ring" id="carousel-ring">
+                
+                <!-- Object 1: Midnight Sketchbook -->
+                <div class="carousel-item" data-item-id="sketchbook" data-title="The Midnight Notebook" data-subtitle="Where every screen begins as pencil graphite" data-tag="Ideation" data-note="I bought this 80-page unruled notebook the night before my first hackathon. Before writing a single function or component, I sketch user confusion, question marks, and messy arrows. It reminds me that good engineering starts on paper, not in a code editor.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-sketchbook-svg">
+                      <rect x="25" y="20" width="70" height="80" rx="6" fill="#FDF3DE" stroke="#2C2825" stroke-width="2.5" />
+                      <line x1="38" y1="20" x2="38" y2="100" stroke="#2C2825" stroke-width="2" stroke-dasharray="2,4" />
+                      <line x1="48" y1="36" x2="82" y2="36" stroke="#8E837A" stroke-width="2" stroke-linecap="round" />
+                      <line x1="48" y1="48" x2="78" y2="48" stroke="#8E837A" stroke-width="2" stroke-linecap="round" />
+                      <line x1="48" y1="60" x2="70" y2="60" stroke="#8E837A" stroke-width="2" stroke-linecap="round" />
+                      <line x1="30" y1="90" x2="88" y2="60" stroke="#E59982" stroke-width="5" stroke-linecap="round" />
+                      <line x1="30" y1="90" x2="88" y2="60" stroke="#2C2825" stroke-width="1.8" stroke-linecap="round" />
+                      <polygon points="88,60 96,56 92,66" fill="#2C2825" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">Midnight Notebook</span>
+                </div>
+
+                <!-- Object 2: First Hackathon Pass -->
+                <div class="carousel-item" data-item-id="lanyard" data-title="Hackathon Badge #142" data-subtitle="FinTech Track • Sleepless 36 Hours" data-tag="Milestone" data-note="My very first participant badge. Wearing this felt intimidating—everyone around me seemed to know five different frameworks and spoke in advanced acronyms. But by hour 18, I realized nobody has it all figured out; we were all just problem-solvers in hoodies trying to make something work.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-lanyard-svg">
+                      <path d="M 60 10 Q 40 30 48 50 L 52 50 Q 56 32 60 10" fill="#9FB59A" stroke="#2C2825" stroke-width="1.5" />
+                      <path d="M 60 10 Q 80 30 72 50 L 68 50 Q 64 32 60 10" fill="#8FA88A" stroke="#2C2825" stroke-width="1.5" />
+                      <rect x="54" y="48" width="12" height="10" rx="2" fill="#E8B86D" stroke="#2C2825" stroke-width="1.8" />
+                      <rect x="34" y="58" width="52" height="52" rx="5" fill="#FFFDF9" stroke="#2C2825" stroke-width="2.4" />
+                      <rect x="40" y="64" width="40" height="12" rx="2" fill="#F5BCA9" />
+                      <text x="60" y="73" font-family="'Plus Jakarta Sans', sans-serif" font-size="7" font-weight="700" fill="#2C2825" text-anchor="middle">HACK #142</text>
+                      <circle cx="50" cy="90" r="6" fill="#EFE4D2" stroke="#2C2825" stroke-width="1.4" />
+                      <line x1="60" y1="87" x2="78" y2="87" stroke="#2C2825" stroke-width="2" stroke-linecap="round" />
+                      <line x1="60" y1="94" x2="74" y2="94" stroke="#8E837A" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">Hackathon Badge</span>
+                </div>
+
+                <!-- Object 3: Steaming Chai Glass -->
+                <div class="carousel-item" data-item-id="chai" data-title="Cutting Chai Glass" data-subtitle="The real fuel behind every solved edge case" data-tag="Ritual" data-note="Brewed strong with crushed cardamom and ginger. At 2:40 AM when a pointer points to garbage or a CSS grid overflows unexpectedly, stepping away for 5 minutes with a hot glass of chai solves more bugs than staring directly at the glowing screen.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-chai-svg">
+                      <path d="M 44 48 L 76 48 L 70 94 L 50 94 Z" fill="#C56A52" />
+                      <path d="M 40 40 L 80 40 L 72 98 L 48 98 Z" fill="none" stroke="#2C2825" stroke-width="2.5" stroke-linejoin="round" />
+                      <line x1="50" y1="52" x2="52" y2="92" stroke="#FAF7F2" stroke-width="1.5" opacity="0.6" />
+                      <line x1="60" y1="52" x2="60" y2="92" stroke="#FAF7F2" stroke-width="1.5" opacity="0.6" />
+                      <line x1="70" y1="52" x2="68" y2="92" stroke="#FAF7F2" stroke-width="1.5" opacity="0.6" />
+                      <path d="M 52 32 Q 48 22 54 12" fill="none" stroke="#8E837A" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M 64 34 Q 68 24 62 14" fill="none" stroke="#8E837A" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">Steaming Chai</span>
+                </div>
+
+                <!-- Object 4: Origami Paper Crane -->
+                <div class="carousel-item" data-item-id="crane" data-title="The Origami Paper Crane" data-subtitle="Symbol of patient folds & still becoming" data-tag="Philosophy" data-note="Folded from a piece of discarded printer paper during a long build compilation. To make an origami crane, you make twenty crisp, patient creases. If one is sloppy, the wings won't balance. Software architecture and learning computer science are exactly the same: patient, mindful folds.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-crane-svg">
+                      <polygon points="60,25 40,65 60,60 80,65" fill="#FFFDF9" stroke="#2C2825" stroke-width="2.2" stroke-linejoin="round" />
+                      <polygon points="60,60 20,40 40,65" fill="#FCE9DE" stroke="#2C2825" stroke-width="2" stroke-linejoin="round" />
+                      <polygon points="60,60 100,40 80,65" fill="#F5BCA9" stroke="#2C2825" stroke-width="2" stroke-linejoin="round" />
+                      <polygon points="60,60 55,95 60,85 65,95" fill="#EFE4D2" stroke="#2C2825" stroke-width="2" stroke-linejoin="round" />
+                      <polyline points="40,65 25,60 20,68" stroke="#2C2825" stroke-width="2" fill="none" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">Origami Crane</span>
+                </div>
+
+                <!-- Object 5: Tactile Mechanical Keycap -->
+                <div class="carousel-item" data-item-id="keycap" data-title="Mechanical Keycap [ESC]" data-subtitle="Cherished tactile keystrokes" data-tag="The Craft" data-note="A custom pastel sage keycap from my keyboard. There is something deeply grounding about the acoustic click of a switch when pressing Escape in Vim or compiling a clean C++ translation unit. It anchors abstract logic in physical reality.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-keycap-svg">
+                      <polygon points="30,75 90,75 80,45 40,45" fill="#9FB59A" stroke="#2C2825" stroke-width="2.5" stroke-linejoin="round" />
+                      <polygon points="40,45 80,45 74,32 46,32" fill="#B7CAB3" stroke="#2C2825" stroke-width="2" stroke-linejoin="round" />
+                      <text x="60" y="42" font-family="'Plus Jakarta Sans', monospace" font-size="9" font-weight="700" fill="#2C2825" text-anchor="middle">ESC</text>
+                      <rect x="54" y="75" width="12" height="15" rx="2" fill="#E59982" stroke="#2C2825" stroke-width="1.8" />
+                      <path d="M 45 90 L 75 90" stroke="#2C2825" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">ESC Keycap</span>
+                </div>
+
+                <!-- Object 6: USB Flash Drive -->
+                <div class="carousel-item" data-item-id="usb" data-title="Flash Drive: hello_world.cpp" data-subtitle="The naive early archives of code" data-tag="Origins" data-note="Contains my high school C++ programs, early HTML table layouts, and my first algorithm traces where I drew memory blocks by hand. Whenever I feel overwhelmed by how much there is to learn in CS, I look at this and remember how far I've come from printing my first asterisks triangle.">
+                  <div class="item-visual-box">
+                    <svg viewBox="0 0 120 120" class="item-svg item-usb-svg">
+                      <rect x="48" y="24" width="24" height="22" rx="2" fill="#E8E2D9" stroke="#2C2825" stroke-width="2" />
+                      <rect x="53" y="30" width="5" height="5" fill="#2C2825" />
+                      <rect x="62" y="30" width="5" height="5" fill="#2C2825" />
+                      <rect x="42" y="44" width="36" height="56" rx="6" fill="#FCE9DE" stroke="#2C2825" stroke-width="2.4" />
+                      <rect x="48" y="52" width="24" height="28" rx="3" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.2" />
+                      <text x="60" y="65" font-family="'Caveat', cursive" font-size="9" fill="#2C2825" text-anchor="middle">Priyanshi</text>
+                      <text x="60" y="75" font-family="'Caveat', cursive" font-size="8" fill="#E59982" text-anchor="middle">v1.cpp</text>
+                      <circle cx="60" cy="94" r="3.5" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.8" />
+                    </svg>
+                  </div>
+                  <div class="item-shadow"></div>
+                  <span class="item-name-tag">First Flash Drive</span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Active Object 3D Focus Stage / Zoom-in Modal -->
+          <div class="memory-focus-overlay" id="memory-focus-overlay" aria-hidden="true">
+            <div class="focus-backdrop" id="focus-backdrop"></div>
+            
+            <div class="focus-modal-card">
+              <!-- Left: 3D Object Stage -->
+              <div class="focus-object-stage" id="focus-object-stage">
+                <div class="focus-object-halo"></div>
+                <div class="focus-object-render" id="focus-object-render">
+                  <!-- Injected SVG via JS -->
+                </div>
+                <div class="focus-object-shadow"></div>
+                <span class="focus-rotator-hint">✦ Click or touch to rotate</span>
+              </div>
+
+              <!-- Right: Handwritten Sticky Note with Washi Tape -->
+              <div class="focus-note-wrapper">
+                <div class="washi-tape-strip"></div>
+                <div class="focus-sticky-note storybook-card">
+                  <div class="note-top-row">
+                    <span class="note-tag" id="focus-note-tag">Milestone</span>
+                    <button class="btn-close-memory" id="btn-close-memory" aria-label="Put object back">
+                      <span>Put Back</span>
+                      <span class="close-cross">×</span>
+                    </button>
+                  </div>
+
+                  <h3 class="focus-note-title" id="focus-note-title">Object Title</h3>
+                  <p class="focus-note-subtitle" id="focus-note-subtitle">Subtitle detail</p>
+                  
+                  <div class="note-handwritten-body">
+                    <p id="focus-note-body">Note content goes here...</p>
+                  </div>
+
+                  <div class="note-footer">
+                    <span class="note-signature">— Priyanshi's Scrapbook</span>
+                    <button class="btn-next-memory" id="btn-next-memory">Next Artifact →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -525,6 +912,16 @@
           <p class="section-subtitle">
             The story of reimagining digital banking from the lens of human hesitation, missing context, and quiet empathy.
           </p>
+          <div class="saarthi-case-study-callout">
+            <a href="saarthi.html" class="btn-case-study-hero" target="_blank" rel="noopener">
+              <span class="callout-star">✦</span>
+              <span>Read Dedicated Saarthi Case Study & Architecture Breakdown</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
         </div>
 
         <!-- CONTINUOUS SAARTHI STORY JOURNEY -->
@@ -1170,6 +1567,9 @@
                   Questions about how we structure data, how we preserve accessibility, and how a student continues to grow. That curiosity carries directly into my ongoing learning journey.
                 </p>
                 <div class="transition-to-ch3">
+                  <a href="saarthi.html" class="btn-storybook-pill btn-case-study-pill" target="_blank" rel="noopener">
+                    <span>Explore Dedicated Saarthi Case Study ↗</span>
+                  </a>
                   <a href="#chapter-3" class="btn-storybook-primary">
                     <span>Continue to Chapter III: Learning</span>
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1258,6 +1658,7 @@
       </div>
     </section>
 
+    
     <!-- ========================================================
          CHAPTER III: STILL FIGURING THINGS OUT
          ======================================================== -->
@@ -1454,9 +1855,271 @@
           </div>
         </div>
 
+        <!-- ====================================================
+             ENHANCEMENT 3: INTERACTIVE STICKY NOTE WALL
+             ==================================================== -->
+        <div class="sticky-wall-module" id="sticky-wall-module">
+          <div class="module-header">
+            <span class="sub-badge">Desk Post-Its & Reflections</span>
+            <h3 class="module-title">The Sticky Note Wall</h3>
+            <p class="module-desc">Scattered thoughts, debugging epiphanies, and honest realizations from my daily practice. Tap any note to unfold it.</p>
+          </div>
+
+          <div class="sticky-notes-board" id="sticky-notes-board">
+            
+            <!-- Note 1 -->
+            <article class="sticky-note note-yellow note-rot-1" data-note-id="1" data-tag="DSA & C++" data-title="The Pointer Epiphany" data-date="Semester II">
+              <div class="note-tape"></div>
+              <span class="note-mini-tag">Memory</span>
+              <h4 class="note-mini-title">Pointers Have Addresses</h4>
+              <p class="note-mini-preview">I spent 3 hours debugging a segmentation fault until I realized pointers are just variables that hold addresses...</p>
+              <div class="note-full-content" style="display:none;">
+                I spent an entire evening staring at a segmentation fault in a custom singly linked list. When it finally clicked—that a pointer is not magic, it is simply an integer holding a location in physical RAM—the fear of C++ evaporated. Memory safety is not an abstract concept; it is being a responsible custodian of hardware.
+              </div>
+              <span class="note-tap-prompt">Tap to expand ↗</span>
+            </article>
+
+            <!-- Note 2 -->
+            <article class="sticky-note note-sage note-rot-2" data-note-id="2" data-tag="UI Craft" data-title="CSS is a Philosophy" data-date="Frontend Journey">
+              <div class="note-tape"></div>
+              <span class="note-mini-tag">Heuristics</span>
+              <h4 class="note-mini-title">Margins Are Breathing Room</h4>
+              <p class="note-mini-preview">Layout isn't just about positioning boxes. It's about respecting how human eyes get tired...</p>
+              <div class="note-full-content" style="display:none;">
+                When an interface is crammed, it feels like an interrogation. Adding 24px of whitespace and warm editorial serif typography completely changes someone's emotional state. Design is quiet hospitality.
+              </div>
+              <span class="note-tap-prompt">Tap to expand ↗</span>
+            </article>
+
+            <!-- Note 3 -->
+            <article class="sticky-note note-peach note-rot-3" data-note-id="3" data-tag="Debugging" data-title="The Uninitialized Boolean" data-date="Hackathon Night">
+              <div class="note-tape"></div>
+              <span class="note-mini-tag">Humbled</span>
+              <h4 class="note-mini-title">My 4-Hour Bug</h4>
+              <p class="note-mini-preview">Why was the login pipeline failing randomly? A single boolean variable left uninitialized in release mode...</p>
+              <div class="note-full-content" style="display:none;">
+                In debug mode, the compiler zeroed it out. In production release, it took whatever random byte was left on the stack. Four hours of questioning my entire existence as a programmer boiled down to: <code>bool isValid = false;</code>. Always initialize your state.
+              </div>
+              <span class="note-tap-prompt">Tap to expand ↗</span>
+            </article>
+
+            <!-- Note 4 -->
+            <article class="sticky-note note-lavender note-rot-4" data-note-id="4" data-tag="Ethics & Tech" data-title="Calm Technology" data-date="Reading Notes">
+              <div class="note-tape"></div>
+              <span class="note-mini-tag">Reading</span>
+              <h4 class="note-mini-title">Technology That Informs</h4>
+              <p class="note-mini-preview">Mark Weiser wrote that good technology moves easily between the periphery and the center of attention...</p>
+              <div class="note-full-content" style="display:none;">
+                We are drowning in noisy badges, red notification dots, and anxious engagement loops. As future engineers, we have a choice: build things that addict people, or build quiet tools that help people get on with their lives. I choose calm.
+              </div>
+              <span class="note-tap-prompt">Tap to expand ↗</span>
+            </article>
+
+            <!-- Note 5 -->
+            <article class="sticky-note note-honey note-rot-5" data-note-id="5" data-tag="Algorithms" data-title="Recursive Trust" data-date="Data Structures">
+              <div class="note-tape"></div>
+              <span class="note-mini-tag">Logic</span>
+              <h4 class="note-mini-title">The Leap of Faith</h4>
+              <p class="note-mini-preview">Recursion taught me the hardest lesson in problem-solving: don't trace the entire stack in your head...</p>
+              <div class="note-full-content" style="display:none;">
+                Solve the base case, solve the single step, and trust that the subproblem will solve itself. Once you let go of trying to micro-manage the entire call stack at once, tree traversals become pure poetry.
+              </div>
+              <span class="note-tap-prompt">Tap to expand ↗</span>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- ====================================================
+             ENHANCEMENT 5: UNFINISHED IDEAS DRAWER
+             ==================================================== -->
+        <div class="ideas-drawer-module" id="ideas-drawer-module">
+          <div class="drawer-cabinet-wrapper storybook-card">
+            
+            <div class="drawer-cabinet-header">
+              <span class="sub-badge">Future Exploration</span>
+              <h3 class="cabinet-title">Ideas I'm Not Done With Yet</h3>
+              <p class="cabinet-desc">A tactile wooden drawer filled with index cards of technical horizons, unanswered questions, and future projects. Pull the brass handle to look inside.</p>
+            </div>
+
+            <!-- 3D Sliding Drawer Box -->
+            <div class="drawer-furniture" id="drawer-furniture">
+              <div class="drawer-housing">
+                <div class="drawer-box" id="drawer-box">
+                  <!-- Drawer Face with Brass Handle -->
+                  <div class="drawer-face" id="drawer-face">
+                    <div class="brass-handle-rig" id="btn-pull-drawer" title="Click to pull drawer open">
+                      <div class="brass-plate"></div>
+                      <div class="brass-handle-ring"></div>
+                      <span class="handle-pull-label">Pull Drawer ↓</span>
+                    </div>
+                    <span class="drawer-label-brass">ARCHIVE: UNFINISHED_IDEAS</span>
+                  </div>
+
+                  <!-- Inside Drawer Cavity (Revealed on Open) -->
+                  <div class="drawer-interior" id="drawer-interior">
+                    <div class="index-cards-stack">
+                      
+                      <!-- Card 1 -->
+                      <article class="idea-index-card card-1" data-idea-title="Calm Finance CLI" data-idea-tag="Open Source Tool">
+                        <div class="card-tab">01 • CLI Tool</div>
+                        <h4 class="card-idea-name">Calm Finance CLI</h4>
+                        <p class="card-idea-summary">A zero-cloud, keyboard-first terminal tool that parses bank statement CSVs into local SQLite ledgers with zero telemetry.</p>
+                        <div class="idea-tech-tags">
+                          <span>C++ / Rust</span>
+                          <span>SQLite</span>
+                          <span>Privacy-first</span>
+                        </div>
+                      </article>
+
+                      <!-- Card 2 -->
+                      <article class="idea-index-card card-2" data-idea-title="Visual DSA Memory Studio" data-idea-tag="Educational Tech">
+                        <div class="card-tab">02 • Visualizer</div>
+                        <h4 class="card-idea-name">Visual DSA Memory Studio</h4>
+                        <p class="card-idea-summary">An interactive web tool designed for beginners to see stack frames, pointer dereferencing, and heap allocations live in SVG.</p>
+                        <div class="idea-tech-tags">
+                          <span>WebAssembly</span>
+                          <span>Canvas</span>
+                          <span>Education</span>
+                        </div>
+                      </article>
+
+                      <!-- Card 3 -->
+                      <article class="idea-index-card card-3" data-idea-title="Accessible Voice-First Banking" data-idea-tag="Accessibility UI">
+                        <div class="card-tab">03 • Research</div>
+                        <h4 class="card-idea-name">Accessible Audio Banking</h4>
+                        <p class="card-idea-summary">Taking the Saarthi voice prototype further: how can conversational audio eliminate the confusing labyrinth of digital banking for non-tech-savvy elderly users?</p>
+                        <div class="idea-tech-tags">
+                          <span>Speech API</span>
+                          <span>Inclusive UX</span>
+                          <span>FinTech</span>
+                        </div>
+                      </article>
+
+                      <!-- Card 4 -->
+                      <article class="idea-index-card card-4" data-idea-title="Context-Preserving Multi-Agent Interfaces" data-idea-tag="Applied AI">
+                        <div class="card-tab">04 • Exploration</div>
+                        <h4 class="card-idea-name">Contextual Companion UI</h4>
+                        <p class="card-idea-summary">Exploring how AI tools can act as quiet sidecars rather than intrusive popups—preserving user focus and mental state.</p>
+                        <div class="idea-tech-tags">
+                          <span>Human-AI Interaction</span>
+                          <span>Heuristics</span>
+                        </div>
+                      </article>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="drawer-action-row">
+                <button class="btn-drawer-toggle" id="btn-drawer-toggle">
+                  <span id="drawer-toggle-text">Pull Drawer Open</span>
+                  <span class="drawer-toggle-icon">↓</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
 
+    <!-- ========================================================
+         ENHANCEMENT 4: BALLOON MEMORIES ("LITTLE THINGS THAT MADE ME")
+         Click to pop gentle floating balloons and reveal life lessons
+         ======================================================== -->
+    <section class="section story-container balloon-memories-section" id="balloon-memories">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interactive Garden • Tap to Pop</span>
+          <h2 class="section-title">Little Things That Made Me</h2>
+          <p class="section-subtitle">
+            Gentle floating memories and principles. Tap any floating balloon to pop it with a soft burst and discover a handwritten lesson inside.
+          </p>
+        </div>
+
+        <div class="balloon-garden-stage" id="balloon-garden-stage">
+          <!-- Background sky ambient canvas for popping particles -->
+          <div class="garden-sky-ambient">
+            <canvas id="balloon-pop-canvas" width="960" height="400"></canvas>
+          </div>
+
+          <div class="floating-balloons-cluster" id="floating-balloons-cluster">
+            
+            <!-- Balloon 1: Peach -->
+            <button class="interactive-memory-balloon balloon-peach-theme" data-balloon-id="1" data-lesson="A bug you spend four hours debugging is not wasted time. It is a concept teaching you patience." data-title="Patience with Bugs" data-color="#F5BCA9" aria-label="Pop Patience balloon">
+              <div class="balloon-skin">
+                <div class="skin-sheen"></div>
+                <span class="balloon-memory-label">Patience</span>
+              </div>
+              <div class="balloon-knot"></div>
+              <div class="balloon-thread"></div>
+            </button>
+
+            <!-- Balloon 2: Sage -->
+            <button class="interactive-memory-balloon balloon-sage-theme" data-balloon-id="2" data-lesson="Good interface design is quiet. It never shouts at someone who is already confused or anxious." data-title="Empathy in UI" data-color="#9FB59A" aria-label="Pop Empathy balloon">
+              <div class="balloon-skin">
+                <div class="skin-sheen"></div>
+                <span class="balloon-memory-label">Empathy</span>
+              </div>
+              <div class="balloon-knot"></div>
+              <div class="balloon-thread"></div>
+            </button>
+
+            <!-- Balloon 3: Honey -->
+            <button class="interactive-memory-balloon balloon-honey-theme" data-balloon-id="3" data-lesson="Asking 'naive' questions at a hackathon is how the best ideas get born. Pretending you know everything only slows you down." data-title="The Beginner's Mind" data-color="#E8B86D" aria-label="Pop Curiosity balloon">
+              <div class="balloon-skin">
+                <div class="skin-sheen"></div>
+                <span class="balloon-memory-label">Curiosity</span>
+              </div>
+              <div class="balloon-knot"></div>
+              <div class="balloon-thread"></div>
+            </button>
+
+            <!-- Balloon 4: Coral -->
+            <button class="interactive-memory-balloon balloon-coral-theme" data-balloon-id="4" data-lesson="C++ pointers taught me that in software, as in life, everything has an address, an owner, and a lifetime." data-title="Memory & Life" data-color="#E59982" aria-label="Pop Ownership balloon">
+              <div class="balloon-skin">
+                <div class="skin-sheen"></div>
+                <span class="balloon-memory-label">Ownership</span>
+              </div>
+              <div class="balloon-knot"></div>
+              <div class="balloon-thread"></div>
+            </button>
+
+            <!-- Balloon 5: Lavender -->
+            <button class="interactive-memory-balloon balloon-lavender-theme" data-balloon-id="5" data-lesson="Still becoming means you never have to pretend you are finished. Every day is a chance to learn something new." data-title="Still Becoming" data-color="#C2BFD8" aria-label="Pop Becoming balloon">
+              <div class="balloon-skin">
+                <div class="skin-sheen"></div>
+                <span class="balloon-memory-label">Becoming</span>
+              </div>
+              <div class="balloon-knot"></div>
+              <div class="balloon-thread"></div>
+            </button>
+
+          </div>
+
+          <!-- Unfolded Memory Note Display Area -->
+          <div class="balloon-revealed-tray" id="balloon-revealed-tray">
+            <div class="tray-note-card storybook-card" id="balloon-tray-card" style="display:none;">
+              <span class="tray-card-badge" id="tray-badge">Revealed Memory</span>
+              <h4 class="tray-card-title" id="tray-title">Select a balloon</h4>
+              <p class="tray-card-quote" id="tray-quote">Pop a balloon to reveal a memory...</p>
+              <span class="tray-card-author">— Priyanshi's Reflections</span>
+            </div>
+          </div>
+
+          <div class="balloon-garden-actions">
+            <button class="btn-reinflate-balloons" id="btn-reinflate-balloons">
+              <span>✦ Float Balloons Again</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
     <!-- ========================================================
          CHAPTER IV: SAY HELLO TO PRIYANSHI
          ======================================================== -->
@@ -1622,8 +2285,56 @@
           </div>
         </div>
 
-      </div>
+              </div>
     </section>
+
+    <!-- ========================================================
+         ENHANCEMENT 8: INTERACTIVE COMMAND CENTRE (TERMINAL)
+         ======================================================== -->
+    <div class="terminal-overlay" id="terminal-overlay" aria-hidden="true">
+      <div class="terminal-backdrop" id="terminal-backdrop"></div>
+      <div class="terminal-window storybook-card">
+        <div class="terminal-titlebar">
+          <div class="terminal-dots">
+            <span class="dot dot-close" id="term-close-dot" title="Close Terminal"></span>
+            <span class="dot dot-minimize"></span>
+            <span class="dot dot-maximize"></span>
+          </div>
+          <span class="terminal-title">priyanshi@still-becoming: ~ (command-centre)</span>
+          <button class="terminal-esc-btn" id="term-esc-btn">ESC ✕</button>
+        </div>
+        <div class="terminal-screen" id="terminal-screen">
+          <div class="terminal-output" id="terminal-output">
+            <p class="term-welcome">Priyanshi's Scrapbook Command Centre [v2.4]</p>
+            <p class="term-dim">Type <span class="term-cmd">help</span> for a list of scrapbook navigation commands.</p>
+          </div>
+          <div class="terminal-prompt-line">
+            <span class="term-prompt">priyanshi@portfolio:~$</span>
+            <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="Type a command (e.g. help, saarthi, about)..." />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky Note Expanded Reading Modal -->
+    <div class="sticky-expanded-overlay" id="sticky-expanded-overlay" aria-hidden="true">
+      <div class="sticky-modal-backdrop" id="sticky-modal-backdrop"></div>
+      <div class="sticky-modal-card storybook-card">
+        <div class="sticky-modal-tape"></div>
+        <div class="sticky-modal-header">
+          <span class="sticky-modal-tag" id="sticky-tag">Note</span>
+          <button class="btn-close-sticky" id="btn-close-sticky" aria-label="Close note">×</button>
+        </div>
+        <h3 class="sticky-modal-title" id="sticky-title">Title</h3>
+        <span class="sticky-modal-date" id="sticky-date">Date</span>
+        <div class="sticky-modal-body" id="sticky-body">
+          <p>Body</p>
+        </div>
+        <div class="sticky-modal-footer">
+          <span>— Priyanshi's Desk Sticky</span>
+        </div>
+      </div>
+    </div>
 
   </main>
 
