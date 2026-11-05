@@ -527,6 +527,8 @@ function initTerminal() {
     switch (cmd) {
       case "help":
         printLine("Available commands:");
+        printLine("  <span class=\"term-cmd\">index</span>    - Open Scrapbook Chapter Index");
+        printLine("  <span class=\"term-cmd\">desk</span>     - View Interactive Desk & Milestones");
         printLine("  <span class=\"term-cmd\">work</span>     - View flagship projects (Saarthi & more)");
         printLine("  <span class=\"term-cmd\">craft</span>    - Explore engineering craft & learning");
         printLine("  <span class=\"term-cmd\">connect</span>  - Contact Priyanshi directly");
@@ -536,25 +538,50 @@ function initTerminal() {
         printLine("  <span class=\"term-cmd\">exit</span>     - Close this terminal modal");
         break;
 
+      case "index":
+      case "toc":
+        printLine("Navigating to Chapter Index...", "term-success");
+        closeTerminal();
+        const tocSec = document.getElementById("table-of-contents");
+        if (tocSec && typeof triggerChapterTransition === "function") {
+          triggerChapterTransition(tocSec, "Chapter Index");
+        }
+        break;
+
+      case "desk":
+        printLine("Navigating to Interactive Desk...", "term-success");
+        closeTerminal();
+        const deskSec = document.getElementById("garden-bridge-stage");
+        if (deskSec && typeof triggerChapterTransition === "function") {
+          triggerChapterTransition(deskSec, "Interactive Desk");
+        }
+        break;
+
       case "work":
         printLine("Navigating to work...", "term-success");
         closeTerminal();
         const workSec = document.getElementById("project-showcase");
-        if (workSec) workSec.scrollIntoView({ behavior: "smooth" });
+        if (workSec && typeof triggerChapterTransition === "function") {
+          triggerChapterTransition(workSec, "Flagship Work");
+        }
         break;
 
       case "craft":
         printLine("Navigating to craft & learning...", "term-success");
         closeTerminal();
         const craftSec = document.getElementById("learning-library");
-        if (craftSec) craftSec.scrollIntoView({ behavior: "smooth" });
+        if (craftSec && typeof triggerChapterTransition === "function") {
+          triggerChapterTransition(craftSec, "Craft & Learning");
+        }
         break;
 
       case "connect":
         printLine("Navigating to contact...", "term-success");
         closeTerminal();
         const connSec = document.getElementById("contact-horizon");
-        if (connSec) connSec.scrollIntoView({ behavior: "smooth" });
+        if (connSec && typeof triggerChapterTransition === "function") {
+          triggerChapterTransition(connSec, "Reach Out");
+        }
         break;
 
       case "about":
@@ -1437,74 +1464,274 @@ function initMilestonesTimeline() {
 }
 
 /* ============================================================
-   16. TABLE OF CONTENTS & CINEMATIC CHAPTER TRANSITIONS
-   Handles chapter navigation with transitional wipe and arrival pulse
+   GLOBAL UTILITIES
    ============================================================ */
-function triggerChapterTransition(targetEl, label) {
-  if (!targetEl) return;
-  const wipeEl = document.getElementById("cinematic-transition-wipe");
-  const wipeText = document.getElementById("transition-wipe-text");
-
-  // Show shimmering golden transition wipe
-  if (wipeEl) {
-    if (wipeText && label) {
-      wipeText.innerHTML = `<span>Traveling to</span> <strong>${escapeHtml(label)}</strong>`;
-    }
-    wipeEl.classList.add("active");
-    wipeEl.setAttribute("aria-hidden", "false");
-  }
-
-  // Smooth scroll to target section
-  setTimeout(() => {
-    targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    // Hide transition wipe
-    setTimeout(() => {
-      if (wipeEl) {
-        wipeEl.classList.remove("active");
-        wipeEl.setAttribute("aria-hidden", "true");
-      }
-
-      // Trigger arrival highlight pulse
-      targetEl.classList.remove("section-arrival-pulse");
-      void targetEl.offsetWidth; // Force reflow
-      targetEl.classList.add("section-arrival-pulse");
-
-      setTimeout(() => {
-        targetEl.classList.remove("section-arrival-pulse");
-      }, 1900);
-    }, 320);
-  }, 180);
+function safeEscapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-function initChapterTransitions() {
-  const tocCards = document.querySelectorAll(".toc-chapter-card[data-target]");
-  const allNavLinks = document.querySelectorAll(".quiet-nav a[href^='#']");
+/* ============================================================
+   16. UPPER NAVIGATION CONTROLLER & TACTILE CHAPTER INDEX
+   Instant smooth scroll, scroll-spy active states, and
+   Zachary Allott tactile staggered drop entrance with previews
+   ============================================================ */
 
-  tocCards.forEach((card) => {
-    card.addEventListener("click", (e) => {
-      const targetSelector = card.getAttribute("data-target");
-      if (!targetSelector) return;
-      const target = document.querySelector(targetSelector);
-      if (target) {
-        e.preventDefault();
-        const titleEl = card.querySelector(".chapter-title");
-        const label = titleEl ? titleEl.textContent.trim() : "Chapter";
-        triggerChapterTransition(target, label);
-      }
-    });
+/**
+ * Computes exact scroll position accounting for fixed site header height
+ * and glides smoothly to the target section
+ */
+function scrollToSection(targetId) {
+  if (!targetId) return;
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const header = document.getElementById("cinematic-header") || document.querySelector(".cinematic-header");
+  const navHeight = header ? header.offsetHeight : 72;
+  const targetRect = target.getBoundingClientRect();
+  const absoluteTop = window.pageYOffset + targetRect.top;
+  const offsetPosition = Math.max(0, absoluteTop - navHeight - 12);
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: "smooth"
   });
 
-  allNavLinks.forEach((link) => {
+  // Brief arrival highlight pulse on section
+  target.classList.remove("section-arrival-pulse");
+  void target.offsetWidth; // Force reflow
+  target.classList.add("section-arrival-pulse");
+  setTimeout(() => {
+    target.classList.remove("section-arrival-pulse");
+  }, 1600);
+
+  // Update URL hash cleanly
+  if (window.history && window.history.pushState) {
+    window.history.pushState(null, null, `#${targetId}`);
+  }
+}
+
+/**
+ * Backward-compatible chapter transition invoker
+ */
+function triggerChapterTransition(targetEl, label) {
+  if (!targetEl) return;
+  scrollToSection(targetEl.id);
+}
+
+/**
+ * Initializes Upper Navigation (P, Index, Desk, Work, Craft, Connect)
+ * and Sticky Notes Alternating Drop Entrance with Live Previews
+ */
+function initChapterTransitions() {
+  const brandMonogram = document.querySelector(".brand-monogram");
+  const quietNavLinks = document.querySelectorAll(".quiet-nav a.quiet-nav-link");
+  const stickyNotesGrid = document.getElementById("sticky-notes-grid");
+  const stickyCards = document.querySelectorAll(".sticky-note-card");
+  const stickyNavigateBtns = document.querySelectorAll(".btn-sticky-navigate");
+
+  // Map of sections to observe
+  const sectionIds = [
+    "opening-stage",
+    "table-of-contents",
+    "garden-bridge-stage",
+    "project-showcase",
+    "learning-library",
+    "contact-horizon"
+  ];
+
+  const sections = sectionIds
+    .map((id) => document.getElementById(id))
+    .filter((el) => el !== null);
+
+  // Helper to activate the right nav link
+  function setActiveNavItem(activeId) {
+    if (activeId === "opening-stage") {
+      if (brandMonogram) brandMonogram.classList.add("active");
+      quietNavLinks.forEach((link) => link.classList.remove("active"));
+    } else {
+      if (brandMonogram) brandMonogram.classList.remove("active");
+      quietNavLinks.forEach((link) => {
+        const targetHref = link.getAttribute("href");
+        if (targetHref === `#${activeId}`) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  // Set initial active state based on current location
+  setActiveNavItem("opening-stage");
+
+  // 1. Monogram "P" click -> Return to opening stage
+  if (brandMonogram) {
+    brandMonogram.addEventListener("click", (e) => {
+      e.preventDefault();
+      scrollToSection("opening-stage");
+      setActiveNavItem("opening-stage");
+    });
+  }
+
+  // 2. Upper Quiet Navigation Links click (Index, Desk, Work, Craft, Connect)
+  // Immediate smooth scroll with zero blocking delay
+  quietNavLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       const href = link.getAttribute("href");
       if (href && href.startsWith("#") && href.length > 1) {
-        const target = document.querySelector(href);
+        const targetId = href.substring(1);
+        const target = document.getElementById(targetId);
         if (target) {
           e.preventDefault();
-          triggerChapterTransition(target, link.textContent.trim());
+          scrollToSection(targetId);
+          setActiveNavItem(targetId);
         }
       }
     });
   });
+
+  // 3. Staggered Alternating Drop Entrance & 3D Unfolding for Sticky Notes
+  if (stickyNotesGrid && stickyCards.length > 0) {
+    // Flag the grid so initial waiting states are active
+    stickyNotesGrid.classList.add("motion-ready");
+
+    let hasTriggeredDrop = false;
+
+    function triggerStickyNoteDrop() {
+      if (hasTriggeredDrop) return;
+      hasTriggeredDrop = true;
+
+      stickyCards.forEach((card, index) => {
+        // Slower, rhythmic staggered drop: 260ms cadence so each note visibly drops and unfolds
+        setTimeout(() => {
+          card.classList.add("has-dropped");
+          
+          // Once the 1.25s drop & unfold settles, clear animation property to enable responsive hover lifts
+          setTimeout(() => {
+            card.style.animation = "none";
+          }, 1400);
+        }, index * 260);
+      });
+    }
+
+    // Trigger sequential drop when Table of Contents section scrolls into view
+    if ("IntersectionObserver" in window) {
+      const tocSection = document.getElementById("table-of-contents");
+      if (tocSection) {
+        const dropObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              triggerStickyNoteDrop();
+              dropObserver.disconnect();
+            }
+          });
+        }, { threshold: 0.1 });
+
+        dropObserver.observe(tocSection);
+      } else {
+        triggerStickyNoteDrop();
+      }
+    } else {
+      triggerStickyNoteDrop();
+    }
+  }
+
+  // 4. Sticky Note Card Click Actions & Spring Snap
+  stickyCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      // Allow external link (Saarthi case study) to open naturally
+      const anchor = e.target.closest("a");
+      if (anchor && anchor.getAttribute("href") && !anchor.getAttribute("href").startsWith("#")) {
+        return;
+      }
+
+      const targetSelector = card.getAttribute("data-target");
+      if (!targetSelector) return;
+      const targetId = targetSelector.replace("#", "");
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        // Subtle tactile press feedback
+        card.style.transform = "translateY(-4px) scale(0.97)";
+        setTimeout(() => {
+          card.style.transform = "";
+          scrollToSection(targetId);
+          setActiveNavItem(targetId);
+        }, 120);
+      }
+    });
+  });
+
+  stickyNavigateBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      if (btn.tagName === "A" && btn.getAttribute("href") && !btn.getAttribute("href").startsWith("#")) {
+        return;
+      }
+      const targetSelector = btn.getAttribute("data-nav-target") || btn.closest(".sticky-note-card")?.getAttribute("data-target");
+      if (!targetSelector) return;
+      const targetId = targetSelector.replace("#", "");
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        e.stopPropagation();
+        scrollToSection(targetId);
+        setActiveNavItem(targetId);
+      }
+    });
+  });
+
+  // 5. Scroll-Spy with IntersectionObserver & Fallback
+  if ("IntersectionObserver" in window && sections.length > 0) {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -50% 0px",
+      threshold: [0, 0.25, 0.5, 0.75]
+    };
+
+    let visibleSectionRatios = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        visibleSectionRatios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      });
+
+      // Find section with highest visible ratio
+      let bestSectionId = "";
+      let highestRatio = 0;
+      visibleSectionRatios.forEach((ratio, id) => {
+        if (ratio > highestRatio) {
+          highestRatio = ratio;
+          bestSectionId = id;
+        }
+      });
+
+      if (bestSectionId && highestRatio > 0.05) {
+        setActiveNavItem(bestSectionId);
+      }
+    }, observerOptions);
+
+    sections.forEach((sec) => observer.observe(sec));
+  } else {
+    // Fallback scroll spy
+    window.addEventListener("scroll", () => {
+      const scrollPos = window.pageYOffset + 120;
+      let currentId = "opening-stage";
+
+      sections.forEach((sec) => {
+        const top = sec.offsetTop;
+        const height = sec.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentId = sec.id;
+        }
+      });
+
+      setActiveNavItem(currentId);
+    }, { passive: true });
+  }
 }

@@ -23,7 +23,7 @@
   <!-- Preconnect & Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="style.css" />
@@ -406,12 +406,18 @@
           <div class="kinetic-title-wrap">
             <h1 class="kinetic-hero-title" id="kinetic-hero-title">PRIYANSHI</h1>
           </div>
-          <p class="delicate-signature" id="hero-signature">Still Becoming</p>
-          <p class="minimal-role-line" id="hero-role-line">First-year Computer Science student &bull; Exploring code, building prototypes &bull; Learning by making</p>
+          <p class="delicate-signature" id="hero-signature">Still Becoming.</p>
+          <p class="minimal-role-line" id="hero-role-line">
+            First-year CS student. I turn messy, ambiguous problems into <span class="sketch-underlined"><strong>clean software</strong><svg class="sketch-svg-underline" viewBox="0 0 110 12" preserveAspectRatio="none"><path d="M 2 8 Q 28 2 55 7 Q 82 12 108 4" fill="none" stroke="#E59982" stroke-width="2.6" stroke-linecap="round"/></svg></span>. Exploring <span class="sketch-circled"><strong>C++ systems</strong><svg class="sketch-svg-circle" viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M 6 20 Q 24 4 52 5 Q 92 6 94 20 Q 96 36 56 36 Q 14 36 6 22" fill="none" stroke="#E8B86D" stroke-width="2" stroke-linecap="round"/></svg></span>, web performance, and human interfaces.
+          </p>
+          <div class="hero-status-pill" style="display:inline-flex;align-items:center;gap:0.55rem;margin-top:0.75rem;padding:0.3rem 0.95rem;background:#FFFDF9;border:1.2px solid rgba(44,40,37,0.14);border-radius:9999px;font-size:0.82rem;font-weight:600;color:#5E564F;box-shadow:0 3px 10px rgba(44,40,37,0.04);">
+            <span style="width:8px;height:8px;border-radius:50%;background:#059669;box-shadow:0 0 6px #059669;display:inline-block;"></span>
+            <span>Currently building <strong>Saarthi</strong> &amp; dissecting memory models</span>
+          </div>
         </div>
 
         <div class="delicate-scroll-cue" id="hero-scroll-cue">
-          <span class="scroll-cue-text">Explore the journey</span>
+          <span class="scroll-cue-text">Explore the work</span>
           <svg class="scroll-cue-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <polyline points="19 12 12 19 5 12"></polyline>
@@ -423,170 +429,390 @@
 
     <!-- ========================================================
          TABLE OF CONTENTS: CHAPTERS OF THE JOURNEY
-         Illustrated directory connecting the world sequences
+         Illustrated scrapbook directory connecting the world sequences
          ======================================================== -->
     <section class="world-scene table-of-contents-world" id="table-of-contents" aria-label="Table of Contents and Chapters">
+      
+      <!-- Continuous Scenic Track Background Behind Chapter Index -->
+      <div class="scenic-continuous-track" aria-hidden="true">
+        <svg viewBox="0 0 1440 900" class="track-backdrop-svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="toc-track-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#F4EFE6" stop-opacity="0.65" />
+              <stop offset="50%" stop-color="#EFE4D2" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#F4EFE6" stop-opacity="0.65" />
+            </linearGradient>
+          </defs>
+          <!-- Winding path ribbon entering from X=910 (hero exit) and curving across -->
+          <path class="scenic-path-ribbon" d="M 910 0 C 940 160, 680 220, 480 320 C 260 430, 220 620, 420 740 C 540 810, 660 840, 690 900 L 770 900 C 740 830, 610 790, 500 720 C 320 610, 360 450, 560 360 C 740 275, 1020 210, 990 0 Z" fill="url(#toc-track-fill)" stroke="#2C2825" stroke-width="2" stroke-opacity="0.35" />
+          <!-- Center walking guide thread line -->
+          <path class="scenic-path-thread" d="M 950 0 C 980 160, 710 225, 520 340 C 290 440, 290 615, 460 730 C 580 810, 700 840, 730 900" fill="none" stroke="#2C2825" stroke-width="1.8" stroke-dasharray="7,9" stroke-opacity="0.4" stroke-linecap="round" />
+          <!-- Stepping stones along the path -->
+          <ellipse cx="940" cy="110" rx="20" ry="9" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="780" cy="220" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="490" cy="360" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="340" cy="540" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="460" cy="710" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="680" cy="840" rx="26" ry="12" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+        </svg>
+      </div>
+
       <div class="toc-inner">
         
-        <!-- Header -->
+        <!-- Header Block -->
         <div class="toc-header-block">
-          <span class="whisper-tag-minimal">Portfolio Index &bull; Chapters</span>
-          <h2 class="toc-main-title">Table of Contents</h2>
+          <span class="whisper-tag-minimal">// WORK DIRECTORY // CHAPTER INDEX</span>
+          <h2 class="toc-main-title">Chapters of the Work.</h2>
           <p class="toc-subtitle">
-            Choose a chapter to jump straight in, or scroll gently to experience each section unfolding naturally.
+            <strong>Pick a sticky note</strong> to jump directly or explore the live chapter preview.
           </p>
         </div>
 
-        <!-- Chapter Cards Grid -->
-        <div class="toc-chapters-grid">
+        <!-- Sticky Notes Grid -->
+        <div class="sticky-notes-grid" id="sticky-notes-grid">
           
-          <!-- Chapter 1: The Interactive Desk -->
-          <a href="#garden-bridge-stage" class="toc-chapter-card" data-target="#garden-bridge-stage">
-            <div class="toc-card-top">
-              <span class="chapter-number">01</span>
-              <div class="chapter-icon-badge">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-              </div>
+          <!-- STICKY 01: Canary Yellow (Milestones) -->
+          <article class="sticky-note-card note-yellow" data-target="#garden-bridge-stage" data-drop-dir="left">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+            
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[00:01:15]</span>
+              <span class="sticky-badge-ch">CH. 01</span>
             </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Interactive Desk</span>
-              <h3 class="chapter-title">Little Milestones</h3>
-              <p class="chapter-desc">
-                Six clickable objects on my illustrated desk representing achievements, problem-solving, and personal learning.
-              </p>
-            </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Visit Desk</span>
-              <span class="toc-arrow">&rarr;</span>
-            </div>
-          </a>
 
-          <!-- Chapter 2: Saarthi Flagship Project -->
-          <a href="#project-showcase" class="toc-chapter-card" data-target="#project-showcase">
-            <div class="toc-card-top">
-              <span class="chapter-number">02</span>
-              <div class="chapter-icon-badge badge-flagship">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                  <polyline points="2 17 12 22 22 17"></polyline>
-                  <polyline points="2 12 12 17 22 12"></polyline>
-                </svg>
-              </div>
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Lamp, Chai, and Crane sketch">
+                <!-- Desk line -->
+                <line x1="15" y1="74" x2="145" y2="74" stroke="#2C2825" stroke-width="2.2" stroke-linecap="round" />
+                <!-- Lamp -->
+                <g transform="translate(18, 6)">
+                  <ellipse cx="20" cy="65" rx="12" ry="4" fill="#E8B86D" stroke="#2C2825" stroke-width="1.8" />
+                  <path d="M 20 65 C 18 40, 28 26, 44 20" fill="none" stroke="#2C2825" stroke-width="2.2" stroke-linecap="round" />
+                  <path d="M 36 14 L 56 22 L 42 32 Z" fill="#E8B86D" stroke="#2C2825" stroke-width="1.8" />
+                  <polygon points="42,32 26,68 64,68 56,22" fill="#FFE8B2" opacity="0.4" />
+                </g>
+                <!-- Cutting Chai -->
+                <g transform="translate(72, 28)">
+                  <polygon points="6,42 22,42 25,12 3,12" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.8" />
+                  <polygon points="7,40 21,40 23,20 5,20" fill="#E8B86D" />
+                  <path d="M 8 8 Q 11 3 8 -1" fill="none" stroke="#E59982" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M 16 9 Q 19 4 16 0" fill="none" stroke="#E59982" stroke-width="1.4" stroke-linecap="round" />
+                </g>
+                <!-- Origami Crane -->
+                <g transform="translate(108, 30)">
+                  <polygon points="10,38 24,24 32,40 16,42" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.8" />
+                  <polygon points="16,42 22,28 34,30" fill="#FCE9DE" stroke="#2C2825" stroke-width="1.4" />
+                  <polygon points="10,38 3,40 12,42" fill="#E8B86D" stroke="#2C2825" stroke-width="1.2" />
+                </g>
+              </svg>
             </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Flagship Prototype</span>
-              <h3 class="chapter-title">Saarthi &amp; Architecture</h3>
-              <p class="chapter-desc">
-                Context-aware digital banking companion with a live system flowchart, deterministic math core, and voice interface.
-              </p>
-            </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Explore Project</span>
-              <span class="toc-arrow">&rarr;</span>
-            </div>
-          </a>
 
-          <!-- Chapter 3: Open Engineering Notebook -->
-          <a href="#learning-library" class="toc-chapter-card" data-target="#learning-library">
-            <div class="toc-card-top">
-              <span class="chapter-number">03</span>
-              <div class="chapter-icon-badge">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="16 18 22 12 16 6"></polyline>
-                  <polyline points="8 6 2 12 8 18"></polyline>
-                </svg>
-              </div>
-            </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Engineering Craft</span>
-              <h3 class="chapter-title">Open Study Notebook</h3>
-              <p class="chapter-desc">
-                Five interactive study tabs: C++ &amp; memory, algorithms, browser rendering, safe AI guardrails, and calm interfaces.
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">Little Milestones</h3>
+              <p class="sticky-desc">
+                <strong>Hackathon sprints, prototypes, and early wins.</strong> Real lessons from building functional software under tight pressure.
               </p>
             </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Read Notebook</span>
-              <span class="toc-arrow">&rarr;</span>
-            </div>
-          </a>
 
-          <!-- Chapter 4: The Curiosity Observatory -->
-          <a href="#curiosity-observatory" class="toc-chapter-card" data-target="#curiosity-observatory">
-            <div class="toc-card-top">
-              <span class="chapter-number">04</span>
-              <div class="chapter-icon-badge">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="7"></circle>
-                  <polyline points="12 9 12 12 13.5 13.5"></polyline>
-                  <path d="m16.24 7.76 2.83-2.83"></path>
-                  <path d="m5 19 2.83-2.83"></path>
-                </svg>
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  LIVE PEEK
+                </span>
+                <span class="sticky-preview-count">3 Highlights</span>
               </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Hackathon Wins &amp; Milestones</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Interactive Desk 3D Relics</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Working Functional Prototypes</li>
+              </ul>
             </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Future Horizons</span>
-              <h3 class="chapter-title">The Curiosity Observatory</h3>
-              <p class="chapter-desc">
-                An interactive night-sky map and pivoting brass telescope charting six areas I want to understand, explore, and build.
-              </p>
-            </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Aim Telescope</span>
-              <span class="toc-arrow">&rarr;</span>
-            </div>
-          </a>
 
-          <!-- Chapter 5: Sunset Horizon (Contact) -->
-          <a href="#contact-horizon" class="toc-chapter-card" data-target="#contact-horizon">
-            <div class="toc-card-top">
-              <span class="chapter-number">05</span>
-              <div class="chapter-icon-badge">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                </svg>
-              </div>
+            <div class="sticky-action-bar">
+              <button class="btn-sticky-navigate" data-nav-target="#garden-bridge-stage" type="button">
+                <span>Jump to Desk</span>
+                <span class="sticky-btn-arrow">&rarr;</span>
+              </button>
             </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Get In Touch</span>
-              <h3 class="chapter-title">The Path Ahead &amp; Letter</h3>
-              <p class="chapter-desc">
-                Full-circle return to the winding pathway under golden dusk, interactive wax-sealed letter, and direct contact.
-              </p>
-            </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Unfold Letter</span>
-              <span class="toc-arrow">&rarr;</span>
-            </div>
-          </a>
+          </article>
 
-          <!-- Chapter 6: Deep Dive Case Study Link -->
-          <a href="saarthi.html" class="toc-chapter-card toc-casestudy-card" target="_blank" rel="noopener">
-            <div class="toc-card-top">
-              <span class="chapter-number">Bonus</span>
-              <div class="chapter-icon-badge badge-accent">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </div>
+          <!-- STICKY 02: Apricot Peach (Saarthi) -->
+          <article class="sticky-note-card note-peach" data-target="#project-showcase" data-drop-dir="right">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[00:02:40]</span>
+              <span class="sticky-badge-ch">CH. 02</span>
             </div>
-            <div class="toc-card-body">
-              <span class="chapter-kicker">Dedicated Deep-Dive</span>
-              <h3 class="chapter-title">Full Saarthi Case Study</h3>
-              <p class="chapter-desc">
-                Read user interviews, examine all 8 high-res prototype screens with zoom lightbox, and review our architecture notes.
+
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Ledger balance and flowchart sketch">
+                <line x1="80" y1="20" x2="80" y2="72" stroke="#2C2825" stroke-width="2.6" stroke-linecap="round" />
+                <polygon points="72,75 88,75 83,72 77,72" fill="#2C2825" />
+                <circle cx="80" cy="20" r="4.5" fill="#E8B86D" stroke="#2C2825" stroke-width="1.8" />
+                <line x1="42" y1="28" x2="118" y2="24" stroke="#2C2825" stroke-width="2.2" stroke-linecap="round" />
+                <!-- Left Ledger -->
+                <rect x="26" y="38" width="30" height="22" rx="3" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.6" />
+                <line x1="32" y1="45" x2="48" y2="45" stroke="#2C2825" stroke-width="1.4" />
+                <line x1="32" y1="51" x2="44" y2="51" stroke="#E59982" stroke-width="1.4" />
+                <!-- Right Pulse Node -->
+                <circle cx="106" cy="46" r="12" fill="#ECFDF5" stroke="#059669" stroke-width="1.6" />
+                <path d="M 98 46 L 103 42 L 107 50 L 111 44 L 114 46" fill="none" stroke="#059669" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </div>
+
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">Building Saarthi</h3>
+              <p class="sticky-desc">
+                <strong>Context-aware digital banking.</strong> Because raw ledger numbers without plain-human context cause panic.
               </p>
             </div>
-            <div class="toc-card-footer">
-              <span class="toc-link-text">Open Dedicated Page ↗</span>
-              <span class="toc-arrow">&rarr;</span>
+
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  LIVE PEEK
+                </span>
+                <span class="sticky-preview-count">Flagship System</span>
+              </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Context-Aware Banking Flowchart</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> 8 Live Interactive UI Screens</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Plain-Human Financial Clarifier</li>
+              </ul>
             </div>
-          </a>
+
+            <div class="sticky-action-bar">
+              <button class="btn-sticky-navigate" data-nav-target="#project-showcase" type="button">
+                <span>View Flagship</span>
+                <span class="sticky-btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- STICKY 03: Mint Sage (Engine Room) -->
+          <article class="sticky-note-card note-mint" data-target="#learning-library" data-drop-dir="left">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[00:03:55]</span>
+              <span class="sticky-badge-ch">CH. 03</span>
+            </div>
+
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Open engineering notebook sketch">
+                <rect x="22" y="16" width="56" height="52" rx="3" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.8" />
+                <rect x="80" y="16" width="56" height="52" rx="3" fill="#FAF4EB" stroke="#2C2825" stroke-width="1.8" />
+                <line x1="79" y1="14" x2="79" y2="70" stroke="#7A6855" stroke-width="3" />
+                <!-- Code lines -->
+                <line x1="30" y1="28" x2="68" y2="28" stroke="#2C2825" stroke-width="1.5" />
+                <line x1="34" y1="36" x2="62" y2="36" stroke="#9FB59A" stroke-width="1.5" />
+                <line x1="34" y1="44" x2="56" y2="44" stroke="#9FB59A" stroke-width="1.5" />
+                <line x1="30" y1="52" x2="48" y2="52" stroke="#2C2825" stroke-width="1.5" />
+                <!-- Braces on right -->
+                <text x="96" y="46" font-family="monospace" font-size="22" font-weight="bold" fill="#059669">{ &amp; }</text>
+              </svg>
+            </div>
+
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">The Engine Room</h3>
+              <p class="sticky-desc">
+                <strong>Daily CS craft.</strong> C++, low-level memory pointers, data structures, and understanding how machines actually run.
+              </p>
+            </div>
+
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  LIVE PEEK
+                </span>
+                <span class="sticky-preview-count">Engine Notebook</span>
+              </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Low-Level C++ &amp; Memory Layout</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Core Data Structures &amp; Algos</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> 4 Engineering Foundations</li>
+              </ul>
+            </div>
+
+            <div class="sticky-action-bar">
+              <button class="btn-sticky-navigate" data-nav-target="#learning-library" type="button">
+                <span>Open Notebook</span>
+                <span class="sticky-btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- STICKY 04: Celestial Cyan (Curiosity Radar) -->
+          <article class="sticky-note-card note-cyan" data-target="#curiosity-observatory" data-drop-dir="right">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[00:05:10]</span>
+              <span class="sticky-badge-ch">CH. 04</span>
+            </div>
+
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Brass telescope and constellation sketch">
+                <!-- Telescope -->
+                <g transform="translate(36, 12)">
+                  <line x1="42" y1="44" x2="28" y2="68" stroke="#2C2825" stroke-width="2.2" stroke-linecap="round" />
+                  <line x1="42" y1="44" x2="56" y2="68" stroke="#2C2825" stroke-width="2.2" stroke-linecap="round" />
+                  <polygon points="18,52 64,28 66,22 16,46" fill="#E8B86D" stroke="#2C2825" stroke-width="1.8" />
+                </g>
+                <!-- Constellation Stars -->
+                <circle cx="118" cy="22" r="3.5" fill="#E8B86D" />
+                <circle cx="138" cy="38" r="4.5" fill="#E8B86D" />
+                <circle cx="114" cy="52" r="3" fill="#E8B86D" />
+                <line x1="118" y1="22" x2="138" y2="38" stroke="#2C2825" stroke-width="1.4" stroke-dasharray="3,3" />
+                <line x1="138" y1="38" x2="114" y2="52" stroke="#2C2825" stroke-width="1.4" stroke-dasharray="3,3" />
+              </svg>
+            </div>
+
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">Curiosity Radar</h3>
+              <p class="sticky-desc">
+                <strong>Six technical frontiers:</strong> AI ergonomics, systems architecture, creative tech, and OS boundaries I'm actively dissecting.
+              </p>
+            </div>
+
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  LIVE PEEK
+                </span>
+                <span class="sticky-preview-count">Stargazer Radar</span>
+              </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> 6 Interactive Constellations</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Astronomical Telescope Explorer</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> AI, Systems &amp; OS Frontiers</li>
+              </ul>
+            </div>
+
+            <div class="sticky-action-bar">
+              <button class="btn-sticky-navigate" data-nav-target="#curiosity-observatory" type="button">
+                <span>Open Radar</span>
+                <span class="sticky-btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- STICKY 05: Blush Pink (Let's Build) -->
+          <article class="sticky-note-card note-pink" data-target="#contact-horizon" data-drop-dir="left">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[00:06:30]</span>
+              <span class="sticky-badge-ch">CH. 05</span>
+            </div>
+
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Wax-sealed letter and mailbox sketch">
+                <rect x="36" y="20" width="88" height="52" rx="4" fill="#FFFDF9" stroke="#2C2825" stroke-width="2" />
+                <polyline points="38,22 80,50 122,22" fill="none" stroke="#2C2825" stroke-width="1.8" />
+                <circle cx="80" cy="50" r="10" fill="#E59982" stroke="#2C2825" stroke-width="1.6" />
+                <circle cx="80" cy="50" r="4" fill="#FCE9DE" />
+              </svg>
+            </div>
+
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">Let's Build</h3>
+              <p class="sticky-desc">
+                <strong>Direct email, honest conversations,</strong> and collaboration. Got an interesting problem or an engineering team? Say hello.
+              </p>
+            </div>
+
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  LIVE PEEK
+                </span>
+                <span class="sticky-preview-count">Direct Channel</span>
+              </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Direct Mailbox (Fast Response)</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> GitHub, LinkedIn &amp; Resume</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Warm Sunset Horizon Landscape</li>
+              </ul>
+            </div>
+
+            <div class="sticky-action-bar">
+              <button class="btn-sticky-navigate" data-nav-target="#contact-horizon" type="button">
+                <span>Reach Out</span>
+                <span class="sticky-btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- BONUS STICKY / POSTCARD: Airmail Feature (Saarthi Case Study) -->
+          <article class="sticky-note-card note-airmail" data-drop-dir="right">
+            <div class="sticky-glue-strip" aria-hidden="true"></div>
+            <div class="sticky-tape-accent" aria-hidden="true"></div>
+            <div class="sticky-corner-peel" aria-hidden="true"></div>
+
+            <div class="sticky-meta-row">
+              <span class="sticky-timecode">[FEATURE // 12-MIN]</span>
+              <span class="sticky-badge-ch">FIELD NOTE</span>
+            </div>
+
+            <div class="sticky-illustration-box">
+              <svg viewBox="0 0 160 85" class="sticky-illustration-svg" aria-label="Magnifying glass and case study dossier sketch">
+                <rect x="42" y="14" width="76" height="56" rx="4" fill="#FAF4EB" stroke="#2C2825" stroke-width="1.8" transform="rotate(-2 80 42)" />
+                <line x1="50" y1="26" x2="86" y2="24" stroke="#2C2825" stroke-width="2" stroke-linecap="round" />
+                <line x1="50" y1="36" x2="98" y2="34" stroke="#8E837A" stroke-width="1.5" stroke-linecap="round" />
+                <!-- Magnifying glass -->
+                <g transform="translate(86, 26)">
+                  <circle cx="16" cy="16" r="13" fill="#FFFDF9" fill-opacity="0.6" stroke="#2C2825" stroke-width="1.8" />
+                  <line x1="25" y1="25" x2="36" y2="36" stroke="#2C2825" stroke-width="2.6" stroke-linecap="round" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="sticky-body-content">
+              <h3 class="sticky-title">Full Saarthi Case Study</h3>
+              <p class="sticky-desc">
+                <strong>Real user interviews, all 8 prototype screens</strong> with zoom lightbox, and engineering reflections in a dedicated dossier.
+              </p>
+            </div>
+
+            <div class="sticky-chapter-preview" aria-label="Chapter contents preview">
+              <div class="sticky-preview-header">
+                <span class="sticky-preview-label airmail">
+                  <span class="preview-pulse-dot" aria-hidden="true"></span>
+                  FIELD DOSSIER
+                </span>
+                <span class="sticky-preview-count">Deep Dive</span>
+              </div>
+              <ul class="sticky-preview-tags">
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Real User Research Findings</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> High-Res Screen Lightbox</li>
+                <li class="preview-tag-item"><span class="tag-bullet">&bull;</span> Engineering Reflections</li>
+              </ul>
+            </div>
+
+            <div class="sticky-action-bar">
+              <a href="saarthi.html" class="btn-sticky-navigate" target="_blank" rel="noopener">
+                <span>Read Case Study</span>
+                <span class="sticky-btn-arrow">&nearr;</span>
+              </a>
+            </div>
+          </article>
 
         </div>
 
@@ -657,9 +883,9 @@
 
       <!-- Subtle Curated Context (NO internal forbidden scene names) -->
       <div class="bridge-intro-header">
-        <span class="whisper-tag-minimal">Milestones &amp; Relics</span>
-        <h2 class="bridge-main-title">Tangible memories along the path</h2>
-        <p class="bridge-instruction-hint">Drag to rotate the platform &bull; Click any object to examine</p>
+        <span class="whisper-tag-minimal">// DESK ARTIFACTS // 06 MILESTONES</span>
+        <h2 class="bridge-main-title">Little Milestones. Real Breakthroughs.</h2>
+        <p class="bridge-instruction-hint"><strong>Click or drag any relic.</strong> Sprints, early wins, and the engineering habits that shaped how I build.</p>
       </div>
 
       <!-- 3D Turntable Platform & Carousel Viewport -->
@@ -847,14 +1073,44 @@
          Flagship Case Study: Missing Context in Digital Banking
          ======================================================== -->
     <section class="world-scene project-showcase-world" id="project-showcase" aria-label="Flagship Project Saarthi">
+      
+      <!-- Continuous Scenic Track Background Behind Showcase -->
+      <div class="scenic-continuous-track" aria-hidden="true">
+        <svg viewBox="0 0 1440 1000" class="track-backdrop-svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="showcase-track-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#F4EFE6" stop-opacity="0.65" />
+              <stop offset="50%" stop-color="#EFE4D2" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#F4EFE6" stop-opacity="0.65" />
+            </linearGradient>
+          </defs>
+          <!-- Pathway ribbon entering from bridge center (X=730) and winding around showcase -->
+          <path class="scenic-path-ribbon" d="M 730 0 C 700 180, 480 260, 360 420 C 220 600, 260 760, 440 860 C 530 910, 620 940, 680 1000 L 760 1000 C 700 930, 590 890, 510 840 C 350 740, 310 590, 430 450 C 540 320, 780 230, 810 0 Z" fill="url(#showcase-track-fill)" stroke="#2C2825" stroke-width="2" stroke-opacity="0.35" />
+          <!-- Center walking thread line -->
+          <path class="scenic-path-thread" d="M 770 0 C 740 180, 520 270, 395 435 C 265 605, 295 765, 475 850 C 560 895, 660 935, 720 1000" fill="none" stroke="#2C2825" stroke-width="1.8" stroke-dasharray="7,9" stroke-opacity="0.4" stroke-linecap="round" />
+          <!-- Stepping stones along the path -->
+          <ellipse cx="760" cy="120" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="580" cy="270" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="380" cy="460" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="330" cy="680" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="480" cy="850" rx="26" ry="12" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="680" cy="960" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <!-- Wildflower blossom accents -->
+          <circle cx="795" cy="160" r="4.5" fill="#E8B86D" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="340" cy="495" r="4.5" fill="#F5BCA9" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="280" cy="720" r="4.5" fill="#9FB59A" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="510" cy="890" r="4" fill="#E8B86D" stroke="#2C2825" stroke-width="1.1" />
+        </svg>
+      </div>
+
       <div class="project-showcase-inner">
         
         <!-- Showcase Header & Problem Thesis -->
         <div class="project-header-block">
-          <span class="whisper-tag-minimal">Flagship Engineering Project</span>
+          <span class="whisper-tag-minimal">// FLAGSHIP PROJECT // FULL-STACK PROTOTYPE</span>
           <h2 class="project-showcase-title">Saarthi &mdash; Context-Aware Digital Banking</h2>
           <p class="project-problem-thesis">
-            Digital banking fails not from lack of numbers, but from missing context. Saarthi bridges the cognitive gap between raw transactional ledger data and human reassurance.
+            <strong>Banking apps fail from missing context, not missing numbers.</strong> Saarthi bridges cold transactional data and real human reassurance through context engines and voice clarification.
           </p>
 
           <div class="project-cta-actions">
@@ -1212,14 +1468,44 @@
          Engineering craft, open notebook & interactive celestial ideas
          ======================================================== -->
     <section class="world-scene learning-library-world" id="learning-library" aria-label="Learning Journey and Explorations">
+      
+      <!-- Continuous Scenic Track Background Behind Learning Journey -->
+      <div class="scenic-continuous-track" aria-hidden="true">
+        <svg viewBox="0 0 1440 1000" class="track-backdrop-svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="library-track-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#F4EFE6" stop-opacity="0.6" />
+              <stop offset="50%" stop-color="#EFE4D2" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#F4EFE6" stop-opacity="0.6" />
+            </linearGradient>
+          </defs>
+          <!-- Pathway ribbon entering from showcase (X=680) and weaving through craft toward horizon (X=380) -->
+          <path class="scenic-path-ribbon" d="M 680 0 C 640 160, 840 280, 960 440 C 1080 600, 1020 780, 820 880 C 680 950, 480 960, 360 1000 L 440 1000 C 540 965, 720 950, 850 870 C 1010 770, 1070 610, 950 460 C 820 310, 680 190, 760 0 Z" fill="url(#library-track-fill)" stroke="#2C2825" stroke-width="2" stroke-opacity="0.35" />
+          <!-- Center walking thread line -->
+          <path class="scenic-path-thread" d="M 720 0 C 680 160, 880 285, 995 450 C 1100 605, 1040 780, 845 875 C 700 950, 510 965, 400 1000" fill="none" stroke="#2C2825" stroke-width="1.8" stroke-dasharray="7,9" stroke-opacity="0.4" stroke-linecap="round" />
+          <!-- Stepping stones along the path -->
+          <ellipse cx="710" cy="110" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="860" cy="280" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="1010" cy="480" rx="22" ry="10" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="980" cy="690" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="800" cy="880" rx="26" ry="12" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <ellipse cx="450" cy="980" rx="24" ry="11" fill="#FFFDF9" stroke="#2C2825" stroke-width="1.4" opacity="0.8" />
+          <!-- Wildflower blossom accents -->
+          <circle cx="750" cy="150" r="4" fill="#9FB59A" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="1035" cy="440" r="4.5" fill="#E8B86D" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="1005" cy="735" r="4.5" fill="#F5BCA9" stroke="#2C2825" stroke-width="1.1" />
+          <circle cx="770" cy="910" r="4" fill="#9FB59A" stroke="#2C2825" stroke-width="1.1" />
+        </svg>
+      </div>
+
       <div class="learning-library-inner">
         
         <!-- Section Header -->
         <div class="library-header-block">
-          <span class="whisper-tag-minimal">Engineering Craft &amp; Curiosity</span>
-          <h2 class="library-main-title">Still Figuring Things Out</h2>
+          <span class="whisper-tag-minimal">// DAILY CS CRAFT // THE ENGINE ROOM</span>
+          <h2 class="library-main-title">The Engine Room. Craft &amp; Systems.</h2>
           <p class="library-subtitle">
-            The everyday practice of learning Computer Science: building mental models from low-level memory pointers to human-centered software.
+            <strong>How machines actually think.</strong> From raw C++ pointers and cache locality to full-stack web architectures and mental models.
           </p>
         </div>
 
@@ -1504,10 +1790,10 @@ return generateCalmExplanation(prompt);</code></pre>
         <div class="twilight-observatory-stage storybook-card" id="curiosity-observatory">
           
           <div class="observatory-header">
-            <span class="whisper-tag-minimal">Future Explorations</span>
-            <h3 class="observatory-title">The Curiosity Observatory</h3>
+            <span class="whisper-tag-minimal">// CURIOSITY RADAR // 06 FRONTIERS</span>
+            <h3 class="observatory-title">The Curiosity Observatory.</h3>
             <p class="observatory-desc">
-              A little map of things I want to understand, explore and eventually build.
+              <strong>Six technical frontiers I'm dissecting and building next.</strong> Click any constellation to aim the telescope.
             </p>
           </div>
 
@@ -1684,10 +1970,10 @@ return generateCalmExplanation(prompt);</code></pre>
         
         <!-- Section Header -->
         <div class="contact-header-block">
-          <span class="whisper-tag-minimal">Full Circle &bull; Reach Out</span>
-          <h2 class="contact-main-title">The Path Ahead</h2>
+          <span class="whisper-tag-minimal">// FULL CIRCLE // GET IN TOUCH</span>
+          <h2 class="contact-main-title">Let's Build Something.</h2>
           <p class="contact-subtitle">
-            Whether you want to talk about low-level systems, discuss banking ergonomics, or just say hello—my inbox is always open.
+            <strong>Got an interesting problem, a challenging project, or an engineering role?</strong> My inbox is always open for good conversations and collaboration.
           </p>
         </div>
 
