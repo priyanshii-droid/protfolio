@@ -1,188 +1,252 @@
-﻿/* ============================================================
+/* ============================================================
    PRIYANSHI — STILL BECOMING
-   Storybook Opening Sequence & Chapter Scroll Animations (GSAP)
+   Phase 2: Cinematic 2.5D Hero World & Interaction Controller
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Check reduced motion preference
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // Initialize Storybook Sequence
-  if (typeof gsap !== "undefined") {
-    // Register ScrollTrigger if available
-    if (typeof ScrollTrigger !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
-
-    if (!prefersReducedMotion) {
-      // Scene 1: Preserved Opening Sequence
-      initStorybookOpeningSequence();
-      initStorybookScrollInteraction();
-
-      // Chapters: Illustrated Book Animations
-      initChapterVignetteAnimations();
-      initSaarthiStorySceneAnimations();
-    } else {
-      initAccessibleState();
-    }
-  } else {
-    initAccessibleState();
+  // Register GSAP Plugins
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
   }
 
-  // Supporting interactions
-  initSketchMorph();
-  initSaarthiWalkthrough();
-  initMobileNavigation();
-  initContactForm();
-  initMemoryCarousel();
-  initBallDrop();
-  initScrapbookTimeline();
-  initStickyNotes();
-  initIdeasDrawer();
-  initBalloonMemories();
+  // 1. Initialize Kinetic Typography Pre-processing
+  setupKineticTypography();
+
+  // 2. Initialize Opening Camera & Balloon-Girl Entrance
+  initOpeningSequence();
+
+  // 3. Initialize Delayed Cursor Parallax
+  initCursorParallax();
+
+  // 4. Initialize Scroll-Driven Pathway & Walking Motion
+  initScrollCamera();
+
+  // 5. Initialize Quiet Terminal Modal (Ctrl+K)
   initTerminal();
 
-  // Continuous storybook world interactions
-  initOpeningCursorParallax();
-  initDeskGatewayAnimation();
-  initScrapbookCube();
-  initPersistentCompanion();
+  // 6. Smooth Scroll Cue Action
+  initScrollCue();
+
+  // 7. Balloon Dissolve & Canvas Stardust Burst
+  initBalloonDissolveOnScroll();
+
+  // 8. Signature 3D Memory Turntable & Focus Object Zoom
+  initMemoryCarousel();
+
+  // 9. Saarthi Interface Walkthrough & Technical Flowcharts
+  initSaarthiWalkthrough();
+
+  // 10. Image Lightbox Modal for Production Screenshots
+  initImageLightbox();
+
+  // 11. Open Engineering Notebook Subjects
+  initNotebookTabs();
+
+  // 12. Twilight Observatory & Constellation Telescope
+  initTwilightObservatory();
+
+  // 13. Contact Horizon & Tactile Wax-Sealed Letter
+  initContactExperience();
+
+  // 14. Milestones Timeline Strip & Scroll Animation
+  initMilestonesTimeline();
+
+  // 15. Table of Contents & Cinematic Chapter Transitions
+  initChapterTransitions();
 });
 
 /* ============================================================
-   1. SCENE 1: STORYBOOK OPENING ANIMATION SEQUENCE (PRESERVED)
+   1. KINETIC TYPOGRAPHY SETUP
+   Splits the hero title into individual letter spans for stagger
    ============================================================ */
-function initStorybookOpeningSequence() {
-  const masterTimeline = gsap.timeline({
-    defaults: { ease: "power2.out" }
-  });
+function setupKineticTypography() {
+  const titleEl = document.getElementById("kinetic-hero-title");
+  if (!titleEl) return;
 
+  const text = titleEl.textContent.trim();
+  titleEl.innerHTML = "";
+  
+  // Wrap each letter in a span for individual kinetic animation
+  Array.from(text).forEach((char) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.className = "kinetic-letter";
+    span.style.display = "inline-block";
+    span.style.willChange = "transform, opacity";
+    titleEl.appendChild(span);
+  });
+}
+
+/* ============================================================
+   2. OPENING CAMERA & BALLOON-GIRL ENTRANCE SEQUENCE
+   ============================================================ */
+function initOpeningSequence() {
   const actorGroup = document.getElementById("main-actor-group");
   const balloonRig = document.getElementById("balloon-rig");
   const characterRig = document.getElementById("character-rig");
   const legLeft = document.getElementById("char-leg-left");
   const legRight = document.getElementById("char-leg-right");
   const scarfTails = document.getElementById("scarf-tails");
-  const hairFlutter = document.getElementById("hair-flutter");
-  const string = document.getElementById("balloon-string");
+  const balloonString = document.getElementById("balloon-string");
 
-  const storyTag = document.getElementById("story-tag");
-  const storyTitle = document.getElementById("story-title");
-  const storyManifesto = document.getElementById("story-manifesto");
-  const storyActions = document.getElementById("story-actions");
-  const scrollHint = document.getElementById("scroll-hint");
+  const titleLetters = document.querySelectorAll(".kinetic-letter");
+  const signature = document.getElementById("hero-signature");
+  const roleLine = document.getElementById("hero-role-line");
+  const scrollCue = document.getElementById("hero-scroll-cue");
 
   const stars = document.querySelectorAll(".drawn-star");
   const sparkles = document.querySelectorAll(".sparkle");
-  const seeds = document.querySelectorAll(".floating-seed");
 
-  // Step 1: Initial State (Offscreen above viewport)
-  gsap.set(actorGroup, { y: -520, opacity: 1 });
+  // Fallback if GSAP is unavailable
+  if (typeof gsap === "undefined") {
+    if (actorGroup) actorGroup.style.opacity = "1";
+    if (titleLetters.length) titleLetters.forEach(l => l.style.opacity = "1");
+    if (signature) signature.style.opacity = "1";
+    if (roleLine) roleLine.style.opacity = "1";
+    if (scrollCue) scrollCue.style.opacity = "1";
+    return;
+  }
+
+  // Initial State: Character and balloon positioned above viewport
+  gsap.set(actorGroup, { y: -540, opacity: 1 });
   gsap.set(balloonRig, { rotation: -6, transformOrigin: "500px 240px" });
   gsap.set(characterRig, { rotation: 4, transformOrigin: "0px 0px" });
-  gsap.set([stars, sparkles, seeds], { scale: 0, opacity: 0, transformOrigin: "center" });
-  gsap.set([storyTag, storyTitle, storyManifesto, storyActions, scrollHint], { opacity: 0, y: 15 });
+  gsap.set([stars, sparkles], { scale: 0, opacity: 0, transformOrigin: "center" });
 
-  // Step 2 & 3: Character enters from upper screen holding the string, lowering balloon
+  if (titleLetters.length) {
+    gsap.set(titleLetters, { opacity: 0, y: 35, rotateX: -40 });
+  }
+  if (signature) {
+    gsap.set(signature, { opacity: 0, y: 15, scale: 0.95 });
+  }
+  if (roleLine) {
+    gsap.set(roleLine, { opacity: 0, y: 15 });
+  }
+  if (scrollCue) {
+    gsap.set(scrollCue, { opacity: 0, y: 12 });
+  }
+
+  // Master Entrance Timeline
+  const masterTimeline = gsap.timeline({
+    defaults: { ease: "power2.out" }
+  });
+
   masterTimeline
     .addLabel("enter", 0.2)
+    // 1. Actor group lowers smoothly into frame
     .to(actorGroup, {
-      duration: 1.8,
+      duration: 1.85,
       y: 0,
       ease: "power2.out"
     }, "enter")
 
-    // Balloon physics: slight lag, rotation, and elastic pull as if lowered down
+    // 2. Balloon follows with gentle elastic sway
     .to(balloonRig, {
-      duration: 2.0,
-      rotation: 2,
-      ease: "elastic.out(1, 0.5)"
+      duration: 2.1,
+      rotation: 2.2,
+      ease: "elastic.out(1, 0.55)"
     }, "enter+=0.1")
 
-    // Character gentle sway and leg kick during descent
+    // 3. Legs swinging with air resistance during descent
     .to(legLeft, {
-      duration: 0.6,
+      duration: 0.55,
       rotation: 12,
       yoyo: true,
       repeat: 3,
       ease: "sine.inOut"
     }, "enter")
     .to(legRight, {
-      duration: 0.6,
+      duration: 0.55,
       rotation: -10,
       yoyo: true,
       repeat: 3,
       ease: "sine.inOut"
     }, "enter")
 
-    // Scarf flutter during descent
+    // 4. Scarf tail flutter
     .to(scarfTails, {
-      duration: 0.5,
-      rotation: 18,
+      duration: 0.48,
+      rotation: 16,
       yoyo: true,
       repeat: 3,
       ease: "sine.inOut"
     }, "enter")
 
-    // String flex/tension
-    .to(string, {
+    // 5. String flex during air descent
+    .to(balloonString, {
       duration: 1.6,
       attr: { d: "M 500 407 Q 498 440 484 472 T 482 505" },
       ease: "power1.out"
     }, "enter+=0.1")
 
-    // Step 5: Balloon & Character Settle into Center
-    .addLabel("settled", "-=0.3")
+    // 6. Character & Balloon settle softly into equilibrium
+    .addLabel("settled", "-=0.35")
     .to(balloonRig, {
-      duration: 0.8,
+      duration: 0.85,
       rotation: 0,
       ease: "power2.out"
     }, "settled")
     .to(characterRig, {
-      duration: 0.8,
+      duration: 0.85,
       rotation: 0,
       ease: "power2.out"
     }, "settled")
 
-    // Step 6: Reveal Text: "WELCOME TO MY LITTLE WORLD" & "I'm Priyanshi — Still Becoming."
-    .addLabel("revealText", "settled+=0.1")
-    .to([storyTag, storyTitle, storyManifesto, storyActions, scrollHint], {
-      duration: 0.8,
+    // 7. Kinetic Typography: "PRIYANSHI" letters cascade upward
+    .addLabel("revealText", "settled+=0.05")
+    .to(titleLetters, {
+      duration: 0.75,
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      stagger: 0.05,
+      ease: "back.out(1.5)"
+    }, "revealText")
+
+    // 8. Signature "Still Becoming" handwritten reveal
+    .to(signature, {
+      duration: 0.7,
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      ease: "power2.out"
+    }, "revealText+=0.25")
+
+    // 9. Minimal role line & scroll prompt
+    .to([roleLine, scrollCue], {
+      duration: 0.6,
       opacity: 1,
       y: 0,
       stagger: 0.12,
       ease: "power2.out"
-    }, "revealText")
+    }, "revealText+=0.4")
 
-    // Step 7: Pop-in Doodles, Stars & Hand-Drawn Sparkles
+    // 10. Sparkles & hand-drawn stars pop in
     .to(stars, {
-      duration: 0.6,
-      scale: 1,
-      opacity: 1,
-      stagger: 0.1,
-      ease: "back.out(1.8)"
-    }, "revealText+=0.2")
-    .to(sparkles, {
-      duration: 0.5,
+      duration: 0.55,
       scale: 1,
       opacity: 1,
       stagger: 0.08,
       ease: "back.out(2)"
     }, "revealText+=0.3")
-    .to(seeds, {
-      duration: 0.6,
+    .to(sparkles, {
+      duration: 0.5,
       scale: 1,
-      opacity: 0.85,
-      stagger: 0.1,
-      ease: "power2.out"
-    }, "revealText+=0.4")
-    .call(startAmbientStorybookPhysics, [], "revealText+=0.8");
+      opacity: 1,
+      stagger: 0.06,
+      ease: "back.out(2.2)"
+    }, "revealText+=0.35")
+
+    // 11. Hand off to continuous ambient physics loop
+    .call(startAmbientPhysics, [], "revealText+=0.7");
 }
 
 /* ============================================================
-   2. AMBIENT NATURAL FLOATING PHYSICS FOR SCENE 1 (PRESERVED)
+   3. CONTINUOUS AMBIENT ORGANIC FLOATING PHYSICS
    ============================================================ */
-function startAmbientStorybookPhysics() {
+function startAmbientPhysics() {
+  if (typeof gsap === "undefined") return;
+
   const balloonRig = document.getElementById("balloon-rig");
   const characterRig = document.getElementById("character-rig");
   const scarfTails = document.getElementById("scarf-tails");
@@ -190,298 +254,68 @@ function startAmbientStorybookPhysics() {
   const legLeft = document.getElementById("char-leg-left");
   const legRight = document.getElementById("char-leg-right");
 
-  // Gentle, continuous floating motion for the balloon
-  gsap.to(balloonRig, {
-    duration: 3.8,
-    y: "+=12",
-    rotation: 1.6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Character floating softly in harmony with the balloon string
-  gsap.to(characterRig, {
-    duration: 4.1,
-    y: "+=10",
-    rotation: -1.2,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.3
-  });
-
-  // Dangler legs subtle floating drift
-  gsap.to(legLeft, {
-    duration: 3.2,
-    rotation: 4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(legRight, {
-    duration: 3.6,
-    rotation: -3,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.2
-  });
-
-  // Scarf breeze ripple
-  gsap.to(scarfTails, {
-    duration: 2.8,
-    rotation: 8,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Whimsical top hair flutter
-  gsap.to(hairFlutter, {
-    duration: 2.2,
-    rotation: 6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Little dandelion seeds drift slowly across the sky
-  gsap.to(".floating-seed.seed-1", {
-    duration: 8.5,
-    x: "+=25",
-    y: "-=18",
-    rotation: 6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".floating-seed.seed-2", {
-    duration: 9.2,
-    x: "-=20",
-    y: "+=15",
-    rotation: -5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Stars gentle twinkling
-  gsap.to(".drawn-star", {
-    duration: 2.4,
-    scale: 1.15,
-    opacity: 0.9,
-    stagger: {
-      each: 0.6,
+  // Balloon continuous natural float & breath
+  if (balloonRig) {
+    gsap.to(balloonRig, {
+      duration: 3.8,
+      y: "+=12",
+      rotation: 1.6,
       repeat: -1,
-      yoyo: true
-    },
-    ease: "sine.inOut"
-  });
-}
-
-/* ============================================================
-   3. SCROLL INTERACTION: SCENE 1 TO CHAPTER I
-   ============================================================ */
-function initStorybookScrollInteraction() {
-  if (typeof ScrollTrigger === "undefined") return;
-
-  const scene = document.getElementById("storybook-scene");
-  const balloonRig = document.getElementById("balloon-rig");
-  const characterRig = document.getElementById("character-rig");
-  const textOverlay = document.getElementById("storybook-text-overlay");
-
-  // Continuous seamless transition from Sky into Desk
-  gsap.timeline({
-    scrollTrigger: {
-      trigger: scene,
-      start: "top top",
-      end: "bottom top",
-      scrub: 1.2
-    }
-  })
-  // Character and balloon gracefully descend toward the desk environment
-  .to(balloonRig, {
-    y: 110,
-    rotation: 2.2,
-    scale: 0.96,
-    ease: "none"
-  }, 0)
-
-  .to(characterRig, {
-    y: 130,
-    rotation: -1.8,
-    scale: 0.97,
-    ease: "none"
-  }, 0)
-
-  // Opening text smoothly dissolves as user descends toward the desk
-  .to(textOverlay, {
-    opacity: 0,
-    y: -40,
-    ease: "power1.out"
-  }, 0.25)
-
-  // Clouds float upward out of view as we descend
-  .to(".cloud-1", {
-    y: -120,
-    x: -30,
-    opacity: 0.2,
-    ease: "none"
-  }, 0)
-  .to(".cloud-2", {
-    y: -140,
-    x: 40,
-    opacity: 0.2,
-    ease: "none"
-  }, 0);
-}
-
-/* ============================================================
-   4. CHAPTER VIGNETTE ANIMATIONS (SCROLL-TRIGGERED STORYBOOK)
-   ============================================================ */
-function initChapterVignetteAnimations() {
-  if (typeof ScrollTrigger === "undefined") return;
-
-  const chapters = document.querySelectorAll(".chapter-section");
-
-  chapters.forEach((chapter) => {
-    const narrativeCard = chapter.querySelector(".story-paragraph-card");
-    const vignette = chapter.querySelector(".vignette-frame");
-    const subElements = chapter.querySelectorAll(".reflection-pill, .milestone-card, .learning-card");
-
-    // Smooth physical entrance with 100% solid opacity - NEVER dimming or fading to 0.4
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: chapter,
-        start: "top 88%",
-        once: true
-      }
+      yoyo: true,
+      ease: "sine.inOut"
     });
+  }
 
-    if (narrativeCard) {
-      tl.from(narrativeCard, {
-        duration: 0.7,
-        y: 20,
-        ease: "power2.out"
-      });
-    }
+  // Character soft floating rhythm (harmonized with lag)
+  if (characterRig) {
+    gsap.to(characterRig, {
+      duration: 4.1,
+      y: "+=10",
+      rotation: -1.2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 0.3
+    });
+  }
 
-    if (vignette) {
-      tl.from(vignette, {
-        duration: 0.8,
-        y: 20,
-        scale: 0.98,
-        ease: "power2.out"
-      }, "-=0.4");
-    }
+  // Free swinging dangler legs
+  if (legLeft) {
+    gsap.to(legLeft, {
+      duration: 3.2,
+      rotation: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  }
+  if (legRight) {
+    gsap.to(legRight, {
+      duration: 3.6,
+      rotation: -3.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 0.2
+    });
+  }
 
-    if (subElements.length > 0) {
-      tl.from(subElements, {
-        duration: 0.5,
-        y: 15,
-        stagger: 0.06,
-        ease: "power2.out"
-      }, "-=0.3");
-    }
-  });
+  // Scarf tails wind oscillation
+  if (scarfTails) {
+    gsap.to(scarfTails, {
+      duration: 2.7,
+      rotation: 7,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  }
 
-  // Chapter I: Floating Sticky Notes & Lightbulb Subtle Drift
-  gsap.to(".float-note-1", {
-    duration: 3.5,
-    y: "+=8",
-    rotation: -4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-note-2", {
-    duration: 4.0,
-    y: "-=7",
-    rotation: 6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.5
-  });
-  gsap.to(".float-bulb", {
-    duration: 3.0,
-    y: "-=6",
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Chapter II: Saarthi Floating Compass & Shield Drift
-  gsap.to(".float-saarthi-compass", {
-    duration: 4.2,
-    y: "-=9",
-    rotation: 5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-saarthi-shield", {
-    duration: 3.8,
-    y: "+=8",
-    rotation: -4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.3
-  });
-
-  // Chapter III: Floating C++ Book, Terminal & Tea Steam
-  gsap.to(".float-book-1", {
-    duration: 4.5,
-    y: "-=8",
-    rotation: -8,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-code-brackets", {
-    duration: 3.7,
-    y: "+=7",
-    rotation: 8,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.4
-  });
-  gsap.to(".float-cup", {
-    duration: 3.2,
-    y: "-=5",
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Chapter IV: Floating Paper Plane, Letter & Waving Arm
-  gsap.to(".float-plane", {
-    duration: 4.8,
-    x: "+=12",
-    y: "-=10",
-    rotation: 4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-letter", {
-    duration: 3.6,
-    y: "+=6",
-    rotation: -6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Priyanshi Friendly Waving Arm in Chapter IV
-  const wavingArm = document.getElementById("waving-arm");
-  if (wavingArm) {
-    gsap.to(wavingArm, {
-      duration: 1.2,
-      rotation: 14,
+  // Hair flutter
+  if (hairFlutter) {
+    gsap.to(hairFlutter, {
+      duration: 2.1,
+      rotation: 5.5,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut"
@@ -490,255 +324,650 @@ function initChapterVignetteAnimations() {
 }
 
 /* ============================================================
-   5. ACCESSIBLE / REDUCED-MOTION FALLBACK
+   4. DELAYED CURSOR PARALLAX (2.5D DEPTH LAYERS)
    ============================================================ */
-function initAccessibleState() {
-  const actorGroup = document.getElementById("main-actor-group");
-  const textOverlay = document.getElementById("storybook-text-overlay");
-  const storyTag = document.getElementById("story-tag");
-  const storyTitle = document.getElementById("story-title");
-  const storyManifesto = document.getElementById("story-manifesto");
-  const storyActions = document.getElementById("story-actions");
-  const scrollHint = document.getElementById("scroll-hint");
-  const stars = document.querySelectorAll(".drawn-star");
-  const sparkles = document.querySelectorAll(".sparkle");
+function initCursorParallax() {
+  const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+  if (isTouch) return; // Touch screens utilize scroll physics
 
-  if (actorGroup) {
-    actorGroup.style.opacity = "1";
-    actorGroup.style.transform = "translate(0, 0)";
+  const balloonRig = document.getElementById("balloon-rig");
+  const characterRig = document.getElementById("character-rig");
+  const parallaxLayers = document.querySelectorAll(".parallax-layer");
+
+  let targetX = 0;
+  let targetY = 0;
+  let charX = 0;
+  let charY = 0;
+  let balloonX = 0;
+  let balloonY = 0;
+  let balloonRot = 0;
+
+  window.addEventListener("pointermove", (e) => {
+    // Normalized coordinates (-1 to 1) from viewport center
+    targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+    targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  function tick() {
+    // 1. Character responsive tracking with smooth damping
+    charX += (targetX * 14 - charX) * 0.055;
+    charY += (targetY * 10 - charY) * 0.055;
+
+    // 2. Balloon delayed tracking (simulating air inertia on thread)
+    balloonX += (targetX * 24 - balloonX) * 0.038;
+    balloonY += (targetY * 18 - balloonY) * 0.038;
+    balloonRot += (targetX * 2.8 - balloonRot) * 0.045;
+
+    if (characterRig) {
+      characterRig.style.transform = `translate(${480 + charX}px, ${500 + charY}px)`;
+    }
+    if (balloonRig) {
+      balloonRig.style.transform = `translate3d(${balloonX}px, ${balloonY}px, 0px) rotate(${balloonRot}deg)`;
+    }
+
+    // 3. Background Parallax Layers based on data-speed
+    parallaxLayers.forEach((layer) => {
+      const speed = parseFloat(layer.getAttribute("data-speed")) || 0.2;
+      const lx = targetX * 18 * speed;
+      const ly = targetY * 12 * speed;
+      layer.style.transform = `translate3d(${lx}px, ${ly}px, 0px)`;
+    });
+
+    requestAnimationFrame(tick);
   }
 
-  if (textOverlay) {
-    textOverlay.style.opacity = "1";
-  }
+  tick();
+}
 
-  [storyTag, storyTitle, storyManifesto, storyActions, scrollHint].forEach((el) => {
-    if (el) {
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
+/* ============================================================
+   5. SCROLL-DRIVEN CAMERA & WALKING PATHWAY
+   ============================================================ */
+function initScrollCamera() {
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+
+  const openingStage = document.getElementById("opening-stage");
+  const layerForeground = document.querySelector(".layer-foreground");
+  const layerMiddle = document.querySelector(".layer-middle-ground");
+  const layerHills = document.querySelector(".layer-distant-hills");
+  const recedingPath = document.querySelector(".receding-path");
+  const charLegs = document.getElementById("char-legs");
+  const legLeft = document.getElementById("char-leg-left");
+  const legRight = document.getElementById("char-leg-right");
+
+  if (!openingStage) return;
+
+  // Camera scroll timeline across the opening hero scene
+  const scrollCamTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: openingStage,
+      start: "top top",
+      end: "+=120%",
+      scrub: 1.2,
+      pin: false
     }
   });
 
-  stars.forEach((s) => {
-    s.style.opacity = "1";
-    s.style.transform = "scale(1)";
-  });
+  // 1. Foreground wildflowers rush past fastest (1.25x parallax)
+  if (layerForeground) {
+    scrollCamTl.to(layerForeground, {
+      y: -140,
+      ease: "none"
+    }, 0);
+  }
 
-  sparkles.forEach((sp) => {
-    sp.style.opacity = "0.85";
-    sp.style.transform = "scale(1)";
-  });
+  // 2. Receding pathway scales and translates towards viewer
+  if (recedingPath) {
+    scrollCamTl.to(recedingPath, {
+      strokeDashoffset: -60,
+      ease: "none"
+    }, 0);
+  }
 
-  // Ensure all cards, vignettes, and frames are visible
-  document.querySelectorAll(".vignette-frame, .sketch-morph-frame, .product-walkthrough-container, .story-paragraph-card, .arch-card").forEach((el) => {
-    el.style.opacity = "1";
-    el.style.visibility = "visible";
-  });
+  // 3. Middleground shifts naturally
+  if (layerMiddle) {
+    scrollCamTl.to(layerMiddle, {
+      y: -60,
+      ease: "none"
+    }, 0);
+  }
+
+  // 4. Distant hills move slowly (0.15x parallax)
+  if (layerHills) {
+    scrollCamTl.to(layerHills, {
+      y: -25,
+      ease: "none"
+    }, 0);
+  }
+
+  // 5. Walking cadence on character legs as visitor scrolls
+  if (legLeft && legRight) {
+    scrollCamTl.to(legLeft, {
+      rotation: 16,
+      repeat: 3,
+      yoyo: true,
+      ease: "sine.inOut"
+    }, 0);
+    scrollCamTl.to(legRight, {
+      rotation: -16,
+      repeat: 3,
+      yoyo: true,
+      ease: "sine.inOut"
+    }, 0);
+  }
 }
 
 /* ============================================================
-   6. NAVIGATION & SCROLL SPY
+   6. SCROLL CUE ACTION
    ============================================================ */
-function initMobileNavigation() {
-  const menuToggle = document.getElementById("menu-toggle");
-  const navMenu = document.getElementById("nav-menu");
-  const navLinks = document.querySelectorAll(".nav-link");
+function initScrollCue() {
+  const scrollCue = document.getElementById("hero-scroll-cue");
+  if (!scrollCue) return;
 
-  if (!menuToggle || !navMenu) return;
-
-  menuToggle.addEventListener("click", () => {
-    menuToggle.classList.toggle("active");
-    navMenu.classList.toggle("open");
-  });
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      menuToggle.classList.remove("active");
-      navMenu.classList.remove("open");
-    });
-  });
-
-  // Active link scroll spy
-  window.addEventListener("scroll", () => {
-    const scrollPos = window.pageYOffset + 140;
-    const sections = document.querySelectorAll("section[id]");
-
-    sections.forEach((sec) => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      const id = sec.getAttribute("id");
-
-      if (scrollPos >= top && scrollPos < top + height) {
-        navLinks.forEach((nl) => {
-          nl.classList.remove("active");
-          if (nl.getAttribute("href") === `#${id}`) {
-            nl.classList.add("active");
-          }
-        });
-      }
-    });
-  });
-}
-
-/* ============================================================
-   7. CONTACT FORM INTERACTION
-   ============================================================ */
-function initContactForm() {
-  const form = document.getElementById("contact-form");
-  const feedback = document.getElementById("form-feedback");
-
-  if (!form || !feedback) return;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = document.getElementById("name").value.trim();
-    const subject = document.getElementById("subject").value.trim();
-    const message = document.getElementById("message").value.trim();
-
-    feedback.innerHTML = `Thank you, ${name || "fellow traveler"}! Your note is ready. <a href="mailto:pkshah2021@gmail.com?subject=${encodeURIComponent(subject || 'Hello from your portfolio')}&body=${encodeURIComponent(message + '\n\n— ' + (name || 'A fellow traveler'))}" style="text-decoration: underline; font-weight: 600; color: #2F4D2A;">Click here to send directly to pkshah2021@gmail.com ↗</a>`;
-    feedback.className = "form-feedback success";
-
-    form.reset();
-
-    setTimeout(() => {
-      feedback.style.display = "none";
-    }, 14000);
-  });
-}
-
-/* ============================================================
-   8. SAARTHI SCENE SCROLL ANIMATIONS (GSAP)
-   ============================================================ */
-function initSaarthiStorySceneAnimations() {
-  if (typeof ScrollTrigger === "undefined") return;
-
-  const saarthiScenes = document.querySelectorAll(".saarthi-story-scene");
-
-  saarthiScenes.forEach((scene) => {
-    // Only animate textual badges, quotes, and cards - full 100% solid opacity at all times
-    const textCards = scene.querySelectorAll(".scene-step-badge, .scene-lead-quote, .story-paragraph-card, .arch-card");
-    if (textCards.length > 0) {
-      gsap.from(textCards, {
-        scrollTrigger: {
-          trigger: scene,
-          start: "top 88%",
-          once: true
-        },
-        duration: 0.6,
-        y: 18,
-        stagger: 0.06,
-        ease: "power2.out"
+  scrollCue.addEventListener("click", () => {
+    const toc = document.getElementById("table-of-contents");
+    if (toc && typeof triggerChapterTransition === "function") {
+      triggerChapterTransition(toc, "Table of Contents");
+    } else if (toc) {
+      toc.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollBy({
+        top: window.innerHeight * 0.85,
+        behavior: "smooth"
       });
     }
   });
-
-  // Scene 1: Floating Question Marks & Thought Bubble
-  gsap.to(".float-question-1", {
-    duration: 3.2,
-    y: "-=10",
-    rotation: -6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-question-2", {
-    duration: 3.8,
-    y: "+=8",
-    rotation: 5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.4
-  });
-  gsap.to(".float-thought-cloud", {
-    duration: 4.2,
-    y: "-=6",
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-
-  // Scene 2: Research Sticky Notes Floating
-  gsap.to(".s-note-1", {
-    duration: 3.6,
-    y: "+=6",
-    rotation: -6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".s-note-2", {
-    duration: 4.0,
-    y: "-=7",
-    rotation: 5,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.3
-  });
-  gsap.to(".s-note-3", {
-    duration: 3.4,
-    y: "+=8",
-    rotation: -4,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.6
-  });
-
-  // Scene 6: Horizon Stars
-  gsap.to(".float-horizon-star-1", {
-    duration: 2.8,
-    scale: 1.2,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut"
-  });
-  gsap.to(".float-horizon-star-2", {
-    duration: 3.2,
-    scale: 1.15,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 0.5
-  });
 }
 
 /* ============================================================
-   9. SKETCH-TO-INTERFACE MORPH TOGGLE (SCENE 3)
+   7. QUIET TERMINAL MODAL (Ctrl+K or `)
    ============================================================ */
-function initSketchMorph() {
-  const btnSketch = document.getElementById("btn-show-sketch");
-  const btnInterface = document.getElementById("btn-show-interface");
-  const layerSketch = document.getElementById("layer-sketch");
-  const layerInterface = document.getElementById("layer-interface");
+function initTerminal() {
+  const overlay = document.getElementById("terminal-overlay");
+  const backdrop = document.getElementById("terminal-backdrop");
+  const btnToggle = document.getElementById("btn-terminal-pill");
+  const btnCloseDot = document.getElementById("term-close-dot");
+  const btnEsc = document.getElementById("term-esc-btn");
+  const terminalInput = document.getElementById("terminal-input");
+  const terminalOutput = document.getElementById("terminal-output");
 
-  if (!btnSketch || !btnInterface || !layerSketch || !layerInterface) return;
+  if (!overlay || !terminalInput || !terminalOutput) return;
 
-  btnSketch.addEventListener("click", () => {
-    btnSketch.classList.add("active");
-    btnInterface.classList.remove("active");
-    layerSketch.classList.add("active");
-    layerInterface.classList.remove("active");
+  let history = [];
+  let historyIndex = -1;
+
+  function openTerminal() {
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      terminalInput.focus();
+    }, 80);
+  }
+
+  function closeTerminal() {
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function printLine(text, className = "") {
+    const p = document.createElement("p");
+    if (className) p.className = className;
+    p.innerHTML = text;
+    terminalOutput.appendChild(p);
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  }
+
+  function handleCommand(cmdRaw) {
+    const cmd = cmdRaw.trim().toLowerCase();
+    printLine(`<span class="term-prompt">priyanshi@portfolio:~$</span> <span class="term-log-cmd">${escapeHtml(cmdRaw)}</span>`);
+
+    if (!cmd) return;
+
+    switch (cmd) {
+      case "help":
+        printLine("Available commands:");
+        printLine("  <span class=\"term-cmd\">work</span>     - View flagship projects (Saarthi & more)");
+        printLine("  <span class=\"term-cmd\">craft</span>    - Explore engineering craft & learning");
+        printLine("  <span class=\"term-cmd\">connect</span>  - Contact Priyanshi directly");
+        printLine("  <span class=\"term-cmd\">about</span>    - Brief background statement");
+        printLine("  <span class=\"term-cmd\">email</span>    - Get direct contact email address");
+        printLine("  <span class=\"term-cmd\">clear</span>    - Clear terminal screen");
+        printLine("  <span class=\"term-cmd\">exit</span>     - Close this terminal modal");
+        break;
+
+      case "work":
+        printLine("Navigating to work...", "term-success");
+        closeTerminal();
+        const workSec = document.getElementById("project-showcase");
+        if (workSec) workSec.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "craft":
+        printLine("Navigating to craft & learning...", "term-success");
+        closeTerminal();
+        const craftSec = document.getElementById("learning-library");
+        if (craftSec) craftSec.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "connect":
+        printLine("Navigating to contact...", "term-success");
+        closeTerminal();
+        const connSec = document.getElementById("contact-horizon");
+        if (connSec) connSec.scrollIntoView({ behavior: "smooth" });
+        break;
+
+      case "about":
+        printLine("Priyanshi Shah", "term-welcome");
+        printLine("First-year CS student at New LJ Institute of Engineering & Technology.");
+        printLine("Exploring C++, data structures, web development, and AI through real projects.");
+        break;
+
+      case "email":
+        printLine("Direct email: <a href=\"mailto:pkshah2021@gmail.com\" style=\"color:#E8B86D;text-decoration:underline;\">pkshah2021@gmail.com</a>", "term-welcome");
+        break;
+
+      case "clear":
+        terminalOutput.innerHTML = "";
+        break;
+
+      case "exit":
+      case "quit":
+        closeTerminal();
+        break;
+
+      default:
+        printLine(`Command not found: "${escapeHtml(cmd)}". Type <span class="term-cmd">help</span> for available commands.`, "term-error");
+        break;
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Event Listeners for Open / Close
+  if (btnToggle) btnToggle.addEventListener("click", openTerminal);
+  if (btnCloseDot) btnCloseDot.addEventListener("click", closeTerminal);
+  if (btnEsc) btnEsc.addEventListener("click", closeTerminal);
+  if (backdrop) backdrop.addEventListener("click", closeTerminal);
+
+  // Global Keyboard Shortcuts
+  window.addEventListener("keydown", (e) => {
+    // Ctrl+K or Cmd+K or backtick (when not in an input)
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      if (overlay.classList.contains("active")) {
+        closeTerminal();
+      } else {
+        openTerminal();
+      }
+    } else if (e.key === "Escape" && overlay.classList.contains("active")) {
+      closeTerminal();
+    } else if (e.key === "`" && !overlay.classList.contains("active") && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+      e.preventDefault();
+      openTerminal();
+    }
   });
 
-  btnInterface.addEventListener("click", () => {
-    btnInterface.classList.add("active");
-    btnSketch.classList.remove("active");
-    layerInterface.classList.add("active");
-    layerSketch.classList.remove("active");
+  // Terminal Input Handling
+  terminalInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const val = terminalInput.value;
+      if (val.trim()) {
+        history.push(val);
+        historyIndex = history.length;
+      }
+      handleCommand(val);
+      terminalInput.value = "";
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (history.length && historyIndex > 0) {
+        historyIndex--;
+        terminalInput.value = history[historyIndex];
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (history.length && historyIndex < history.length - 1) {
+        historyIndex++;
+        terminalInput.value = history[historyIndex];
+      } else {
+        historyIndex = history.length;
+        terminalInput.value = "";
+      }
+    }
   });
 }
 
 /* ============================================================
-   10. SAARTHI PRODUCT WALKTHROUGH CONTROLS (SCENE 5)
+   8. BALLOON ASCENT, RELEASE & CANVAS PARTICLE DISSOLVE
+   ============================================================ */
+function initBalloonDissolveOnScroll() {
+  const canvas = document.getElementById("balloon-dissolve-canvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  let particles = [];
+  let animId = null;
+  let hasDissolved = false;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    ctx.scale(dpr, dpr);
+  }
+
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas, { passive: true });
+
+  function spawnBurst(originX, originY) {
+    const colors = ["#E8B86D", "#F5BCA9", "#E59982", "#FAF7F2", "#FFF0D6"];
+    for (let i = 0; i < 75; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2.0 + Math.random() * 5.5;
+      particles.push({
+        x: originX,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        r: 2.5 + Math.random() * 3.8,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        decay: 0.014 + Math.random() * 0.018,
+        isStar: Math.random() > 0.45,
+        rotation: Math.random() * Math.PI,
+        rotSpeed: (Math.random() - 0.5) * 0.1
+      });
+    }
+
+    if (!animId) {
+      loopParticles();
+    }
+  }
+
+  function loopParticles() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.04; // Gentle air float
+      p.vx *= 0.985;
+      p.rotation += p.rotSpeed;
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+
+      if (p.isStar) {
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.beginPath();
+        for (let s = 0; s < 4; s++) {
+          ctx.lineTo(Math.cos((s * 90) * Math.PI / 180) * p.r * 1.5, Math.sin((s * 90) * Math.PI / 180) * p.r * 1.5);
+          ctx.lineTo(Math.cos((s * 90 + 45) * Math.PI / 180) * (p.r * 0.5), Math.sin((s * 90 + 45) * Math.PI / 180) * (p.r * 0.5));
+        }
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    if (particles.length > 0) {
+      animId = requestAnimationFrame(loopParticles);
+    } else {
+      animId = null;
+    }
+  }
+
+  // Trigger burst via ScrollTrigger as user scrolls into the bridge scene
+  const openingStage = document.getElementById("opening-stage");
+  const balloonRig = document.getElementById("balloon-rig");
+  const balloonString = document.getElementById("balloon-string");
+  const pipGuide = document.getElementById("pip-companion-guide");
+
+  if (typeof ScrollTrigger !== "undefined" && openingStage && balloonRig) {
+    ScrollTrigger.create({
+      trigger: openingStage,
+      start: "bottom 85%",
+      onEnter: () => {
+        if (!hasDissolved) {
+          hasDissolved = true;
+          const rect = balloonRig.getBoundingClientRect();
+          const originX = rect.left + rect.width / 2;
+          const originY = rect.top + rect.height / 2;
+          
+          gsap.to(balloonRig, {
+            y: -280,
+            opacity: 0,
+            duration: 1.2,
+            ease: "power2.in"
+          });
+          if (balloonString) {
+            gsap.to(balloonString, {
+              opacity: 0,
+              duration: 0.6
+            });
+          }
+          spawnBurst(originX, originY);
+
+          // Pip takes flight forward
+          if (pipGuide) {
+            gsap.fromTo(pipGuide, 
+              { opacity: 0, x: -60, y: 40, scale: 0.8 },
+              { opacity: 1, x: 0, y: 0, scale: 1, duration: 1.6, ease: "power2.out" }
+            );
+          }
+        }
+      },
+      onLeaveBack: () => {
+        hasDissolved = false;
+        gsap.to(balloonRig, {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: "power2.out"
+        });
+        if (balloonString) {
+          gsap.to(balloonString, {
+            opacity: 1,
+            duration: 0.8
+          });
+        }
+      }
+    });
+  }
+}
+
+/* ============================================================
+   9. SIGNATURE 3D MEMORY TURNTABLE & FOCUS OBJECT ZOOM
+   ============================================================ */
+function initMemoryCarousel() {
+  const viewport = document.getElementById("carousel-viewport");
+  const ring = document.getElementById("carousel-ring");
+  const items = document.querySelectorAll(".carousel-item");
+  const btnPrev = document.getElementById("carousel-prev-btn");
+  const btnNext = document.getElementById("carousel-next-btn");
+
+  const focusOverlay = document.getElementById("memory-focus-overlay");
+  const focusBackdrop = document.getElementById("focus-backdrop");
+  const focusRender = document.getElementById("focus-object-render");
+  const focusTag = document.getElementById("focus-note-tag");
+  const focusTitle = document.getElementById("focus-note-title");
+  const focusSubtitle = document.getElementById("focus-note-subtitle");
+  const focusBody = document.getElementById("focus-note-body");
+  const btnClose = document.getElementById("btn-close-memory");
+  const btnNextMemory = document.getElementById("btn-next-memory");
+
+  if (!viewport || !ring || items.length === 0) return;
+
+  const count = items.length;
+  let currentRotation = 0;
+  let targetRotation = 0;
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let autoRotate = true;
+  let selectedIndex = 0;
+
+  function getRadius() {
+    return window.innerWidth < 768 ? 150 : 215;
+  }
+
+  function updateCarousel() {
+    const radius = getRadius();
+    const step = 360 / count;
+
+    items.forEach((item, index) => {
+      const angleDeg = (index * step + currentRotation) % 360;
+      const angleRad = (angleDeg * Math.PI) / 180;
+
+      const x = Math.sin(angleRad) * radius;
+      const z = Math.cos(angleRad) * radius;
+
+      // 0 (back) to 1 (front)
+      const normalizedZ = (z + radius) / (2 * radius);
+      const scale = 0.72 + normalizedZ * 0.42;
+      const opacity = 0.45 + normalizedZ * 0.55;
+      const zIndex = Math.round(normalizedZ * 100);
+
+      item.style.transform = `translate3d(${x}px, 0px, ${z}px) scale(${scale})`;
+      item.style.opacity = opacity;
+      item.style.zIndex = zIndex;
+    });
+  }
+
+  function tick() {
+    currentRotation += (targetRotation - currentRotation) * 0.085;
+
+    if (autoRotate && !isDragging) {
+      targetRotation += 0.08;
+    }
+
+    updateCarousel();
+    requestAnimationFrame(tick);
+  }
+
+  // Pointer drag handling (mouse & touch)
+  viewport.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    autoRotate = false;
+    startX = e.clientX;
+    lastX = e.clientX;
+    viewport.classList.add("is-dragging");
+  });
+
+  window.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - lastX;
+    lastX = e.clientX;
+    targetRotation += deltaX * 0.45;
+  }, { passive: true });
+
+  window.addEventListener("pointerup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    viewport.classList.remove("is-dragging");
+    // Resume gentle auto-rotation after 3 seconds idle
+    setTimeout(() => {
+      if (!isDragging && (!focusOverlay || !focusOverlay.classList.contains("active"))) {
+        autoRotate = true;
+      }
+    }, 3000);
+  });
+
+  // Prev / Next step buttons
+  if (btnPrev) {
+    btnPrev.addEventListener("click", () => {
+      autoRotate = false;
+      targetRotation += 360 / count;
+    });
+  }
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      autoRotate = false;
+      targetRotation -= 360 / count;
+    });
+  }
+
+  // Item Click & Object Selection Zoom-in
+  function openMemory(index) {
+    selectedIndex = index;
+    const item = items[index];
+    if (!item || !focusOverlay) return;
+
+    autoRotate = false;
+    const svgBox = item.querySelector(".item-visual-box");
+    if (svgBox && focusRender) {
+      focusRender.innerHTML = svgBox.innerHTML;
+    }
+
+    if (focusTag) focusTag.textContent = item.dataset.tag || "01. Achievements";
+    if (focusTitle) focusTitle.textContent = item.dataset.title || "Achievements";
+    if (focusSubtitle) focusSubtitle.textContent = item.dataset.subtitle || "";
+    if (focusBody) focusBody.textContent = item.dataset.note || "";
+
+    focusOverlay.classList.add("active");
+    focusOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMemory() {
+    if (!focusOverlay) return;
+    focusOverlay.classList.remove("active");
+    focusOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    autoRotate = true;
+  }
+
+  items.forEach((item, index) => {
+    item.addEventListener("click", () => {
+      // If we weren't just actively dragging
+      if (Math.abs(lastX - startX) < 8) {
+        openMemory(index);
+      }
+    });
+  });
+
+  if (btnClose) btnClose.addEventListener("click", closeMemory);
+  if (focusBackdrop) focusBackdrop.addEventListener("click", closeMemory);
+
+  if (btnNextMemory) {
+    btnNextMemory.addEventListener("click", () => {
+      openMemory((selectedIndex + 1) % count);
+    });
+  }
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && focusOverlay && focusOverlay.classList.contains("active")) {
+      closeMemory();
+    }
+  });
+
+  tick();
+}
+
+/* ============================================================
+   10. SAARTHI PRODUCT WALKTHROUGH CONTROLLER
    ============================================================ */
 function initSaarthiWalkthrough() {
-  const walkthroughContainer = document.getElementById("walkthrough-container");
-  if (!walkthroughContainer) return;
+  const container = document.getElementById("walkthrough-container");
+  if (!container) return;
 
-  const tabs = walkthroughContainer.querySelectorAll(".walkthrough-tab");
-  const slides = walkthroughContainer.querySelectorAll(".walkthrough-slide");
+  const tabs = container.querySelectorAll(".walkthrough-tab");
+  const slides = container.querySelectorAll(".walkthrough-slide");
   const titleEl = document.getElementById("walkthrough-title");
   const descEl = document.getElementById("walkthrough-desc");
   const counterEl = document.getElementById("step-counter");
@@ -747,28 +976,28 @@ function initSaarthiWalkthrough() {
 
   const walkthroughData = [
     {
-      title: "01 • Private Financial Workspace (Login)",
-      desc: "The calm starting point of Saarthi. Designed to remove the feeling of cold administrative interrogation by providing disposable demo workspace access and reassuring copy."
+      title: "01 • Welcome & Login",
+      desc: "The starting point of Saarthi. We added demo credentials so anyone visiting can try the app right away without filling out forms."
     },
     {
-      title: "02 • The Financial Cockpit & Signal",
-      desc: "Instant clarity: ₹52,000 in, ₹7,869 out, ₹44,131 surplus. The 100 Financial Signal score offers holistic health rather than an intimidating credit score."
+      title: "02 • At-a-Glance Dashboard",
+      desc: "Shows total money coming in, money going out, and your remaining balance with an easy-to-read financial health score."
     },
     {
-      title: "03 • Canonical Ledger: Normalized Truth",
-      desc: "Every calculation starts from normalized data. Raw imports from Excel, CSV, or bank statements are mapped to structured records (Swiggy, Amazon, Uber, Salary) to ensure the AI never invents phantom transactions."
+      title: "03 • Clean Transaction Ledger",
+      desc: "Turns cryptic bank statement codes into familiar names like Swiggy, Amazon, and Uber so you know exactly where your money went."
     },
     {
-      title: "04 • Audit & Investigate: Evidence First",
-      desc: "Letting Saarthi find what matters. The system runs multi-step deterministic checks first, strictly separating facts, observations, and review items before offering natural language summaries."
+      title: "04 • Spending Checks & Alerts",
+      desc: "Flags unusual charges or forgotten renewals so you can review them quickly without having to dig through old statements."
     },
     {
-      title: "05 • Money Time Machine: What-If Simulation",
-      desc: "A digital twin for financial decisions. Users can test scenarios—like reducing food spending by 20%—to preview the exact budgetary impact without touching their real bank accounts or ledger."
+      title: "05 • What-If Budget Simulator",
+      desc: "Lets you test questions like 'What happens if I cut food spending by 20%?' to see the savings impact before you make the decision."
     },
     {
-      title: "06 • Voice & Natural Interaction: Talk It Out",
-      desc: "Bringing browser speech recognition to finance. Users who find complex filters intimidating can simply tap the microphone and ask their question naturally in their own words."
+      title: "06 • Voice Search ('Talk It Out')",
+      desc: "Lets anyone ask questions out loud using speech recognition instead of typing complex search terms."
     }
   ];
 
@@ -779,23 +1008,16 @@ function initSaarthiWalkthrough() {
     if (index >= walkthroughData.length) index = 0;
     currentSlide = index;
 
-    // Update slides
     slides.forEach((slide, i) => {
-      if (i === currentSlide) {
-        slide.classList.add("active");
-      } else {
-        slide.classList.remove("active");
-      }
+      slide.classList.toggle("active", i === currentSlide);
     });
 
-    // Update tabs
     tabs.forEach((tab, i) => {
       const isSelected = i === currentSlide;
       tab.classList.toggle("active", isSelected);
       tab.setAttribute("aria-selected", isSelected ? "true" : "false");
     });
 
-    // Update text explanations
     if (titleEl) titleEl.textContent = walkthroughData[currentSlide].title;
     if (descEl) descEl.textContent = walkthroughData[currentSlide].desc;
     if (counterEl) counterEl.textContent = `${currentSlide + 1} / ${walkthroughData.length}`;
@@ -822,8 +1044,8 @@ function initSaarthiWalkthrough() {
     });
   }
 
-  // Keyboard navigation when interacting with walkthrough
-  walkthroughContainer.addEventListener("keydown", (e) => {
+  // Keyboard navigation when container has focus
+  container.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") {
       updateSlide(currentSlide + 1);
     } else if (e.key === "ArrowLeft") {
@@ -833,1346 +1055,456 @@ function initSaarthiWalkthrough() {
 }
 
 /* ============================================================
-   11. SIGNATURE 3D MEMORY CAROUSEL & OBJECT ZOOM INTERACTION
+   11. PRODUCTION SCREENSHOT LIGHTBOX MODAL
    ============================================================ */
-function initMemoryCarousel() {
-  const viewport = document.getElementById("carousel-viewport");
-  const ring = document.getElementById("carousel-ring");
-  const items = document.querySelectorAll(".carousel-item");
-  const btnPrev = document.getElementById("carousel-prev-btn");
-  const btnNext = document.getElementById("carousel-next-btn");
-
-  // Zoom-in Focus Stage Elements
-  const focusOverlay = document.getElementById("memory-focus-overlay");
-  const focusBackdrop = document.getElementById("focus-backdrop");
-  const focusRender = document.getElementById("focus-object-render");
-  const focusTag = document.getElementById("focus-note-tag");
-  const focusTitle = document.getElementById("focus-note-title");
-  const focusSubtitle = document.getElementById("focus-note-subtitle");
-  const focusBody = document.getElementById("focus-note-body");
-  const btnClose = document.getElementById("btn-close-memory");
-  const btnNextMemory = document.getElementById("btn-next-memory");
-
-  if (!viewport || !ring || items.length === 0) return;
-
-  const count = items.length;
-  let currentRotation = 0;
-  let targetRotation = 0;
-  let isDragging = false;
-  let startX = 0;
-  let lastX = 0;
-  let velocity = 0;
-  let autoRotate = true;
-  let selectedIndex = -1;
-
-  function getRadius() {
-    return window.innerWidth <= 768 ? 140 : 210;
-  }
-
-  // Update item 3D positions around the circular platform
-  function updateCarousel() {
-    const radius = getRadius();
-    const step = 360 / count;
-
-    items.forEach((item, index) => {
-      const angleDeg = (index * step + currentRotation) % 360;
-      const angleRad = (angleDeg * Math.PI) / 180;
-
-      // Calculate 3D coordinates on circular turntable
-      const x = Math.sin(angleRad) * radius;
-      const z = Math.cos(angleRad) * radius;
-      
-      // Depth scaling and layering
-      const normalizedZ = (z + radius) / (2 * radius); // 0 (back) to 1 (front)
-      const scale = 0.82 + normalizedZ * 0.28;
-      const opacity = 0.5 + normalizedZ * 0.5;
-      const zIndex = Math.round(normalizedZ * 100);
-
-      // Billboard items towards the viewer
-      item.style.transform = `translate3d(${x}px, 0px, ${z}px) scale(${scale})`;
-      item.style.zIndex = zIndex;
-      item.style.opacity = opacity;
-    });
-  }
-
-  // Physics animation loop for smooth drag and subtle ambient spin
-  function tick() {
-    if (!isDragging) {
-      if (autoRotate && (!focusOverlay || !focusOverlay.classList.contains("active"))) {
-        targetRotation += 0.12; // gentle ambient float
-      }
-      currentRotation += (targetRotation - currentRotation) * 0.1;
-      velocity *= 0.92;
-      targetRotation += velocity;
-    } else {
-      currentRotation += (targetRotation - currentRotation) * 0.35;
-    }
-
-    updateCarousel();
-    requestAnimationFrame(tick);
-  }
-
-  // Drag Interactions (Mouse & Touch)
-  function onPointerDown(clientX) {
-    isDragging = true;
-    autoRotate = false;
-    startX = clientX;
-    lastX = clientX;
-    velocity = 0;
-    viewport.classList.add("is-dragging");
-  }
-
-  function onPointerMove(clientX) {
-    if (!isDragging) return;
-    const deltaX = clientX - lastX;
-    velocity = deltaX * 0.35;
-    targetRotation += velocity;
-    lastX = clientX;
-  }
-
-  function onPointerUp() {
-    if (!isDragging) return;
-    isDragging = false;
-    viewport.classList.remove("is-dragging");
-    setTimeout(() => {
-      if (!isDragging && focusOverlay && !focusOverlay.classList.contains("active")) {
-        autoRotate = true;
-      }
-    }, 3000);
-  }
-
-  // Mouse listeners
-  viewport.addEventListener("mousedown", (e) => {
-    if (e.button === 0) onPointerDown(e.clientX);
-  });
-  window.addEventListener("mousemove", (e) => onPointerMove(e.clientX));
-  window.addEventListener("mouseup", onPointerUp);
-
-  // Touch listeners
-  viewport.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) onPointerDown(e.touches[0].clientX);
-  }, { passive: true });
-  window.addEventListener("touchmove", (e) => {
-    if (isDragging && e.touches.length === 1) onPointerMove(e.touches[0].clientX);
-  }, { passive: true });
-  window.addEventListener("touchend", onPointerUp);
-
-  // Manual rotation buttons
-  if (btnPrev) {
-    btnPrev.addEventListener("click", () => {
-      autoRotate = false;
-      targetRotation += 360 / count;
-      setTimeout(() => { autoRotate = true; }, 3500);
-    });
-  }
-
-  if (btnNext) {
-    btnNext.addEventListener("click", () => {
-      autoRotate = false;
-      targetRotation -= 360 / count;
-      setTimeout(() => { autoRotate = true; }, 3500);
-    });
-  }
-
-  // ----------------------------------------------------
-  // OBJECT SELECTION & 3D ZOOM-IN INSPECTION MODAL
-  // ----------------------------------------------------
-  function openMemory(index) {
-    selectedIndex = index;
-    const item = items[index];
-    if (!item) return;
-
-    autoRotate = false;
-
-    // Extract data
-    const title = item.getAttribute("data-title") || "";
-    const subtitle = item.getAttribute("data-subtitle") || "";
-    const tag = item.getAttribute("data-tag") || "Artifact";
-    const note = item.getAttribute("data-note") || "";
-    const visualBox = item.querySelector(".item-visual-box");
-
-    // Populate Modal
-    if (focusTag) focusTag.textContent = tag;
-    if (focusTitle) focusTitle.textContent = title;
-    if (focusSubtitle) focusSubtitle.textContent = subtitle;
-    if (focusBody) focusBody.textContent = `“${note}”`;
-
-    // Clone SVG with crisp resolution
-    if (focusRender && visualBox) {
-      focusRender.innerHTML = visualBox.innerHTML;
-    }
-
-    // Activate Focus Overlay
-    if (focusOverlay) {
-      focusOverlay.classList.add("active");
-      focusOverlay.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
-  }
-
-  function closeMemory() {
-    if (focusOverlay) {
-      focusOverlay.classList.remove("active");
-      focusOverlay.setAttribute("aria-hidden", "true");
-    }
-    document.body.style.overflow = "";
-    selectedIndex = -1;
-    setTimeout(() => {
-      autoRotate = true;
-    }, 1500);
-  }
-
-  // Click on items to inspect
-  items.forEach((item, index) => {
-    item.addEventListener("click", (e) => {
-      if (Math.abs(velocity) > 1.2) return;
-      openMemory(index);
-    });
-  });
-
-  // Close buttons and backdrop
-  if (btnClose) btnClose.addEventListener("click", closeMemory);
-  if (focusBackdrop) focusBackdrop.addEventListener("click", closeMemory);
-
-  // Next Memory button inside modal
-  if (btnNextMemory) {
-    btnNextMemory.addEventListener("click", () => {
-      const nextIndex = (selectedIndex + 1) % count;
-      targetRotation -= 360 / count;
-      openMemory(nextIndex);
-    });
-  }
-
-  // Escape key to close
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && focusOverlay && focusOverlay.classList.contains("active")) {
-      closeMemory();
-    }
-  });
-
-  // Start rotation loop
-  tick();
-}
-
-/* ============================================================
-   12. THE CURIOSITY PEBBLE (BALL DROP SIMULATION)
-   ============================================================ */
-function initBallDrop() {
-  const canvas = document.getElementById("pebble-canvas");
-  const btnDrop = document.getElementById("btn-drop-marble");
-  const statusBadge = document.getElementById("pebble-status-badge");
-  const resultBox = document.getElementById("pebble-result-box");
-  const noteNumEl = document.getElementById("pebble-note-num");
-  const quoteEl = document.getElementById("pebble-quote");
-
-  if (!canvas || !btnDrop) return;
-
-  const ctx = canvas.getContext("2d");
-  const width = canvas.width;
-  const height = canvas.height;
-
-  // Authentic student lessons
-  const lessons = [
-    "Every line of code you write was once something you didn't know how to do. Momentum is just one small pebble at a time.",
-    "Debugging with print statements or GDB: the bug isn't elusive because it's hard, it's elusive because you made an assumption you didn't check.",
-    "In digital banking, a missing explanation creates immediate anxiety. Software that handles human livelihoods must prioritize clarity over cleverness.",
-    "A segmentation fault isn't failureâ€”it's the CPU gently reminding you that computers don't guess, they obey.",
-    "You don't need to know every framework in existence. You need to know how to ask questions, read documentation, and stay curious when things break."
-  ];
-
-  let currentLessonIndex = 0;
-
-  // Pegboard grid
-  const pegs = [];
-  const rows = [
-    { y: 55, xs: [75, 130, 180, 230, 285] },
-    { y: 95, xs: [50, 105, 155, 205, 255, 310] },
-    { y: 135, xs: [75, 130, 180, 230, 285] },
-    { y: 175, xs: [50, 105, 155, 205, 255, 310] }
-  ];
-
-  rows.forEach(row => {
-    row.xs.forEach(x => {
-      pegs.push({ x, y: row.y, r: 4.5, pulse: 0 });
-    });
-  });
-
-  // Marble state
-  const marble = {
-    x: 180,
-    y: 18,
-    vx: 0,
-    vy: 0,
-    r: 7.5,
-    active: false,
-    settled: false,
-    trail: []
-  };
-
-  function dropMarble() {
-    marble.x = 180 + (Math.random() - 0.5) * 20;
-    marble.y = 18;
-    marble.vx = (Math.random() - 0.5) * 1.5;
-    marble.vy = 0.5;
-    marble.active = true;
-    marble.settled = false;
-    marble.trail = [];
-    
-    if (statusBadge) {
-      statusBadge.textContent = "Bouncing down pegs...";
-      statusBadge.style.color = "var(--pastel-coral)";
-    }
-  }
-
-  function settleMarble() {
-    marble.settled = true;
-    marble.active = false;
-
-    // Pick next lesson
-    currentLessonIndex = (currentLessonIndex + 1) % lessons.length;
-    if (noteNumEl) noteNumEl.textContent = currentLessonIndex + 1;
-    if (quoteEl) quoteEl.textContent = `â€œ${lessons[currentLessonIndex]}â€`;
-
-    if (statusBadge) {
-      statusBadge.textContent = "Landed in Cradle! âœ¨";
-      statusBadge.style.color = "var(--pastel-sage-dark, #5F7D5A)";
-    }
-
-    if (resultBox) {
-      resultBox.style.transform = "rotate(0deg) scale(1.03)";
-      setTimeout(() => {
-        resultBox.style.transform = "rotate(-1deg) scale(1)";
-      }, 350);
-    }
-  }
-
-  function update() {
-    if (marble.active) {
-      marble.vy += 0.38; // gravity
-      marble.vx *= 0.99; // air resistance
-      marble.vy *= 0.99;
-      marble.x += marble.vx;
-      marble.y += marble.vy;
-
-      // Add to trail
-      marble.trail.push({ x: marble.x, y: marble.y, life: 1 });
-      if (marble.trail.length > 8) marble.trail.shift();
-
-      // Side wall bounces
-      const minX = 20 + marble.r;
-      const maxX = width - 20 - marble.r;
-      if (marble.x < minX) {
-        marble.x = minX;
-        marble.vx = -marble.vx * 0.65;
-      } else if (marble.x > maxX) {
-        marble.x = maxX;
-        marble.vx = -marble.vx * 0.65;
-      }
-
-      // Peg collisions
-      pegs.forEach(peg => {
-        const dx = marble.x - peg.x;
-        const dy = marble.y - peg.y;
-        const dist = Math.hypot(dx, dy);
-        const minDist = marble.r + peg.r;
-
-        if (dist < minDist && dist > 0) {
-          const nx = dx / dist;
-          const ny = dy / dist;
-          // separate
-          marble.x = peg.x + nx * minDist;
-          marble.y = peg.y + ny * minDist;
-
-          // bounce
-          const dot = marble.vx * nx + marble.vy * ny;
-          if (dot < 0) {
-            marble.vx -= 1.62 * dot * nx;
-            marble.vy -= 1.62 * dot * ny;
-            marble.vx += (Math.random() - 0.5) * 0.8;
-          }
-          peg.pulse = 1;
-        }
-      });
-
-      // Bottom cradle
-      const floorY = 205;
-      if (marble.y >= floorY) {
-        marble.y = floorY;
-        marble.vy = -marble.vy * 0.45;
-        // funnel towards center
-        marble.vx += (180 - marble.x) * 0.08;
-        marble.vx *= 0.85;
-
-        if (Math.abs(marble.vy) < 0.4 && Math.abs(marble.vx) < 0.2) {
-          settleMarble();
-        }
-      }
-    }
-
-    // Decay peg pulses
-    pegs.forEach(peg => {
-      if (peg.pulse > 0) peg.pulse -= 0.05;
-    });
-
-    // Decay trail
-    marble.trail.forEach(t => {
-      t.life -= 0.08;
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, width, height);
-
-    // Warm wooden pegboard background
-    ctx.fillStyle = "#F8EFEB";
-    ctx.fillRect(0, 0, width, height);
-
-    // Subtle guide grain lines
-    ctx.strokeStyle = "rgba(44, 40, 37, 0.05)";
-    ctx.lineWidth = 1;
-    for (let y = 30; y < height; y += 20) {
-      ctx.beginPath();
-      ctx.moveTo(15, y);
-      ctx.lineTo(width - 15, y);
-      ctx.stroke();
-    }
-
-    // Funnel catcher chute at bottom
-    ctx.strokeStyle = "#2C2825";
-    ctx.lineWidth = 2.5;
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(30, 195);
-    ctx.quadraticCurveTo(80, 215, 140, 218);
-    ctx.lineTo(220, 218);
-    ctx.quadraticCurveTo(280, 215, 330, 195);
-    ctx.stroke();
-
-    // Pegs
-    pegs.forEach(peg => {
-      // Peg shadow
-      ctx.fillStyle = "rgba(44, 40, 37, 0.15)";
-      ctx.beginPath();
-      ctx.arc(peg.x + 1, peg.y + 1.5, peg.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Peg body
-      ctx.fillStyle = peg.pulse > 0 ? "#E59982" : "#8E837A";
-      ctx.beginPath();
-      ctx.arc(peg.x, peg.y, peg.r + peg.pulse * 2, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Brass pin center
-      ctx.fillStyle = "#FAF7F2";
-      ctx.beginPath();
-      ctx.arc(peg.x - 1, peg.y - 1, peg.r * 0.35, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    // Trail
-    marble.trail.forEach(t => {
-      if (t.life > 0) {
-        ctx.fillStyle = `rgba(229, 153, 130, ${t.life * 0.35})`;
-        ctx.beginPath();
-        ctx.arc(t.x, t.y, marble.r * 0.65, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    });
-
-    // Marble
-    if (marble.active || marble.settled) {
-      // Marble drop shadow
-      ctx.fillStyle = "rgba(44, 40, 37, 0.22)";
-      ctx.beginPath();
-      ctx.ellipse(marble.x, marble.y + 5, marble.r, marble.r * 0.45, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Marble glossy sphere
-      const grad = ctx.createRadialGradient(
-        marble.x - marble.r * 0.3,
-        marble.y - marble.r * 0.3,
-        1,
-        marble.x,
-        marble.y,
-        marble.r
-      );
-      grad.addColorStop(0, "#FCE9DE");
-      grad.addColorStop(0.5, "#E59982");
-      grad.addColorStop(1, "#B85D43");
-
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(marble.x, marble.y, marble.r, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Crisp outline
-      ctx.strokeStyle = "#2C2825";
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-
-      // Little specular shine dot
-      ctx.fillStyle = "#FFFFFF";
-      ctx.beginPath();
-      ctx.arc(marble.x - marble.r * 0.35, marble.y - marble.r * 0.35, marble.r * 0.28, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-  }
-
-  btnDrop.addEventListener("click", dropMarble);
-
-  // Trigger once on view
-  let triggeredOnScroll = false;
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !triggeredOnScroll) {
-        triggeredOnScroll = true;
-        setTimeout(dropMarble, 600);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  observer.observe(canvas);
-  loop();
-}
-
-/* ============================================================
-   13. SCRAPBOOK JOURNEY TIMELINE & POLAROID FRAMES
-   ============================================================ */
-function initScrapbookTimeline() {
-  const nodes = document.querySelectorAll(".milestone-node");
-  const cardPill = document.getElementById("ms-pill");
-  const cardTitle = document.getElementById("ms-title");
-  const cardDesc = document.getElementById("ms-desc");
-  const cardTakeaway = document.getElementById("ms-takeaway");
-  const polaroids = document.querySelectorAll(".polaroid-frame");
-
-  if (nodes.length === 0) return;
-
-  const milestonesData = [
-    {
-      pill: "Milestone 01 â€¢ High School",
-      title: "Writing My Very First Line of Code",
-      desc: "It was an asterisks pyramid printed to the command prompt in a dusty computer lab. It crashed three times before running. But that feelingâ€”of giving an inanimate machine a thought and watching it respondâ€”sparked the endless curiosity that brought me into Computer Science.",
-      takeaway: "<em>Lesson: â€œEvery master began by printing naive text to a dark terminal.â€</em>"
-    },
-    {
-      pill: "Milestone 02 â€¢ Year 1",
-      title: "Deep End: The First Hackathon",
-      desc: "Walking into an auditorium packed with senior engineers, multiple monitors, and unfamiliar terminal commands felt terrifying. For two hours I questioned if I belonged. Then we grabbed sketchbooks, asked naive user questions, and started building. I learned that you don't need to know everything to make a meaningful start.",
-      takeaway: "<em>Lesson: â€œAction dispels imposter syndrome faster than preparation ever can.â€</em>"
-    },
-    {
-      pill: "Milestone 03 â€¢ FinTech Track",
-      title: "The Genesis of Saarthi",
-      desc: "Watching my family get paralyzed by ambiguous banking alerts ('Transaction Pending: Error Code 8821') convinced me that banking apps lacked human context. We pitched Saarthiâ€”an assistant that bridges raw ledger entries with real-world contextâ€”and spent 36 sleepless hours turning sketches into a working prototype.",
-      takeaway: "<em>Lesson: â€œThe strongest software comes from solving frustrations you've personally witnessed.â€</em>"
-    },
-    {
-      pill: "Milestone 04 â€¢ Core Foundations",
-      title: "Wrestling with C++ & DSA",
-      desc: "Countless late nights wrestling with pointer arithmetic, memory allocation, and graph traversals. When you strip away modern frameworks and look directly at memory, you develop deep respect for what happens under the hood.",
-      takeaway: "<em>Lesson: â€œUnderstanding how things break teaches you how to build things that last.â€</em>"
-    },
-    {
-      pill: "Milestone 05 â€¢ Present",
-      title: "Designing for Humans (Still Becoming)",
-      desc: "Today, my craft lives at the intersection of rigorous problem-solving and gentle, human-centric design. Every interface is a conversation, and every system should respect the human on the other side.",
-      takeaway: "<em>Lesson: â€œStill becoming. The journey itself is the craft.â€</em>"
-    }
-  ];
-
-  nodes.forEach(node => {
-    node.addEventListener("click", () => {
-      const stepIndex = parseInt(node.getAttribute("data-step"), 10);
-      const data = milestonesData[stepIndex];
-      if (!data) return;
-
-      nodes.forEach(n => n.classList.remove("active"));
-      node.classList.add("active");
-
-      // Smooth content update
-      if (cardTitle) {
-        cardTitle.style.opacity = "0.2";
-        setTimeout(() => {
-          if (cardPill) cardPill.textContent = data.pill;
-          if (cardTitle) cardTitle.textContent = data.title;
-          if (cardDesc) cardDesc.textContent = data.desc;
-          if (cardTakeaway) cardTakeaway.innerHTML = data.takeaway;
-          cardTitle.style.opacity = "1";
-        }, 150);
-      }
-    });
-  });
-
-  // Polaroid interactive tilts & snaps
-  polaroids.forEach(polaroid => {
-    polaroid.addEventListener("click", () => {
-      polaroid.classList.toggle("is-focused");
-    });
-  });
-}
-
-/* ============================================================
-   14. INTERACTIVE STICKY NOTE WALL & EXPANDED CARD MODAL
-   ============================================================ */
-function initStickyNotes() {
-  const notes = document.querySelectorAll(".sticky-note");
-  const overlay = document.getElementById("sticky-expanded-overlay");
-  const backdrop = document.getElementById("sticky-modal-backdrop");
-  const btnClose = document.getElementById("btn-close-sticky");
-  const tagEl = document.getElementById("sticky-tag");
-  const titleEl = document.getElementById("sticky-title");
-  const dateEl = document.getElementById("sticky-date");
-  const bodyEl = document.getElementById("sticky-body");
-
-  if (notes.length === 0 || !overlay) return;
-
-  function openNote(note) {
-    const tag = note.getAttribute("data-tag") || "Reflection";
-    const title = note.getAttribute("data-title") || "Note";
-    const date = note.getAttribute("data-date") || "Scrapbook";
-    const fullContentEl = note.querySelector(".note-full-content");
-    const fullContent = fullContentEl ? fullContentEl.innerHTML : note.querySelector(".note-mini-preview").textContent;
-
-    if (tagEl) tagEl.textContent = tag;
-    if (titleEl) titleEl.textContent = title;
-    if (dateEl) dateEl.textContent = date;
-    if (bodyEl) bodyEl.innerHTML = `<p>${fullContent.trim()}</p>`;
-
-    overlay.classList.add("active");
-    overlay.setAttribute("aria-hidden", "false");
+function initImageLightbox() {
+  const modal = document.getElementById("image-lightbox-modal");
+  const fullImg = document.getElementById("lightbox-full-img");
+  const captionEl = document.getElementById("lightbox-caption");
+  const btnClose = document.getElementById("lightbox-close-btn");
+  const backdrop = document.getElementById("lightbox-backdrop");
+  const screenshots = document.querySelectorAll("#walkthrough-container .screenshot-img");
+
+  if (!modal || !fullImg) return;
+
+  function openLightbox(imgSrc, altText) {
+    fullImg.src = imgSrc;
+    fullImg.alt = altText;
+    if (captionEl) captionEl.textContent = altText;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
   }
 
-  function closeNote() {
-    overlay.classList.remove("active");
-    overlay.setAttribute("aria-hidden", "true");
+  function closeLightbox() {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
   }
 
-  notes.forEach(note => {
-    note.addEventListener("click", () => openNote(note));
-  });
-
-  if (btnClose) btnClose.addEventListener("click", closeNote);
-  if (backdrop) backdrop.addEventListener("click", closeNote);
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && overlay.classList.contains("active")) {
-      closeNote();
-    }
-  });
-}
-
-/* ============================================================
-   15. UNFINISHED IDEAS DRAWER
-   ============================================================ */
-function initIdeasDrawer() {
-  const drawerBox = document.getElementById("drawer-box");
-  const btnPull = document.getElementById("btn-pull-drawer");
-  const btnToggle = document.getElementById("btn-drawer-toggle");
-  const toggleText = document.getElementById("drawer-toggle-text");
-  const pullLabel = document.querySelector(".handle-pull-label");
-  const toggleIcon = document.querySelector(".drawer-toggle-icon");
-
-  if (!drawerBox) return;
-
-  function toggleDrawer() {
-    const isOpen = drawerBox.classList.toggle("is-open");
-
-    if (toggleText) {
-      toggleText.textContent = isOpen ? "Close Drawer" : "Pull Drawer Open";
-    }
-    if (pullLabel) {
-      pullLabel.textContent = isOpen ? "Push Drawer â†‘" : "Pull Drawer â†“";
-    }
-    if (toggleIcon) {
-      toggleIcon.textContent = isOpen ? "â†‘" : "â†“";
-    }
-  }
-
-  if (btnPull) btnPull.addEventListener("click", toggleDrawer);
-  if (btnToggle) btnToggle.addEventListener("click", toggleDrawer);
-}
-
-/* ============================================================
-   16. BALLOON MEMORIES ("LITTLE THINGS THAT MADE ME")
-   ============================================================ */
-function initBalloonMemories() {
-  const balloons = document.querySelectorAll(".interactive-memory-balloon");
-  const canvas = document.getElementById("balloon-pop-canvas");
-  const trayCard = document.getElementById("balloon-tray-card");
-  const trayTitle = document.getElementById("tray-title");
-  const trayQuote = document.getElementById("tray-quote");
-  const btnReinflate = document.getElementById("btn-reinflate-balloons");
-
-  if (balloons.length === 0) return;
-
-  let ctx = null;
-  let particles = [];
-
-  if (canvas) {
-    ctx = canvas.getContext("2d");
-    const rect = canvas.getBoundingClientRect();
-    if (rect.width > 0) {
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-  }
-
-  function spawnBurst(originX, originY, color) {
-    if (!ctx) return;
-    for (let i = 0; i < 35; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 2 + Math.random() * 5;
-      particles.push({
-        x: originX,
-        y: originY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 1.5,
-        r: 3 + Math.random() * 4,
-        color: color || "#E59982",
-        alpha: 1,
-        decay: 0.02 + Math.random() * 0.02,
-        isStar: Math.random() > 0.5
-      });
-    }
-  }
-
-  function updateParticles() {
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.12; // soft gravity
-      p.alpha -= p.decay;
-
-      if (p.alpha <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
-
-      ctx.save();
-      ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
-
-      if (p.isStar) {
-        ctx.translate(p.x, p.y);
-        ctx.beginPath();
-        for (let j = 0; j < 4; j++) {
-          ctx.rotate(Math.PI / 2);
-          ctx.lineTo(p.r * 1.5, 0);
-          ctx.lineTo(p.r * 0.4, p.r * 0.4);
-        }
-        ctx.fill();
-      } else {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    if (particles.length > 0) {
-      requestAnimationFrame(updateParticles);
-    }
-  }
-
-  balloons.forEach(balloon => {
-    balloon.addEventListener("click", (e) => {
-      if (balloon.classList.contains("is-popped")) return;
-
-      const title = balloon.getAttribute("data-title") || "Memory";
-      const lesson = balloon.getAttribute("data-lesson") || "";
-      const color = balloon.getAttribute("data-color") || "#E59982";
-
-      if (canvas) {
-        const cRect = canvas.getBoundingClientRect();
-        const bRect = balloon.getBoundingClientRect();
-        const originX = bRect.left + bRect.width / 2 - cRect.left;
-        const originY = bRect.top + bRect.height / 3 - cRect.top;
-        spawnBurst(originX, originY, color);
-        if (particles.length <= 35) {
-          requestAnimationFrame(updateParticles);
-        }
-      }
-
-      balloon.classList.add("is-popped");
-
-      if (trayCard) {
-        trayCard.style.display = "block";
-        if (trayTitle) trayTitle.textContent = title;
-        if (trayQuote) trayQuote.textContent = `â€œ${lesson}â€`;
-        trayCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
+  screenshots.forEach((img) => {
+    img.addEventListener("click", () => {
+      openLightbox(img.src, img.alt);
     });
   });
 
-  if (btnReinflate) {
-    btnReinflate.addEventListener("click", () => {
-      balloons.forEach((balloon, i) => {
-        setTimeout(() => {
-          balloon.classList.remove("is-popped");
-        }, i * 100);
-      });
-      if (trayCard) {
-        trayCard.style.display = "none";
-      }
-    });
-  }
-}
+  if (btnClose) btnClose.addEventListener("click", closeLightbox);
+  if (backdrop) backdrop.addEventListener("click", closeLightbox);
 
-/* ============================================================
-   17. RETRO COMMAND CENTRE (TERMINAL NAVIGATION ENGINE)
-   ============================================================ */
-function initTerminal() {
-  const overlay = document.getElementById("terminal-overlay");
-  const backdrop = document.getElementById("terminal-backdrop");
-  const btnToggle = document.getElementById("btn-command-centre-toggle");
-  const btnCloseDot = document.getElementById("term-close-dot");
-  const btnEsc = document.getElementById("term-esc-btn");
-  const terminalInput = document.getElementById("terminal-input");
-  const terminalOutput = document.getElementById("terminal-output");
-
-  if (!overlay || !terminalInput || !terminalOutput) return;
-
-  let history = [];
-  let historyIndex = -1;
-
-  function openTerminal() {
-    overlay.classList.add("active");
-    overlay.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      terminalInput.focus();
-    }, 100);
-  }
-
-  function closeTerminal() {
-    overlay.classList.remove("active");
-    overlay.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  function printLine(text, className = "") {
-    const p = document.createElement("p");
-    if (className) p.className = className;
-    p.innerHTML = text;
-    terminalOutput.appendChild(p);
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-  }
-
-  function executeCommand(cmdRaw) {
-    const cmd = cmdRaw.trim().toLowerCase();
-    if (!cmd) return;
-
-    printLine(`<span class="term-prompt">priyanshi@portfolio:~$</span> ${escapeHTML(cmdRaw)}`, "term-cmd-history");
-
-    switch (cmd) {
-      case "help":
-        printLine("<span class='term-highlight'>Available commands:</span>");
-        printLine("  <span class='term-cmd'>about</span>     - Priyanshi's story & student background");
-        printLine("  <span class='term-cmd'>saarthi</span>   - Deep dive into the flagship banking context prototype");
-        printLine("  <span class='term-cmd'>skills</span>    - Technical stack & foundations (C++, DSA, UI, AI)");
-        printLine("  <span class='term-cmd'>artifacts</span> - Scroll to 3D Memory Stand");
-        printLine("  <span class='term-cmd'>timeline</span>  - Scroll to Scrapbook Journey Timeline");
-        printLine("  <span class='term-cmd'>drawer</span>    - Open the Unfinished Ideas Drawer");
-        printLine("  <span class='term-cmd'>ball</span>      - Drop a pebble down the pegboard");
-        printLine("  <span class='term-cmd'>balloons</span>  - Go to Balloon Memories garden");
-        printLine("  <span class='term-cmd'>contact</span>   - Contact details (email & manifesto)");
-        printLine("  <span class='term-cmd'>clear</span>     - Clear terminal buffer");
-        printLine("  <span class='term-cmd'>exit</span>      - Close this terminal modal");
-        break;
-
-      case "about":
-        printLine("Priyanshi â€” Computer Science undergraduate & creative builder.");
-        printLine("Philosophy: <em>Still Becoming.</em> Always curious, always learning, building with empathy.");
-        printLine("Focused on bridging rigorous computing foundations with humane interfaces.");
-        break;
-
-      case "projects":
-      case "saarthi":
-        printLine("â˜… <strong>Saarthi</strong> â€” Missing Context in Digital Banking Assistant.");
-        printLine("Built during a FinTech hackathon to bridge raw bank ledgers with clear human context.");
-        printLine("<a href='saarthi.html' class='term-link'>â†’ Click here to open the Dedicated Saarthi Case Study page</a>");
-        break;
-
-      case "skills":
-        printLine("<strong>Foundations:</strong> C++, Data Structures & Algorithms, OOP, Memory Management");
-        printLine("<strong>Frontend:</strong> JavaScript (ES6+), HTML5 Canvas, CSS3 3D transforms, SVG, GSAP");
-        printLine("<strong>Design:</strong> UI/UX Research, Wireframing, Accessible Typography, Information Hierarchy");
-        printLine("<strong>Applied:</strong> Contextual AI orchestration, Financial data parsing, REST APIs");
-        break;
-
-      case "artifacts":
-      case "carousel":
-        printLine("Navigating to 3D Memory Carousel...");
-        closeTerminal();
-        const carousel = document.getElementById("memory-stand");
-        if (carousel) carousel.scrollIntoView({ behavior: "smooth" });
-        break;
-
-      case "timeline":
-        printLine("Navigating to Scrapbook Journey Timeline...");
-        closeTerminal();
-        const timeline = document.getElementById("journey-timeline");
-        if (timeline) timeline.scrollIntoView({ behavior: "smooth" });
-        break;
-
-      case "drawer":
-        printLine("Opening Unfinished Ideas Drawer...");
-        closeTerminal();
-        const drawerMod = document.getElementById("ideas-drawer-module");
-        if (drawerMod) {
-          drawerMod.scrollIntoView({ behavior: "smooth" });
-          const box = document.getElementById("drawer-box");
-          if (box && !box.classList.contains("is-open")) {
-            const btnPull = document.getElementById("btn-pull-drawer");
-            if (btnPull) btnPull.click();
-          }
-        }
-        break;
-
-      case "ball":
-      case "pebble":
-        printLine("Dropping Curiosity Pebble...");
-        closeTerminal();
-        const pebbleSec = document.querySelector(".curiosity-pebble-container");
-        if (pebbleSec) {
-          pebbleSec.scrollIntoView({ behavior: "smooth" });
-          const btn = document.getElementById("btn-drop-marble");
-          if (btn) btn.click();
-        }
-        break;
-
-      case "balloons":
-        printLine("Navigating to Balloon Memories garden...");
-        closeTerminal();
-        const balloonsSec = document.getElementById("balloon-memories");
-        if (balloonsSec) balloonsSec.scrollIntoView({ behavior: "smooth" });
-        break;
-
-      case "contact":
-        printLine("Email: <a href='mailto:pkshah2021@gmail.com' class='term-link'>pkshah2021@gmail.com</a>");
-        printLine("â€œStill becoming. Always curious. Always building.â€");
-        closeTerminal();
-        const ch4 = document.getElementById("chapter-4");
-        if (ch4) ch4.scrollIntoView({ behavior: "smooth" });
-        break;
-
-      case "clear":
-        terminalOutput.innerHTML = `
-          <p class="term-welcome">Priyanshi's Scrapbook Command Centre [v2.4]</p>
-          <p class="term-dim">Type <span class="term-cmd">help</span> for a list of scrapbook navigation commands.</p>
-        `;
-        break;
-
-      case "exit":
-      case "quit":
-        closeTerminal();
-        break;
-
-      default:
-        printLine(`Command not recognized: '<span class="term-err">${escapeHTML(cmdRaw)}</span>'. Type <span class="term-cmd">help</span> for commands.`, "term-dim");
-        break;
-    }
-  }
-
-  function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag));
-  }
-
-  // Input listeners
-  terminalInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      const val = terminalInput.value;
-      if (val.trim()) {
-        history.push(val);
-        historyIndex = history.length;
-        executeCommand(val);
-      }
-      terminalInput.value = "";
-    } else if (e.key === "ArrowUp") {
-      if (history.length > 0 && historyIndex > 0) {
-        historyIndex--;
-        terminalInput.value = history[historyIndex];
-      }
-    } else if (e.key === "ArrowDown") {
-      if (historyIndex < history.length - 1) {
-        historyIndex++;
-        terminalInput.value = history[historyIndex];
-      } else {
-        historyIndex = history.length;
-        terminalInput.value = "";
-      }
-    }
-  });
-
-  // Toggles and Close triggers
-  if (btnToggle) btnToggle.addEventListener("click", openTerminal);
-  if (btnCloseDot) btnCloseDot.addEventListener("click", closeTerminal);
-  if (btnEsc) btnEsc.addEventListener("click", closeTerminal);
-  if (backdrop) backdrop.addEventListener("click", closeTerminal);
-
-  // Global keyboard shortcuts (Ctrl+K, Cmd+K, or ~ when not in an input)
   window.addEventListener("keydown", (e) => {
-    const isCtrlK = (e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K");
-    const isTilde = e.key === "~" || e.key === "`";
-
-    if (isCtrlK || (isTilde && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA")) {
-      e.preventDefault();
-      if (overlay.classList.contains("active")) {
-        closeTerminal();
-      } else {
-        openTerminal();
-      }
-    } else if (e.key === "Escape" && overlay.classList.contains("active")) {
-      closeTerminal();
+    if (e.key === "Escape" && modal.classList.contains("active")) {
+      closeLightbox();
     }
   });
 }
 
-
 /* ============================================================
-   18. CURSOR PARALLAX FOR SCENE 1 (THE GIRL & BALLOON)
+   12. OPEN ENGINEERING NOTEBOOK CONTROLLER
+   Subject tab switching with rich technical reflections & diagrams
    ============================================================ */
-function initOpeningCursorParallax() {
-  const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
-  if (isTouch) return; // Touch uses scroll float
+function initNotebookTabs() {
+  const tabs = document.querySelectorAll(".notebook-tabs-bar .notebook-tab");
+  const badgeEl = document.getElementById("nb-subject-badge");
+  const titleEl = document.getElementById("nb-subject-title");
+  const proseEl = document.getElementById("nb-reflection-prose");
+  const listEl = document.getElementById("nb-takeaways-list");
+  const pageNumLeft = document.getElementById("page-num-left");
+  const pageNumRight = document.getElementById("page-num-right");
+  const panes = document.querySelectorAll(".notebook-diagram-pane");
 
-  const balloonRig = document.getElementById("balloon-rig");
-  const characterRig = document.getElementById("character-rig");
+  if (!tabs.length) return;
 
-  if (!balloonRig || !characterRig) return;
-
-  let targetX = 0;
-  let targetY = 0;
-  let charX = 0;
-  let charY = 0;
-  let balloonX = 0;
-  let balloonY = 0;
-  let balloonRot = 0;
-
-  window.addEventListener("pointermove", (e) => {
-    // Normalized coordinates (-1 to 1) from viewport center
-    const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-    const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-    targetX = nx;
-    targetY = ny;
-  }, { passive: true });
-
-  function tickParallax() {
-    // Damped lerp for character (smooth lag)
-    charX += (targetX * 14 - charX) * 0.05;
-    charY += (targetY * 10 - charY) * 0.05;
-
-    // Independent delayed lerp for floating balloon (larger displacement & gentle air sway)
-    balloonX += (targetX * 24 - balloonX) * 0.035;
-    balloonY += (targetY * 18 - balloonY) * 0.035;
-    balloonRot += (targetX * 2.8 - balloonRot) * 0.04;
-
-    // Displace character and balloon independently relative to their base coordinates
-    characterRig.style.transform = `translate(${480 + charX}px, ${500 + charY}px)`;
-    balloonRig.style.transform = `translate3d(${balloonX}px, ${balloonY}px, 0px) rotate(${balloonRot}deg)`;
-
-    requestAnimationFrame(tickParallax);
-  }
-
-  tickParallax();
-}
-
-/* ============================================================
-   19. SEAMLESS TRANSITION: SKY TO DESK & DRAWER GATEWAY
-   ============================================================ */
-function initDeskGatewayAnimation() {
-  if (typeof ScrollTrigger === "undefined") return;
-
-  const deskScene = document.getElementById("desk-gateway-scene");
-  const deskViewport = document.getElementById("desk-stage-viewport");
-  const drawerBox = document.getElementById("drawer-box");
-  const cubeStage = document.getElementById("scrapbook-cube-stage");
-
-  if (!deskScene || !deskViewport || !drawerBox) return;
-
-  // Camera zoom and approach towards desk on scroll
-  gsap.fromTo(deskViewport, 
-    { scale: 0.94, y: 35, opacity: 0.9 },
+  const notebookData = [
     {
-      scale: 1,
-      y: 0,
-      opacity: 1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: deskScene,
-        start: "top 80%",
-        end: "top 30%",
-        scrub: 1
-      }
-    }
-  );
-
-  // Smooth drawer auto-open and 3D Scrapbook emergence as visitor approaches
-  ScrollTrigger.create({
-    trigger: deskScene,
-    start: "top 60%",
-    onEnter: () => {
-      if (!drawerBox.classList.contains("is-open")) {
-        drawerBox.classList.add("is-open");
-        const toggleText = document.getElementById("drawer-toggle-text");
-        const pullLabel = document.querySelector(".handle-pull-label");
-        const toggleIcon = document.querySelector(".drawer-toggle-icon");
-        if (toggleText) toggleText.textContent = "Close Drawer";
-        if (pullLabel) pullLabel.textContent = "Push Drawer â†‘";
-        if (toggleIcon) toggleIcon.textContent = "â†‘";
-      }
+      badge: "C++ & Memory",
+      title: "Pointers, Memory & How Computers Work",
+      leftPage: "p. 24 &bull; Foundations",
+      rightPage: "p. 25 &bull; Mental Model",
+      prose: [
+        "Learning C++ made me realize that code isn't just abstract logic—it actually runs in physical memory. Every variable has an address, and every piece of memory has to be managed carefully.",
+        "Understanding concepts like RAII and ownership changed how I think: good software doesn't just clean up after errors happen, it is designed so resources are handled safely by default."
+      ],
+      takeaways: [
+        "&bull; Clean memory ownership prevents tricky, hard-to-find bugs",
+        "&bull; Understanding how data sits in memory helps write faster code",
+        "&bull; Writing C++ gave me huge respect for what high-level languages do behind the scenes"
+      ]
     },
-    onLeaveBack: () => {
-      if (drawerBox.classList.contains("is-open")) {
-        drawerBox.classList.remove("is-open");
-        const toggleText = document.getElementById("drawer-toggle-text");
-        const pullLabel = document.querySelector(".handle-pull-label");
-        const toggleIcon = document.querySelector(".drawer-toggle-icon");
-        if (toggleText) toggleText.textContent = "Pull Drawer Open";
-        if (pullLabel) pullLabel.textContent = "Pull Drawer Open â†“";
-        if (toggleIcon) toggleIcon.textContent = "â†“";
-      }
+    {
+      badge: "Algorithms & DSA",
+      title: "Trees, Graphs & Problem Solving",
+      leftPage: "p. 38 &bull; Problem Solving",
+      rightPage: "p. 39 &bull; Visualizing Steps",
+      prose: [
+        "Data structures aren't just interview puzzles; they are ways of organizing information so you can solve problems efficiently.",
+        "Tracing recursive functions and tree traversals by hand on paper helped me visualize how big, confusing problems break down into smaller, manageable steps."
+      ],
+      takeaways: [
+        "&bull; Break complex problems into simple base cases before writing code",
+        "&bull; Picking the right data structure makes the solution much clearer",
+        "&bull; Drawing steps on paper is still the best debugging tool"
+      ]
+    },
+    {
+      badge: "Web & Systems",
+      title: "How Browsers Render & Run Smoothly",
+      leftPage: "p. 52 &bull; The Browser",
+      rightPage: "p. 53 &bull; Fluid Motion",
+      prose: [
+        "Web browsers do an amazing amount of work behind the scenes. Learning how HTML, CSS, and JavaScript turn into pixels on screen changed how I build interfaces.",
+        "To keep animations feeling smooth at 60 frames per second, I learned to rely on GPU-friendly CSS properties like transform and opacity rather than triggering heavy layout recalculations."
+      ],
+      takeaways: [
+        "&bull; Use transform and opacity for fluid, stutter-free animations",
+        "&bull; Time animations with requestAnimationFrame for smooth motion",
+        "&bull; Keep user interactions snappy by avoiding heavy blocking tasks on the main thread"
+      ]
+    },
+    {
+      badge: "Building with AI",
+      title: "Where AI Helps & Where Code Rules",
+      leftPage: "p. 66 &bull; Safe AI",
+      rightPage: "p. 67 &bull; Saarthi Lessons",
+      prose: [
+        "Building Saarthi taught me an important lesson about AI: language models shouldn't do math when exact numbers matter. Numbers and rules need to be strictly verified by code.",
+        "Where AI really shines is explaining things in plain English—turning complex numbers, bank records, and dry facts into friendly, understandable insights that help people."
+      ],
+      takeaways: [
+        "&bull; Let code handle math and facts; let AI handle natural explanations",
+        "&bull; Always check inputs and outputs before showing them to users",
+        "&bull; Give people clear reasons and sources for whatever the system says"
+      ]
+    },
+    {
+      badge: "Human-Centered Design",
+      title: "Warm Interfaces & Thoughtful Details",
+      leftPage: "p. 80 &bull; Human First",
+      rightPage: "p. 81 &bull; Visual Rhythm",
+      prose: [
+        "Good software respects human attention. Instead of aggressive notifications and sterile gray dashboards, I enjoy designing interfaces that feel calm, warm, and inviting—like turning pages in a well-kept notebook.",
+        "Small details—smooth transitions, soft drop-shadows, and tactile click states—make digital tools feel less mechanical and much more human."
+      ],
+      takeaways: [
+        "&bull; Use soft contrast and warm palettes instead of harsh contrasts",
+        "&bull; Smooth, natural motion makes interactions feel tactile and friendly",
+        "&bull; Keep layouts clean so people can focus on what matters"
+      ]
     }
-  });
+  ];
 
-  // Scrapbook 3D Box emergence effect from the drawer cavity
-  if (cubeStage) {
-    gsap.fromTo(cubeStage,
-      { y: 50, scale: 0.88, opacity: 0 },
-      {
-        y: 0,
-        scale: 1,
-        opacity: 1,
-        ease: "back.out(1.4)",
-        scrollTrigger: {
-          trigger: deskScene,
-          start: "top 45%",
-          end: "top 10%",
-          scrub: 1.2
-        }
-      }
-    );
-  }
-}
+  function selectTab(index) {
+    if (index < 0 || index >= notebookData.length) return;
+    const data = notebookData[index];
 
-/* ============================================================
-   20. THE 3D ROTATING SCRAPBOOK BOX (CHAPTER PORTAL)
-   ============================================================ */
-function initScrapbookCube() {
-  const viewport = document.getElementById("scrapbook-cube-viewport");
-  const cube = document.getElementById("scrapbook-cube");
-  const tabs = document.querySelectorAll(".cube-tab");
-  const faces = document.querySelectorAll(".cube-face");
-
-  if (!viewport || !cube) return;
-
-  let currentRotY = 0;
-  let targetRotY = 0;
-  let isDragging = false;
-  let startX = 0;
-  let lastX = 0;
-  let velocity = 0;
-  let autoRotate = true;
-
-  const faceAngles = [0, -90, -180, -270];
-
-  function setActiveTab(faceIndex) {
+    // Update tab pills
     tabs.forEach((tab, i) => {
-      if (i === faceIndex) {
-        tab.classList.add("active");
-        tab.setAttribute("aria-selected", "true");
-      } else {
-        tab.classList.remove("active");
-        tab.setAttribute("aria-selected", "false");
-      }
+      const isSelected = i === index;
+      tab.classList.toggle("active", isSelected);
+      tab.setAttribute("aria-selected", isSelected ? "true" : "false");
+    });
+
+    // Update left page
+    if (pageNumLeft) pageNumLeft.innerHTML = data.leftPage;
+    if (pageNumRight) pageNumRight.innerHTML = data.rightPage;
+    if (badgeEl) badgeEl.textContent = data.badge;
+    if (titleEl) titleEl.textContent = data.title;
+    if (proseEl) {
+      proseEl.innerHTML = data.prose.map((p) => `<p>${p}</p>`).join("");
+    }
+    if (listEl) {
+      listEl.innerHTML = data.takeaways.map((item) => `<li>${item}</li>`).join("");
+    }
+
+    // Update right page diagram pane
+    panes.forEach((pane, i) => {
+      pane.classList.toggle("active", i === index);
     });
   }
 
-  function getActiveFaceIndex() {
-    let norm = ((-targetRotY % 360) + 360) % 360;
-    let idx = Math.round(norm / 90) % 4;
-    return idx;
-  }
-
-  function updateCubeTransform() {
-    cube.style.transform = `rotateY(${currentRotY}deg)`;
-  }
-
-  function tick() {
-    if (!isDragging) {
-      if (autoRotate) {
-        targetRotY -= 0.08;
-      }
-      currentRotY += (targetRotY - currentRotY) * 0.1;
-      velocity *= 0.92;
-      targetRotY += velocity;
-    } else {
-      currentRotY += (targetRotY - currentRotY) * 0.35;
-    }
-
-    updateCubeTransform();
-    requestAnimationFrame(tick);
-  }
-
-  // Pointer interactions (mouse & touch)
-  function onPointerDown(clientX) {
-    isDragging = true;
-    autoRotate = false;
-    startX = clientX;
-    lastX = clientX;
-    velocity = 0;
-    viewport.classList.add("is-dragging");
-  }
-
-  function onPointerMove(clientX) {
-    if (!isDragging) return;
-    const deltaX = clientX - lastX;
-    velocity = deltaX * 0.4;
-    targetRotY += velocity;
-    lastX = clientX;
-    setActiveTab(getActiveFaceIndex());
-  }
-
-  function onPointerUp() {
-    if (!isDragging) return;
-    isDragging = false;
-    viewport.classList.remove("is-dragging");
-
-    // Snap to nearest 90-degree face
-    const idx = getActiveFaceIndex();
-    targetRotY = -idx * 90;
-    setActiveTab(idx);
-
-    setTimeout(() => {
-      if (!isDragging) autoRotate = true;
-    }, 4000);
-  }
-
-  // Mouse events
-  viewport.addEventListener("mousedown", (e) => {
-    if (e.button === 0) onPointerDown(e.clientX);
-  });
-  window.addEventListener("mousemove", (e) => onPointerMove(e.clientX));
-  window.addEventListener("mouseup", onPointerUp);
-
-  // Touch events
-  viewport.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) onPointerDown(e.touches[0].clientX);
-  }, { passive: true });
-  window.addEventListener("touchmove", (e) => {
-    if (isDragging && e.touches.length === 1) onPointerMove(e.touches[0].clientX);
-  }, { passive: true });
-  window.addEventListener("touchend", onPointerUp);
-
-  // Tab navigation clicks
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      autoRotate = false;
-      const faceIndex = parseInt(tab.getAttribute("data-face"), 10);
-      targetRotY = faceAngles[faceIndex];
-      setActiveTab(faceIndex);
-      setTimeout(() => { autoRotate = true; }, 4000);
+      const idx = parseInt(tab.getAttribute("data-tab"), 10);
+      if (!isNaN(idx)) {
+        selectTab(idx);
+      }
+    });
+  });
+}
+
+/* ============================================================
+   13. TWILIGHT OBSERVATORY & CELESTIAL CONSTELLATION MAPPER
+   Rotating brass telescope aiming at active research questions
+   ============================================================ */
+function initTwilightObservatory() {
+  const buttons = document.querySelectorAll(".telescope-direction-buttons .btn-telescope-target");
+  const constellationGroups = document.querySelectorAll(".dome-sky-svg .constellation-group");
+  const barrel = document.getElementById("telescope-barrel");
+  const cardTag = document.getElementById("celestial-tag");
+  const cardTitle = document.getElementById("celestial-title");
+  const cardDesc = document.getElementById("celestial-desc");
+  const cardReading = document.getElementById("celestial-reading");
+  const card = document.getElementById("celestial-card");
+
+  if (!buttons.length || !constellationGroups.length) return;
+
+  const constellations = [
+    {
+      angle: -36,
+      tag: "Constellation 01 &bull; Currently Exploring",
+      title: "01. Software Engineering",
+      desc: "I'm exploring programming fundamentals, C++, data structures and algorithms. I want to understand how software works, not just how to write code.",
+      reading: "<span>Currently Exploring:</span> Programming Fundamentals &bull; C++ &bull; Data Structures &bull; Problem Solving"
+    },
+    {
+      angle: -10,
+      tag: "Constellation 02 &bull; Currently Exploring",
+      title: "02. Web Development",
+      desc: "I'm learning to build interactive websites, exploring frontend and backend development, and figuring out how to turn ideas into working products.",
+      reading: "<span>Currently Exploring:</span> Interactive Frontend &bull; Backend Basics &bull; Responsive Layouts"
+    },
+    {
+      angle: 24,
+      tag: "Constellation 03 &bull; Currently Exploring",
+      title: "03. Artificial Intelligence",
+      desc: "I'm curious about AI, prompt engineering and intelligent applications. I want to understand how these tools work and how they can solve real problems.",
+      reading: "<span>Currently Exploring:</span> Practical AI &bull; Prompt Engineering &bull; Real-World Use Cases"
+    },
+    {
+      angle: -52,
+      tag: "Constellation 04 &bull; Currently Exploring",
+      title: "04. Creative Technology",
+      desc: "I'm exploring UI/UX, animations, interactive experiences and 3D elements. I love the idea of making technology both useful and enjoyable.",
+      reading: "<span>Currently Exploring:</span> UI/UX Design &bull; Vector Animations &bull; Interactive Experiences"
+    },
+    {
+      angle: 5,
+      tag: "Constellation 05 &bull; Currently Exploring",
+      title: "05. Product & Research",
+      desc: "I'm learning how to find real-world problems, research ideas, understand users and turn observations into useful products.",
+      reading: "<span>Currently Exploring:</span> Finding Real Problems &bull; User Feedback &bull; Practical Prototypes"
+    },
+    {
+      angle: 42,
+      tag: "Constellation 06 &bull; Currently Exploring",
+      title: "06. Computer Science Beyond Code",
+      desc: "I'm curious about operating systems, cybersecurity and computer architecture. I want to understand what actually happens behind the screen.",
+      reading: "<span>Currently Exploring:</span> Operating Systems &bull; Cybersecurity Basics &bull; Computer Architecture"
+    }
+  ];
+
+  function aimTelescope(index) {
+    if (index < 0 || index >= constellations.length) return;
+    const target = constellations[index];
+
+    // Update buttons
+    buttons.forEach((btn, i) => {
+      btn.classList.toggle("active", i === index);
+    });
+
+    // Rotate telescope barrel
+    if (barrel) {
+      barrel.style.transform = `rotate(${target.angle}deg)`;
+    }
+
+    // Highlight constellation SVG group
+    constellationGroups.forEach((group, i) => {
+      group.classList.toggle("active", i === index);
+    });
+
+    // Update celestial card details with subtle gentle transition
+    if (card) {
+      card.style.opacity = "0.7";
+      setTimeout(() => {
+        if (cardTag) {
+          cardTag.innerHTML = `<span class="exploring-pulse-dot"></span><span>${target.tag}</span>`;
+        }
+        if (cardTitle) cardTitle.textContent = target.title;
+        if (cardDesc) cardDesc.textContent = target.desc;
+        if (cardReading) cardReading.innerHTML = target.reading;
+        card.style.opacity = "1";
+      }, 120);
+    }
+  }
+
+  // Button clicks
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.getAttribute("data-constellation"), 10);
+      if (!isNaN(idx)) {
+        aimTelescope(idx);
+      }
     });
   });
 
-  // Clicking a face smoothly scrolls to that chapter
-  faces.forEach((face) => {
-    face.addEventListener("click", (e) => {
-      if (Math.abs(velocity) > 1.2) return;
-      const targetSelector = face.getAttribute("data-chapter-target");
-      if (targetSelector) {
-        const targetEl = document.querySelector(targetSelector);
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth" });
+  // Constellation SVG group clicks
+  constellationGroups.forEach((group, i) => {
+    group.addEventListener("click", () => {
+      aimTelescope(i);
+    });
+  });
+
+  // Initial aim
+  aimTelescope(0);
+}
+
+/* ============================================================
+   14. CONTACT HORIZON & TACTILE ENVELOPE CONTROLLER
+   Interactive wax-sealed letter fold/unfold & back to top
+   ============================================================ */
+function initContactExperience() {
+  const sealTrigger = document.getElementById("envelope-seal-trigger");
+  const cardWrapper = document.getElementById("envelope-card");
+  const btnTop = document.getElementById("btn-back-to-top");
+
+  if (sealTrigger && cardWrapper) {
+    sealTrigger.addEventListener("click", () => {
+      const isFolded = cardWrapper.classList.toggle("folded");
+      sealTrigger.setAttribute("aria-expanded", isFolded ? "false" : "true");
+      
+      const label = sealTrigger.querySelector(".seal-label-whisper");
+      if (label) {
+        label.textContent = isFolded ? "Click wax seal to unfold letter" : "Click wax seal to fold letter";
+      }
+    });
+
+    // Support keyboard activation
+    sealTrigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        sealTrigger.click();
+      }
+    });
+  }
+
+  if (btnTop) {
+    btnTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+}
+
+/* ============================================================
+   15. MILESTONES TIMELINE & SCROLL REVEAL
+   Subtle entrance and marker highlight as visitor scrolls
+   ============================================================ */
+function initMilestonesTimeline() {
+  const strip = document.getElementById("milestones-timeline-strip");
+  const nodes = document.querySelectorAll(".milestones-timeline-strip .milestone-node");
+  const line = document.querySelector(".milestones-connecting-line");
+
+  if (!strip || !nodes.length) return;
+
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    // Subtle stagger reveal of milestone markers
+    gsap.from(nodes, {
+      scrollTrigger: {
+        trigger: strip,
+        start: "top 85%",
+        toggleActions: "play none none reverse"
+      },
+      y: 20,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+
+    if (line) {
+      gsap.from(line, {
+        scrollTrigger: {
+          trigger: strip,
+          start: "top 85%",
+          toggleActions: "play none none reverse"
+        },
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 1,
+        ease: "power2.out"
+      });
+    }
+  }
+
+  // Interactive focus on click / touch
+  nodes.forEach((node) => {
+    node.addEventListener("click", () => {
+      nodes.forEach((n) => n.classList.remove("active"));
+      node.classList.add("active");
+    });
+  });
+}
+
+/* ============================================================
+   16. TABLE OF CONTENTS & CINEMATIC CHAPTER TRANSITIONS
+   Handles chapter navigation with transitional wipe and arrival pulse
+   ============================================================ */
+function triggerChapterTransition(targetEl, label) {
+  if (!targetEl) return;
+  const wipeEl = document.getElementById("cinematic-transition-wipe");
+  const wipeText = document.getElementById("transition-wipe-text");
+
+  // Show shimmering golden transition wipe
+  if (wipeEl) {
+    if (wipeText && label) {
+      wipeText.innerHTML = `<span>Traveling to</span> <strong>${escapeHtml(label)}</strong>`;
+    }
+    wipeEl.classList.add("active");
+    wipeEl.setAttribute("aria-hidden", "false");
+  }
+
+  // Smooth scroll to target section
+  setTimeout(() => {
+    targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Hide transition wipe
+    setTimeout(() => {
+      if (wipeEl) {
+        wipeEl.classList.remove("active");
+        wipeEl.setAttribute("aria-hidden", "true");
+      }
+
+      // Trigger arrival highlight pulse
+      targetEl.classList.remove("section-arrival-pulse");
+      void targetEl.offsetWidth; // Force reflow
+      targetEl.classList.add("section-arrival-pulse");
+
+      setTimeout(() => {
+        targetEl.classList.remove("section-arrival-pulse");
+      }, 1900);
+    }, 320);
+  }, 180);
+}
+
+function initChapterTransitions() {
+  const tocCards = document.querySelectorAll(".toc-chapter-card[data-target]");
+  const allNavLinks = document.querySelectorAll(".quiet-nav a[href^='#']");
+
+  tocCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const targetSelector = card.getAttribute("data-target");
+      if (!targetSelector) return;
+      const target = document.querySelector(targetSelector);
+      if (target) {
+        e.preventDefault();
+        const titleEl = card.querySelector(".chapter-title");
+        const label = titleEl ? titleEl.textContent.trim() : "Chapter";
+        triggerChapterTransition(target, label);
+      }
+    });
+  });
+
+  allNavLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (href && href.startsWith("#") && href.length > 1) {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          triggerChapterTransition(target, link.textContent.trim());
         }
       }
     });
   });
-
-  tick();
-}
-
-/* ============================================================
-   21. PERSISTENT STORYBOOK COMPANION: PRIYANSHI & BALLOON
-   ============================================================ */
-function initPersistentCompanion() {
-  const companion = document.getElementById("persistent-companion");
-  const avatarRig = document.getElementById("companion-avatar-rig");
-  const compBalloon = document.getElementById("comp-balloon-rig");
-  const compChar = document.getElementById("comp-char-rig");
-  const heroScene = document.getElementById("storybook-scene");
-
-  if (!companion || !avatarRig || !compBalloon) return;
-
-  const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
-
-  // Visibility based on scroll: fade in when leaving Hero, remain as companion
-  if (typeof ScrollTrigger !== "undefined" && heroScene) {
-    ScrollTrigger.create({
-      trigger: heroScene,
-      start: "bottom 70%",
-      onEnter: () => companion.classList.add("is-visible"),
-      onLeaveBack: () => companion.classList.remove("is-visible")
-    });
-
-    // Gentle scroll-based height drift as user journeys through chapters
-    gsap.to(avatarRig, {
-      y: 60,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 2
-      }
-    });
-  }
-
-  // Subtle cursor parallax on desktop
-  if (!isTouch) {
-    let targetX = 0;
-    let targetY = 0;
-    let currX = 0;
-    let currY = 0;
-    let balloonTilt = 0;
-
-    window.addEventListener("pointermove", (e) => {
-      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-      targetX = nx;
-      targetY = ny;
-    }, { passive: true });
-
-    function tickCompanion() {
-      currX += (targetX * 12 - currX) * 0.04;
-      currY += (targetY * 8 - currY) * 0.04;
-      balloonTilt += (targetX * 2.2 - balloonTilt) * 0.035;
-
-      compChar.style.transform = `translate3d(${currX}px, ${currY}px, 0px)`;
-      compBalloon.style.transform = `translate3d(${currX * 1.5}px, ${currY * 1.5}px, 0px) rotate(${balloonTilt}deg)`;
-
-      requestAnimationFrame(tickCompanion);
-    }
-
-    tickCompanion();
-  }
 }

@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saarthi Case Study — Priyanshi | Still Becoming</title>
   <meta name="description" content="A comprehensive deep dive into Saarthi: tackling missing context in digital banking through empathetic, intelligent architecture. Flagship hackathon project by Priyanshi." />
+  <meta name="theme-color" content="#FAF7F2" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.svg" type="image/svg+xml" />
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Saarthi Case Study — Priyanshi | Still Becoming" />
+  <meta property="og:description" content="Tackling missing context in digital banking through empathetic, intelligent architecture." />
+  <meta property="og:image" content="assets/saarthi/home1.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Saarthi Case Study — Priyanshi" />
+  <meta name="twitter:description" content="Tackling missing context in digital banking through empathetic, intelligent architecture." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -617,9 +631,95 @@
       transform: translateY(-2px);
     }
 
+    /* Prototype Launch Banner */
+    .case-prototype-banner {
+      margin: 2.2rem 0 0.5rem;
+      background: #FFFDF9;
+      border: 1.8px solid var(--border-pencil-strong, rgba(44, 40, 37, 0.22));
+      border-radius: var(--radius-story, 16px);
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      box-shadow: 0 4px 18px rgba(44, 40, 37, 0.05);
+    }
+
+    .prototype-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .banner-pulse-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+      animation: bannerPulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes bannerPulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .banner-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin: 0 0 0.2rem;
+    }
+
+    .banner-desc {
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--ink-secondary);
+      margin: 0;
+    }
+
+    .btn-launch-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.6rem;
+      border-radius: var(--radius-pill);
+      background: var(--ink-primary);
+      color: #FAF7F2;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(44, 40, 37, 0.16);
+      flex-shrink: 0;
+    }
+
+    .btn-launch-hero:hover {
+      background: var(--color-dusty-rose, #E59982);
+      transform: translateY(-2px);
+      color: #FAF7F2;
+    }
+
     @media (max-width: 768px) {
       .case-nav-links {
         display: none;
+      }
+
+      .case-prototype-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.25rem;
+      }
+
+      .btn-launch-hero {
+        width: 100%;
+        justify-content: center;
       }
 
       .comparison-grid {
@@ -638,8 +738,8 @@
   <!-- Navigation Bar -->
   <nav class="case-nav" aria-label="Case Study Navigation">
     <div class="case-nav-inner">
-      <a href="index.html#chapter-2" class="case-nav-back">
-        <span>←</span>
+      <a href="index.html#project-showcase" class="case-nav-back">
+        <span>&larr;</span>
         <span>Back to Priyanshi's Portfolio</span>
       </a>
       <ul class="case-nav-links">
@@ -672,11 +772,11 @@
     <div class="case-meta-grid">
       <div class="meta-col">
         <div class="meta-col-title">Role</div>
-        <div class="meta-col-value">UX Research & Architecture</div>
+        <div class="meta-col-value">UX Research &amp; Architecture</div>
       </div>
       <div class="meta-col">
         <div class="meta-col-title">Track</div>
-        <div class="meta-col-value">FinTech & Inclusive Banking</div>
+        <div class="meta-col-value">FinTech &amp; Inclusive Banking</div>
       </div>
       <div class="meta-col">
         <div class="meta-col-title">Timeframe</div>
@@ -684,8 +784,26 @@
       </div>
       <div class="meta-col">
         <div class="meta-col-title">Core Focus</div>
-        <div class="meta-col-value">Contextual AI & Human Interface</div>
+        <div class="meta-col-value">Contextual AI &amp; Human Interface</div>
       </div>
+    </div>
+
+    <!-- Live Working Prototype Banner -->
+    <div class="case-prototype-banner">
+      <div class="prototype-banner-left">
+        <span class="banner-pulse-dot" aria-hidden="true"></span>
+        <div>
+          <h4 class="banner-title">Live Hackathon Prototype Deployed</h4>
+          <p class="banner-desc">Explore the live prototype online: test the Hisaab breakdown, Time Machine simulation, and voice queries.</p>
+        </div>
+      </div>
+      <a href="https://sarthi-everything-a-bank-needs.onrender.com" target="_blank" rel="noopener" class="btn-launch-hero">
+        <span>Launch Working Prototype</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
     </div>
   </header>
 
@@ -695,7 +813,7 @@
     <!-- SECTION 1: THE HUMAN PROBLEM -->
     <section class="case-section" id="problem">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter I • The Catalyst</span>
+        <span class="section-kicker">Section 01 &bull; The Catalyst</span>
         <h2 class="case-section-title">The Problem: Missing Context in Digital Banking</h2>
       </div>
 
@@ -748,7 +866,7 @@
     <!-- SECTION 2: RESEARCH & INSIGHTS -->
     <section class="case-section" id="research">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter II • Empathy & Discovery</span>
+        <span class="section-kicker">Section 02 &bull; Empathy &amp; Discovery</span>
         <h2 class="case-section-title">User Research: What People Actually Need</h2>
       </div>
 
@@ -774,7 +892,7 @@
     <!-- SECTION 3: ARCHITECTURE & HOW SAARTHI WORKS -->
     <section class="case-section" id="architecture">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter III • Systems Architecture</span>
+        <span class="section-kicker">Section 03 &bull; Systems Architecture</span>
         <h2 class="case-section-title">How Saarthi Works: The Context Pipeline</h2>
       </div>
 
@@ -800,29 +918,118 @@
 
           <div class="pipeline-step">
             <span class="pipeline-tag">Layer 3</span>
-            <h4 class="pipeline-name">Canonical Ledger</h4>
-            <p class="pipeline-desc">Maps raw banking statements to rich metadata (merchant names, locations, recurring subscriptions).</p>
+            <h4 class="pipeline-name">Clean Statement Ledger</h4>
+            <p class="pipeline-desc">Maps raw, cryptic bank statements to recognizable merchant names, categories, and subscriptions.</p>
           </div>
 
           <div class="pipeline-step highlight">
             <span class="pipeline-tag">Layer 4 • Output</span>
-            <h4 class="pipeline-name">Calm Synthesizer</h4>
-            <p class="pipeline-desc">Delivers reassuring natural-language summaries and audio responses instead of cold error codes.</p>
+            <h4 class="pipeline-name">Calm Insights</h4>
+            <p class="pipeline-desc">Delivers reassuring, plain-English summaries and voice explanations instead of cold error codes.</p>
           </div>
         </div>
       </div>
 
       <div class="case-prose">
         <p>
-          A standout engineering decision was separating <strong>computational verification</strong> from <strong>natural language explanation</strong>. In financial applications, LLMs cannot be trusted to perform deterministic balance arithmetic. Saarthi delegates all financial math to a deterministic ledger core, utilizing the AI model solely for intent understanding, context augmentation, and empathetic explanation.
+          A key engineering decision was separating <strong>computational verification</strong> from <strong>natural language explanation</strong>. In financial tools, AI models should not do calculations where exact numbers matter. Saarthi calculates all numbers directly in code, using the AI model solely to understand questions, retrieve relevant context, and explain financial insights in plain, reassuring English.
         </p>
+      </div>
+
+      <!-- Detailed System Architecture Component Breakdown -->
+      <div class="architecture-grid" style="margin-top: 2.5rem;">
+        
+        <!-- Component 1 -->
+        <div class="arch-node-card">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9638;</span>
+            <span class="arch-badge badge-implemented">Working in Prototype</span>
+          </div>
+          <h4 class="arch-node-title">Clear Financial Summary</h4>
+          <p class="arch-node-text">
+            Live interactive dashboard showing incoming money, total spending, and monthly savings at a glance, paired with a simple financial health score.
+          </p>
+        </div>
+
+        <!-- Component 2 -->
+        <div class="arch-node-card">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9878;</span>
+            <span class="arch-badge badge-implemented">Working in Prototype</span>
+          </div>
+          <h4 class="arch-node-title">Clean Data &amp; Direct Math</h4>
+          <p class="arch-node-text">
+            Cleans messy CSV and Excel bank statements into clear, organized records. All math is calculated directly in code so the numbers are always accurate.
+          </p>
+        </div>
+
+        <!-- Component 3 -->
+        <div class="arch-node-card">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9672;</span>
+            <span class="arch-badge badge-implemented">Working in Prototype</span>
+          </div>
+          <h4 class="arch-node-title">Spending Checks &amp; Observations</h4>
+          <p class="arch-node-text">
+            Automated checks that spot unexpected charges, price jumps, and subscription renewals, flagging what needs a second look.
+          </p>
+        </div>
+
+        <!-- Component 4 -->
+        <div class="arch-node-card">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9684;</span>
+            <span class="arch-badge badge-implemented">Working in Prototype</span>
+          </div>
+          <h4 class="arch-node-title">What-If Budget Simulator</h4>
+          <p class="arch-node-text">
+            A sandbox that lets people test ideas—like &ldquo;what if I spend 20% less on dining out?&rdquo;—to see how their savings change without touching real money.
+          </p>
+        </div>
+
+        <!-- Component 5 -->
+        <div class="arch-node-card">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9742;</span>
+            <span class="arch-badge badge-implemented">Working in Prototype</span>
+          </div>
+          <h4 class="arch-node-title">Voice Input (&ldquo;Talk It Out&rdquo;)</h4>
+          <p class="arch-node-text">
+            Uses browser speech recognition so users can ask everyday questions out loud instead of navigating complex menus and filters.
+          </p>
+        </div>
+
+        <!-- Component 6 (Planned) -->
+        <div class="arch-node-card card-planned">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9744;</span>
+            <span class="arch-badge badge-planned">Planned Future Idea</span>
+          </div>
+          <h4 class="arch-node-title">Smart Monthly Memory</h4>
+          <p class="arch-node-text">
+            Remembering recurring monthly bills and seasonal expenses securely on the user's device, without ever storing private bank credentials.
+          </p>
+        </div>
+
+        <!-- Component 7 (Planned) -->
+        <div class="arch-node-card card-planned">
+          <div class="arch-node-top">
+            <span class="arch-node-icon">&#9875;</span>
+            <span class="arch-badge badge-planned">Planned Future Idea</span>
+          </div>
+          <h4 class="arch-node-title">Banking Guidelines &amp; Help</h4>
+          <p class="arch-node-text">
+            Connecting with official consumer banking rules and dispute guidance so users can easily understand how to contest unfair charges or errors.
+          </p>
+        </div>
+
       </div>
     </section>
 
     <!-- SECTION 4: SCREEN WALKTHROUGH -->
     <section class="case-section" id="screens">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter IV • Product Walkthrough</span>
+        <span class="section-kicker">Section 04 &bull; Product Walkthrough</span>
         <h2 class="case-section-title">The Implemented Interface & Screen Flow</h2>
       </div>
 
@@ -952,7 +1159,7 @@
     <!-- SECTION 5: IMPLEMENTED VS ROADMAP -->
     <section class="case-section" id="roadmap">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter V • Honesty in Engineering</span>
+        <span class="section-kicker">Section 05 &bull; Honesty in Engineering</span>
         <h2 class="case-section-title">Implementation Reality vs Future Roadmap</h2>
       </div>
 
@@ -1032,7 +1239,7 @@
     <!-- SECTION 6: STUDENT REFLECTIONS -->
     <section class="case-section" id="learnings" style="border-bottom: none;">
       <div class="case-section-header">
-        <span class="section-kicker">Chapter VI • Personal Takeaways</span>
+        <span class="section-kicker">Section 06 &bull; Personal Takeaways</span>
         <h2 class="case-section-title">What Building Saarthi Taught Priyanshi</h2>
       </div>
 
@@ -1067,11 +1274,62 @@
   <footer class="case-footer">
     <div class="case-footer-monogram">P</div>
     <p class="case-footer-quote">“Still becoming. Always curious. Always building.”</p>
-    <a href="index.html#chapter-2" class="btn-return-home">
-      <span>←</span>
+    <a href="index.html#project-showcase" class="btn-return-home">
+      <span>&larr;</span>
       <span>Return to Priyanshi's Portfolio</span>
     </a>
   </footer>
+
+  <!-- High-Res Image Lightbox Modal for Case Study Screens -->
+  <div class="image-lightbox-modal" id="saarthi-lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" id="saarthi-lightbox-backdrop"></div>
+    <div class="lightbox-content-card">
+      <button class="lightbox-close-btn" id="saarthi-lightbox-close" aria-label="Close image preview">&times;</button>
+      <img src="" alt="Full resolution preview" class="lightbox-full-img" id="saarthi-lightbox-img" />
+      <p class="lightbox-caption" id="saarthi-lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- Interactive Lightbox Script -->
+  <script>
+    (function() {
+      const modal = document.getElementById("saarthi-lightbox");
+      const fullImg = document.getElementById("saarthi-lightbox-img");
+      const captionEl = document.getElementById("saarthi-lightbox-caption");
+      const btnClose = document.getElementById("saarthi-lightbox-close");
+      const backdrop = document.getElementById("saarthi-lightbox-backdrop");
+      const screenCards = document.querySelectorAll(".screen-card img");
+
+      if (!modal || !fullImg) return;
+
+      function openLightbox(src, alt) {
+        fullImg.src = src;
+        fullImg.alt = alt;
+        if (captionEl) captionEl.textContent = alt;
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      screenCards.forEach(img => {
+        img.style.cursor = "zoom-in";
+        img.title = "Click to view full resolution";
+        img.addEventListener("click", () => openLightbox(img.src, img.alt));
+      });
+
+      if (btnClose) btnClose.addEventListener("click", closeLightbox);
+      if (backdrop) backdrop.addEventListener("click", closeLightbox);
+      window.addEventListener("keydown", e => {
+        if (e.key === "Escape" && modal.classList.contains("active")) closeLightbox();
+      });
+    })();
+  </script>
 
 </body>
 </html>
