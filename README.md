@@ -1,4 +1,4 @@
-# Priyanshi — Still Becoming.
+﻿# Priyanshi — Still Becoming.
 ### An Illustrated Personal Journey of a Computer Science Student
 
 A hand-drawn, poetic web experience capturing the authentic story of a Computer Science undergraduate navigating hackathons, problem-solving, and the patient pursuit of human-centered software.

@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    PRIYANSHI — STILL BECOMING
    Storybook Opening Sequence & Chapter Scroll Animations (GSAP)
    ============================================================ */
@@ -41,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initIdeasDrawer();
   initBalloonMemories();
   initTerminal();
+
+  // Continuous storybook world interactions
+  initOpeningCursorParallax();
+  initDeskGatewayAnimation();
+  initScrapbookCube();
+  initPersistentCompanion();
 });
 
 /* ============================================================
@@ -285,6 +291,7 @@ function initStorybookScrollInteraction() {
   const characterRig = document.getElementById("character-rig");
   const textOverlay = document.getElementById("storybook-text-overlay");
 
+  // Continuous seamless transition from Sky into Desk
   gsap.timeline({
     scrollTrigger: {
       trigger: scene,
@@ -293,37 +300,39 @@ function initStorybookScrollInteraction() {
       scrub: 1.2
     }
   })
-  // The balloon gently moves upwards
+  // Character and balloon gracefully descend toward the desk environment
   .to(balloonRig, {
-    y: -240,
-    rotation: -4,
-    scale: 0.92,
+    y: 110,
+    rotation: 2.2,
+    scale: 0.96,
     ease: "none"
   }, 0)
 
-  // Character responds to the balloon lifting upwards
   .to(characterRig, {
-    y: -210,
-    rotation: 3,
-    scale: 0.95,
+    y: 130,
+    rotation: -1.8,
+    scale: 0.97,
     ease: "none"
   }, 0)
 
-  // Opening text smoothly transitions out as user scrolls toward Chapter I
+  // Opening text smoothly dissolves as user descends toward the desk
   .to(textOverlay, {
     opacity: 0,
-    y: -50,
+    y: -40,
     ease: "power1.out"
-  }, 0.35)
+  }, 0.25)
 
+  // Clouds float upward out of view as we descend
   .to(".cloud-1", {
-    y: -80,
+    y: -120,
     x: -30,
+    opacity: 0.2,
     ease: "none"
   }, 0)
   .to(".cloud-2", {
-    y: -100,
+    y: -140,
     x: 40,
+    opacity: 0.2,
     ease: "none"
   }, 0);
 }
@@ -1836,4 +1845,334 @@ function initTerminal() {
       closeTerminal();
     }
   });
+}
+
+
+/* ============================================================
+   18. CURSOR PARALLAX FOR SCENE 1 (THE GIRL & BALLOON)
+   ============================================================ */
+function initOpeningCursorParallax() {
+  const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+  if (isTouch) return; // Touch uses scroll float
+
+  const balloonRig = document.getElementById("balloon-rig");
+  const characterRig = document.getElementById("character-rig");
+
+  if (!balloonRig || !characterRig) return;
+
+  let targetX = 0;
+  let targetY = 0;
+  let charX = 0;
+  let charY = 0;
+  let balloonX = 0;
+  let balloonY = 0;
+  let balloonRot = 0;
+
+  window.addEventListener("pointermove", (e) => {
+    // Normalized coordinates (-1 to 1) from viewport center
+    const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+    const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+    targetX = nx;
+    targetY = ny;
+  }, { passive: true });
+
+  function tickParallax() {
+    // Damped lerp for character (smooth lag)
+    charX += (targetX * 14 - charX) * 0.05;
+    charY += (targetY * 10 - charY) * 0.05;
+
+    // Independent delayed lerp for floating balloon (larger displacement & gentle air sway)
+    balloonX += (targetX * 24 - balloonX) * 0.035;
+    balloonY += (targetY * 18 - balloonY) * 0.035;
+    balloonRot += (targetX * 2.8 - balloonRot) * 0.04;
+
+    // Displace character and balloon independently relative to their base coordinates
+    characterRig.style.transform = `translate(${480 + charX}px, ${500 + charY}px)`;
+    balloonRig.style.transform = `translate3d(${balloonX}px, ${balloonY}px, 0px) rotate(${balloonRot}deg)`;
+
+    requestAnimationFrame(tickParallax);
+  }
+
+  tickParallax();
+}
+
+/* ============================================================
+   19. SEAMLESS TRANSITION: SKY TO DESK & DRAWER GATEWAY
+   ============================================================ */
+function initDeskGatewayAnimation() {
+  if (typeof ScrollTrigger === "undefined") return;
+
+  const deskScene = document.getElementById("desk-gateway-scene");
+  const deskViewport = document.getElementById("desk-stage-viewport");
+  const drawerBox = document.getElementById("drawer-box");
+  const cubeStage = document.getElementById("scrapbook-cube-stage");
+
+  if (!deskScene || !deskViewport || !drawerBox) return;
+
+  // Camera zoom and approach towards desk on scroll
+  gsap.fromTo(deskViewport, 
+    { scale: 0.94, y: 35, opacity: 0.9 },
+    {
+      scale: 1,
+      y: 0,
+      opacity: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: deskScene,
+        start: "top 80%",
+        end: "top 30%",
+        scrub: 1
+      }
+    }
+  );
+
+  // Smooth drawer auto-open and 3D Scrapbook emergence as visitor approaches
+  ScrollTrigger.create({
+    trigger: deskScene,
+    start: "top 60%",
+    onEnter: () => {
+      if (!drawerBox.classList.contains("is-open")) {
+        drawerBox.classList.add("is-open");
+        const toggleText = document.getElementById("drawer-toggle-text");
+        const pullLabel = document.querySelector(".handle-pull-label");
+        const toggleIcon = document.querySelector(".drawer-toggle-icon");
+        if (toggleText) toggleText.textContent = "Close Drawer";
+        if (pullLabel) pullLabel.textContent = "Push Drawer â†‘";
+        if (toggleIcon) toggleIcon.textContent = "â†‘";
+      }
+    },
+    onLeaveBack: () => {
+      if (drawerBox.classList.contains("is-open")) {
+        drawerBox.classList.remove("is-open");
+        const toggleText = document.getElementById("drawer-toggle-text");
+        const pullLabel = document.querySelector(".handle-pull-label");
+        const toggleIcon = document.querySelector(".drawer-toggle-icon");
+        if (toggleText) toggleText.textContent = "Pull Drawer Open";
+        if (pullLabel) pullLabel.textContent = "Pull Drawer Open â†“";
+        if (toggleIcon) toggleIcon.textContent = "â†“";
+      }
+    }
+  });
+
+  // Scrapbook 3D Box emergence effect from the drawer cavity
+  if (cubeStage) {
+    gsap.fromTo(cubeStage,
+      { y: 50, scale: 0.88, opacity: 0 },
+      {
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        ease: "back.out(1.4)",
+        scrollTrigger: {
+          trigger: deskScene,
+          start: "top 45%",
+          end: "top 10%",
+          scrub: 1.2
+        }
+      }
+    );
+  }
+}
+
+/* ============================================================
+   20. THE 3D ROTATING SCRAPBOOK BOX (CHAPTER PORTAL)
+   ============================================================ */
+function initScrapbookCube() {
+  const viewport = document.getElementById("scrapbook-cube-viewport");
+  const cube = document.getElementById("scrapbook-cube");
+  const tabs = document.querySelectorAll(".cube-tab");
+  const faces = document.querySelectorAll(".cube-face");
+
+  if (!viewport || !cube) return;
+
+  let currentRotY = 0;
+  let targetRotY = 0;
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let velocity = 0;
+  let autoRotate = true;
+
+  const faceAngles = [0, -90, -180, -270];
+
+  function setActiveTab(faceIndex) {
+    tabs.forEach((tab, i) => {
+      if (i === faceIndex) {
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+      } else {
+        tab.classList.remove("active");
+        tab.setAttribute("aria-selected", "false");
+      }
+    });
+  }
+
+  function getActiveFaceIndex() {
+    let norm = ((-targetRotY % 360) + 360) % 360;
+    let idx = Math.round(norm / 90) % 4;
+    return idx;
+  }
+
+  function updateCubeTransform() {
+    cube.style.transform = `rotateY(${currentRotY}deg)`;
+  }
+
+  function tick() {
+    if (!isDragging) {
+      if (autoRotate) {
+        targetRotY -= 0.08;
+      }
+      currentRotY += (targetRotY - currentRotY) * 0.1;
+      velocity *= 0.92;
+      targetRotY += velocity;
+    } else {
+      currentRotY += (targetRotY - currentRotY) * 0.35;
+    }
+
+    updateCubeTransform();
+    requestAnimationFrame(tick);
+  }
+
+  // Pointer interactions (mouse & touch)
+  function onPointerDown(clientX) {
+    isDragging = true;
+    autoRotate = false;
+    startX = clientX;
+    lastX = clientX;
+    velocity = 0;
+    viewport.classList.add("is-dragging");
+  }
+
+  function onPointerMove(clientX) {
+    if (!isDragging) return;
+    const deltaX = clientX - lastX;
+    velocity = deltaX * 0.4;
+    targetRotY += velocity;
+    lastX = clientX;
+    setActiveTab(getActiveFaceIndex());
+  }
+
+  function onPointerUp() {
+    if (!isDragging) return;
+    isDragging = false;
+    viewport.classList.remove("is-dragging");
+
+    // Snap to nearest 90-degree face
+    const idx = getActiveFaceIndex();
+    targetRotY = -idx * 90;
+    setActiveTab(idx);
+
+    setTimeout(() => {
+      if (!isDragging) autoRotate = true;
+    }, 4000);
+  }
+
+  // Mouse events
+  viewport.addEventListener("mousedown", (e) => {
+    if (e.button === 0) onPointerDown(e.clientX);
+  });
+  window.addEventListener("mousemove", (e) => onPointerMove(e.clientX));
+  window.addEventListener("mouseup", onPointerUp);
+
+  // Touch events
+  viewport.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) onPointerDown(e.touches[0].clientX);
+  }, { passive: true });
+  window.addEventListener("touchmove", (e) => {
+    if (isDragging && e.touches.length === 1) onPointerMove(e.touches[0].clientX);
+  }, { passive: true });
+  window.addEventListener("touchend", onPointerUp);
+
+  // Tab navigation clicks
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      autoRotate = false;
+      const faceIndex = parseInt(tab.getAttribute("data-face"), 10);
+      targetRotY = faceAngles[faceIndex];
+      setActiveTab(faceIndex);
+      setTimeout(() => { autoRotate = true; }, 4000);
+    });
+  });
+
+  // Clicking a face smoothly scrolls to that chapter
+  faces.forEach((face) => {
+    face.addEventListener("click", (e) => {
+      if (Math.abs(velocity) > 1.2) return;
+      const targetSelector = face.getAttribute("data-chapter-target");
+      if (targetSelector) {
+        const targetEl = document.querySelector(targetSelector);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    });
+  });
+
+  tick();
+}
+
+/* ============================================================
+   21. PERSISTENT STORYBOOK COMPANION: PRIYANSHI & BALLOON
+   ============================================================ */
+function initPersistentCompanion() {
+  const companion = document.getElementById("persistent-companion");
+  const avatarRig = document.getElementById("companion-avatar-rig");
+  const compBalloon = document.getElementById("comp-balloon-rig");
+  const compChar = document.getElementById("comp-char-rig");
+  const heroScene = document.getElementById("storybook-scene");
+
+  if (!companion || !avatarRig || !compBalloon) return;
+
+  const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+
+  // Visibility based on scroll: fade in when leaving Hero, remain as companion
+  if (typeof ScrollTrigger !== "undefined" && heroScene) {
+    ScrollTrigger.create({
+      trigger: heroScene,
+      start: "bottom 70%",
+      onEnter: () => companion.classList.add("is-visible"),
+      onLeaveBack: () => companion.classList.remove("is-visible")
+    });
+
+    // Gentle scroll-based height drift as user journeys through chapters
+    gsap.to(avatarRig, {
+      y: 60,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 2
+      }
+    });
+  }
+
+  // Subtle cursor parallax on desktop
+  if (!isTouch) {
+    let targetX = 0;
+    let targetY = 0;
+    let currX = 0;
+    let currY = 0;
+    let balloonTilt = 0;
+
+    window.addEventListener("pointermove", (e) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetX = nx;
+      targetY = ny;
+    }, { passive: true });
+
+    function tickCompanion() {
+      currX += (targetX * 12 - currX) * 0.04;
+      currY += (targetY * 8 - currY) * 0.04;
+      balloonTilt += (targetX * 2.2 - balloonTilt) * 0.035;
+
+      compChar.style.transform = `translate3d(${currX}px, ${currY}px, 0px)`;
+      compBalloon.style.transform = `translate3d(${currX * 1.5}px, ${currY * 1.5}px, 0px) rotate(${balloonTilt}deg)`;
+
+      requestAnimationFrame(tickCompanion);
+    }
+
+    tickCompanion();
+  }
 }
